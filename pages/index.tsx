@@ -13,10 +13,12 @@ import {
   SimpleGrid,
   Icon,
   Center,
-  HStack
+  HStack,
+  StackDivider,
+  Container
 } from '@chakra-ui/react'
 
-import { FcBullish, FcCalendar, FcTodoList } from 'react-icons/fc';
+import { IoAnalytics, IoCalendarClear, IoList } from 'react-icons/io5';
 import { BiBookOpen } from "react-icons/bi";
 import Navbar from '../components/landing/navbar'
 import Footer from '../components/landing/footer'
@@ -114,21 +116,21 @@ export default function Home() {
           </Text>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} my={'5'}>
             <Feature
-              icon={<Icon as={FcTodoList} w={10} h={10} />}
+              icon={<Icon as={IoList} w={10} h={10} color='gray.600' />}
               title={'Organize school tasks'}
               text={
                 'All the tasks you need to do in one place, organized by class and priority. Focus on class specific task list or get an overview with a global task list.'
               }
             />
             <Feature
-              icon={<Icon as={FcCalendar} w={10} h={10} />}
+              icon={<Icon as={IoCalendarClear} w={10} h={10} color='gray.600' />}
               title={'Manage your school timetable'}
               text={
                 'Input your school timetable and keep track of lectures and tutorials. Plan future timetables with a mock timetable tool.'
               }
             />
             <Feature
-              icon={<Icon as={FcBullish} w={10} h={10} />}
+              icon={<Icon as={IoAnalytics} w={10} h={10} color='gray.600' />}
               title={'Marks tracking'}
               text={
                 'Stop tracking with your marks with a spreadsheet. Check your current average and calculate what your need to get your target grade.'
@@ -161,82 +163,129 @@ export default function Home() {
           >
             How Studydesk can help organize.
           </Heading>
-          
-          <Center>
-            <HStack
-              my={'5'}
-            >
-              <Flex
-                w={{base: 16, md: 24}}
-                h={{base: 16, md: 24}}
-                align={'center'}
-                justify={'center'}
-                color={'white'}
-                rounded={'full'}
-                bg={'gray.100'}
-                >
-                <Icon as={FcTodoList} w={{base: 10, md: 12}} h={{base: 10, md: 12}} />
-              </Flex>
-              <Heading
-                size={'lg'}
-              >
-                Global and class focused task lists.
-              </Heading>
-            </HStack>
-          </Center>
 
-          <Center>
-            <HStack
-              my={'5'}
-            >
-              <Flex
-                w={{base: 16, md: 24}}
-                h={{base: 16, md: 24}}
-                align={'center'}
-                justify={'center'}
-                color={'white'}
-                rounded={'full'}
-                bg={'gray.100'}
-                >
-                <Icon as={FcCalendar} w={{base: 10, md: 12}} h={{base: 10, md: 12}} />
-              </Flex>
-              <Heading
-                size={'lg'}
-              >
-                Load and plan your timetables.
-              </Heading>
-            </HStack>
-          </Center>
+          <Container maxW={'7xl'} py={10}>
+            <SimpleGrid columns={{base: 1, md: 2}} spacing={10}>
+                <Stack>
+                  <Flex>
+                    <Flex
+                      w={20}
+                      h={20}
+                      align={'center'}
+                      justify={'center'}
+                      color={'white'}
+                      rounded={'full'}
+                      bg={'gray.100'}
+                      mb={1}
+                      mx={2}
+                      >
+                      <Icon as={IoList} w={12} h={12} color='gray.600'/>
+                    </Flex>
+                    <Center flex={1}>
+                      <Heading
+                        size={'lg'}
+                      >
+                        Global and class focused task lists.
+                      </Heading>
+                    </Center>
+                  </Flex>
+                </Stack>
 
-          <Center>
-            <HStack
-              my={'5'}
-            >
-              <Flex
-                w={{base: 16, md: 24}}
-                h={{base: 16, md: 24}}
-                align={'center'}
-                justify={'center'}
-                color={'white'}
-                rounded={'full'}
-                bg={'gray.100'}
-                >
-                <Icon as={FcBullish} w={{base: 10, md: 12}} h={{base: 10, md: 12}} />
-              </Flex>
-              <Heading
-                size={'lg'}
-              >
-                Manage your marks and calculate minimum grades
-              </Heading>
-            </HStack>
-          </Center>
+                <Flex>
+                  <Image
+                    rounded={'md'}
+                    alt={'feature image'}
+                    src={
+                      'https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+                    }
+                  />
+                </Flex>
+            </SimpleGrid>
+          </Container>
 
+          <Container maxW={'7xl'} py={10}>
+            <SimpleGrid columns={{base: 1, md: 2}} spacing={10}>
+              <Stack>
+                <Flex>
+                  <Flex
+                    w={20}
+                    h={20}
+                    align={'center'}
+                    justify={'center'}
+                    color={'white'}
+                    rounded={'full'}
+                    bg={'gray.100'}
+                    mb={1}
+                    mx={2}
+                    >
+                    <Icon as={IoCalendarClear} w={12} h={12} color='gray.600'/>
+                  </Flex>
+                  <Center flex={1}>
+                    <Heading
+                      size={'lg'}
+                    >
+                      Load and plan your timetables.
+                    </Heading>
+                  </Center>
+                </Flex>
+              </Stack>
+              <Flex>
+                <Image
+                  rounded={'md'}
+                  alt={'feature image'}
+                  src={
+                    'https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+                  }
+                />
+              </Flex>
+            </SimpleGrid>
+          </Container>
+
+          <Container maxW={'7xl'} py={10}>
+            <SimpleGrid columns={{base: 1, md: 2}} spacing={10}>
+                <Stack>
+                  <Flex>
+                    <Flex
+                      w={20}
+                      h={20}
+                      align={'center'}
+                      justify={'center'}
+                      color={'white'}
+                      rounded={'full'}
+                      bg={'gray.100'}
+                      mb={1}
+                      mx={2}
+                      >
+                      <Icon as={IoAnalytics} w={12} h={12} color='gray.600'/>
+                    </Flex>
+                    <Center flex={1}>
+                      <Heading
+                        size={'lg'}
+                      >
+                        Manage your marks and calculate minimum grades.
+                      </Heading>
+                    </Center>
+                  </Flex>
+
+                </Stack>
+
+                <Flex>
+                  <Image
+                    rounded={'md'}
+                    alt={'feature image'}
+                    src={
+                      'https://images.unsplash.com/photo-1554200876-56c2f25224fa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+                    }
+                  />
+                </Flex>
+            </SimpleGrid>
+          </Container>
         </Box>
 
-        <Box
-          p={10}
-          alignContent={'center'}
-        >
+      <Box
+        p={10}
+        alignContent={'center'}
+      >
           <Heading
             size={'2xl'}
             m={5}
