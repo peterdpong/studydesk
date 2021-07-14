@@ -10,7 +10,7 @@ export default function App() {
     if(!loading && !auth) {
       router.push('/');
     }
-  }, [auth, loading])
+  }, [auth, loading]);
 
   if(loading || !auth) {
     return (<div>Loading</div>);
