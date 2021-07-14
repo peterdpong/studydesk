@@ -13,8 +13,8 @@ interface Auth {
 interface AuthContext {
   auth: Auth | null;
   loading: boolean;
-  signinWithEmailAndPassword: (email: string, password: string) => void;
-  createUserWithEmailAndPassword: (email: string, password: string) => void;
+  signinWithEmailAndPassword: (email: string, password: string) => Promise<any>;
+  createUserWithEmailAndPassword: (email: string, password: string) => Promise<any>;
   signinWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -22,8 +22,8 @@ interface AuthContext {
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   auth: null,
   loading: true,
-  signinWithEmailAndPassword: () => {},
-  createUserWithEmailAndPassword: () => {},
+  signinWithEmailAndPassword: async (email: string, password: string) => {},
+  createUserWithEmailAndPassword: async (email: string, password: string) => {},
   signinWithGoogle: async () => {},
   signOut: async () => {}
 });
@@ -69,12 +69,23 @@ function useProvideAuth() {
     setLoading(true);
   };
 
-  const signinWithEmailAndPassword = (email: string, password: string) => {
-    firebase.auth().signInWithEmailAndPassword(email, password);
+  const signinWithEmailAndPassword = (email: string, password: string): any => {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
-  const createUserWithEmailAndPassword = (email: string, password: string) => {
-    firebase.auth().createUserWithEmailAndPassword(email, password);
+  const createUserWithEmailAndPassword = (email: string, password: string): any => {
+    return firebase.auth().createUserWithEmailAndPassword(email, password).then(async (
+      response: firebase.auth.UserCredential,
+      provider: String = 'email'
+    ) => {
+      if(!response.user) {
+        throw new Error('No User');
+      }
+
+      const authUser = formatAuthState(response.user);
+      await addUser({...authUser, provider});
+
+    });
   }
 
   const signinWithGoogle = async() => {

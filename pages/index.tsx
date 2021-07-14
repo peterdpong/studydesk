@@ -13,8 +13,6 @@ import {
   SimpleGrid,
   Icon,
   Center,
-  HStack,
-  StackDivider,
   Container
 } from '@chakra-ui/react'
 
