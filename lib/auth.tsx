@@ -13,7 +13,7 @@ interface AuthContext {
   auth: Auth | null;
   loading: boolean;
   signinWithEmailAndPassword: (email: string, password: string) => Promise<any>;
-  createUserWithEmailAndPassword: (email: string, password: string) => Promise<any>;
+  createUserWithEmailAndPassword: (email: string, password: string, name: string) => Promise<any>;
   signinWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -22,7 +22,7 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
   auth: null,
   loading: true,
   signinWithEmailAndPassword: async (email: string, password: string) => {},
-  createUserWithEmailAndPassword: async (email: string, password: string) => {},
+  createUserWithEmailAndPassword: async (email: string, password: string, name: string) => {},
   signinWithGoogle: async () => {},
   signOut: async () => {}
 });
