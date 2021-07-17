@@ -1,12 +1,11 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react';
-import { addUser } from '../utils/db';
+import { addUser } from './firestoredb';
 import firebase from './firebase';
 
 interface Auth {
   uid: string;
   email: string | null;
   name: string | null;
-  photoUrl: string | null;
   token: string | null;
 }
 
@@ -32,7 +31,6 @@ const formatAuthState = (user: firebase.User): Auth => ({
   uid: user.uid,
   email: user.email,
   name: user.displayName,
-  photoUrl: user.photoURL,
   token: null
 });
 
@@ -73,7 +71,7 @@ function useProvideAuth() {
     return firebase.auth().signInWithEmailAndPassword(email, password);
   }
 
-  const createUserWithEmailAndPassword = (email: string, password: string): any => {
+  const createUserWithEmailAndPassword = (email: string, password: string, name: string): any => {
     return firebase.auth().createUserWithEmailAndPassword(email, password).then(async (
       response: firebase.auth.UserCredential,
       provider: String = 'email'
@@ -83,6 +81,7 @@ function useProvideAuth() {
       }
 
       const authUser = formatAuthState(response.user);
+      authUser.name = name;
       await addUser({...authUser, provider});
 
     });

@@ -18,7 +18,7 @@ export default function SignUp() {
     setError(null);
 
     if(passwordOne === passwordTwo) {
-      createUserWithEmailAndPassword(email, passwordOne).then(
+      createUserWithEmailAndPassword(email, passwordOne, name).then(
         (authUser: any) => {
           console.log("User created");
           router.push('/app');
@@ -41,7 +41,7 @@ export default function SignUp() {
         <Input placeholder="Name" mb={3} type="text" value={name} onChange={(event) => setName(event.target.value)}/>
         <Input placeholder="Email" mb={3} type="email" value={email} onChange={(event) => setEmail(event.target.value)}/>
         <Input placeholder="Password" mb={3} type="password" value={passwordOne} onChange={(event) => setPasswordOne(event.target.value)}/>
-        <Input placeholder="Repeat Password" mb={3} type="password" value={passwordTwo} onChange={(event) => setPasswordTwo(event.target.value)}/>
+        <Input placeholder="Confirm Password" mb={3} type="password" value={passwordTwo} onChange={(event) => setPasswordTwo(event.target.value)}/>
         <Button colorScheme="blue" onClick={onSubmit}>Sign up</Button>
         {error ? <Text color={'red.400'}>Error: {error}</Text> : null}
       </Flex>
