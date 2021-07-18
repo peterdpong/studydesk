@@ -89,6 +89,9 @@ function useProvideAuth() {
         setUserData(getUserData(authUser.uid));
         setAuth(authUser);
         setLoading(false);
+      }).catch(error => {
+        setLoading(false);
+        throw new Error(error.message);
       });
   }
 

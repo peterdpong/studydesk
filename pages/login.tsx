@@ -37,6 +37,9 @@ export default function Login() {
     router.push('/signup');
   }
 
+  console.log(loading)
+  console.log(loginAttempt)
+
   // Checking for previous login session
   if(loading || loginAttempt) {
     return (
