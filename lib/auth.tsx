@@ -1,5 +1,5 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react';
-import { addUser, getUser, getUserData } from './firestoredb';
+import { addUser, getUserData } from './firestoredb';
 import firebase from './firebase';
 
 interface Auth {
