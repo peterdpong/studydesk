@@ -8,12 +8,14 @@ export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [loginAttempt, setLoginAttempt] = useState<boolean>(false);
   const router = useRouter();
 
   const { signinWithEmailAndPassword, signOut , auth, userData, loading } = useAuth();
 
   function onSubmit(event: any): void {
     setError(null);
+    setLoginAttempt(true);
 
     signinWithEmailAndPassword(email, password).then(
       () => {
@@ -21,6 +23,7 @@ export default function Login() {
       }
     ).catch(error => {
       setError(error.message);
+      setLoginAttempt(false);
     });
 
     event.preventDefault();
@@ -35,18 +38,17 @@ export default function Login() {
   }
 
   // Checking for previous login session
-  if(loading) {
+  if(loading || loginAttempt) {
     return (
       <Flex height="100vh" alignItems="center" justifyContent="center" m={5}>
         <Flex direction="column" background="gray.100" p={12} rounded={6}>
-          <Heading mb={6}>Log in loading</Heading>
           <Center>
             <Spinner size="xl" />
           </Center>
         </Flex>
       </Flex>
     );
-  } else if (auth) {
+  } else if (auth && !loginAttempt) {
     return (
       <Flex height="100vh" alignItems="center" justifyContent="center" m={5}>
         <Flex direction="column" background="gray.100" p={12} rounded={6}>
