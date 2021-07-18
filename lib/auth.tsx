@@ -1,5 +1,5 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react';
-import { addUser } from './firestoredb';
+import { addUser, getUser, getUserData } from './firestoredb';
 import firebase from './firebase';
 
 interface Auth {
@@ -11,6 +11,7 @@ interface Auth {
 
 interface AuthContext {
   auth: Auth | null;
+  userData: any;
   loading: boolean;
   signinWithEmailAndPassword: (email: string, password: string) => Promise<any>;
   createUserWithEmailAndPassword: (email: string, password: string, name: string) => Promise<any>;
@@ -20,6 +21,7 @@ interface AuthContext {
 
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   auth: null,
+  userData: {},
   loading: true,
   signinWithEmailAndPassword: async (email: string, password: string) => {},
   createUserWithEmailAndPassword: async (email: string, password: string, name: string) => {},
@@ -36,6 +38,7 @@ const formatAuthState = (user: firebase.User): Auth => ({
 
 function useProvideAuth() {
   const [auth, setAuth] = useState<Auth | null>(null);
+  const [userData, setUserData] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleAuthChange = async (authState: firebase.User | null) => {
@@ -45,12 +48,14 @@ function useProvideAuth() {
     }
 
     const formattedAuth = formatAuthState(authState);
+    const userData = await getUserData(formattedAuth.uid);
     formattedAuth.token = await authState.getIdToken();
     setAuth(formattedAuth);
+    setUserData(userData.data());
     setLoading(false);
   }
 
-  const signedIn = async(
+  const signedIn = async (
     response: firebase.auth.UserCredential,
     provider: String = 'google'
   ) => {
@@ -59,16 +64,32 @@ function useProvideAuth() {
     }
 
     const authUser = formatAuthState(response.user);
+    const userData = await getUserData(authUser.uid)
     await addUser({...authUser, provider});
+    setUserData(userData.data());
   }
 
   const clear = () => {
     setAuth(null);
+    setUserData({});
     setLoading(true);
   };
 
   const signinWithEmailAndPassword = (email: string, password: string): any => {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
+    setLoading(true);
+
+    return firebase.auth().signInWithEmailAndPassword(email, password).then(async (
+      response: firebase.auth.UserCredential
+      ) => {
+        if(!response.user) {
+          throw new Error('No User');
+        }
+
+        const authUser = formatAuthState(response.user);
+        setUserData(getUserData(authUser.uid));
+        setAuth(authUser);
+        setLoading(false);
+      });
   }
 
   const createUserWithEmailAndPassword = (email: string, password: string, name: string): any => {
@@ -81,9 +102,11 @@ function useProvideAuth() {
       }
 
       const authUser = formatAuthState(response.user);
+      const userData = await getUserData(authUser.uid);
       authUser.name = name;
+      setUserData(userData.data());
+      setAuth(authUser);
       await addUser({...authUser, provider});
-
     });
   }
 
@@ -103,6 +126,7 @@ function useProvideAuth() {
 
   return {
     auth,
+    userData,
     loading,
     signinWithEmailAndPassword,
     createUserWithEmailAndPassword,

@@ -6,15 +6,15 @@ export const addUser = async (authUser: any) => {
     .collection('users')
     .doc(authUser.uid as string)
     .set({ ...authUser }, { merge: true });
-    
+
   return response;
 };
 
-export const getUser = async (authUser: any) => {
-  const response = await firebase
+export const getUserData = async (uid: string) => {
+  const response = firebase
     .firestore()
     .collection('users')
-    .doc(authUser.uid as string)
+    .doc(uid as string)
     .get();
     
   return response;

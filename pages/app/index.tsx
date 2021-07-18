@@ -24,8 +24,6 @@ export default function App() {
     );
   }
 
-
-  console.log(auth);
   return (
     <div>
       <Navbar/>

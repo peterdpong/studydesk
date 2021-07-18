@@ -2,24 +2,21 @@ import { Button, Center, Flex, Heading, Input, Spinner, Text } from "@chakra-ui/
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 import { useAuth } from "../lib/auth";
-import { getUser } from "../lib/firestoredb";
 
 
-export default function Login(props: any) {
+export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  const { signinWithEmailAndPassword, auth, loading } = useAuth();
+  const { signinWithEmailAndPassword, signOut , auth, userData, loading } = useAuth();
 
   function onSubmit(event: any): void {
     setError(null);
 
     signinWithEmailAndPassword(email, password).then(
-      (authUser: any) => {
-        console.log("User logged in");
-        console.log(authUser);
+      () => {
         navigateToApp()
       }
     ).catch(error => {
@@ -31,6 +28,10 @@ export default function Login(props: any) {
 
   function navigateToApp(): void {
     router.push('/app');
+  }
+
+  function navigateToSignup(): void {
+    router.push('/signup');
   }
 
   // Checking for previous login session
@@ -45,13 +46,14 @@ export default function Login(props: any) {
         </Flex>
       </Flex>
     );
-  } else if (auth && !loading) {
-    console.log(props)
+  } else if (auth) {
     return (
       <Flex height="100vh" alignItems="center" justifyContent="center" m={5}>
         <Flex direction="column" background="gray.100" p={12} rounded={6}>
-          <Heading mb={6}>Log in as {props.userData}</Heading>
-          <Button colorScheme="blue" onClick={navigateToApp}>Log in</Button>
+          <Heading mb={6}>Log in as {userData.name}</Heading>
+          <Button colorScheme="blue" mb={2} onClick={navigateToApp}>Log in</Button>
+          <Button colorScheme="blue" mb={2} onClick={signOut}>Log in to a different account</Button>
+          <Button colorScheme="blue" mb={2} onClick={navigateToSignup}>Sign up</Button>
         </Flex>
       </Flex>
     )
@@ -65,19 +67,12 @@ export default function Login(props: any) {
         <Heading mb={6}>Login to Studydesk</Heading>
         <Input placeholder="Email" mb={3} type="email" value={email} onChange={(event) => setEmail(event.target.value)}/>
         <Input placeholder="Password" mb={3} type="password" value={password} onChange={(event) => setPassword(event.target.value)}/>
-        <Button colorScheme="blue" onClick={onSubmit}>Log In</Button>
+        <Button colorScheme="blue" mb={2} onClick={onSubmit}>Log In</Button>
+        <Button colorScheme="blue" mb={2} onClick={navigateToSignup}>Sign up</Button>
         {error ? <Text color={'red.400'}>Error: {error}</Text> : null}
       </Flex>
 
     </Flex>
   )
 
-}
-
-export async function getServerSideProps() {
-  const { auth } = useAuth();
-  const user = await getUser(auth);
-  console.log(user);
-
-  return { props: {userData: user } }
 }

@@ -8,12 +8,8 @@ const firebaseConfig = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
 }
 
-try {
+if(!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
-} catch (error) {
-  if (!/already exists/.test(error.message)) {
-    console.error('Firebase initialization error', error.stack);
-  }
 }
 
 export default firebase;
