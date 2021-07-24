@@ -1,6 +1,11 @@
-import { Button, Center, Flex, Heading, Input, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, Center, chakra, Flex, FormControl, FormLabel, Heading, Input, Link, Spinner, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
+import { FaGoogle } from "react-icons/fa";
+import { HiLogin, HiMail } from "react-icons/hi";
+import { PasswordField } from "../components/auth/PasswordField";
+import { Card } from "../components/Card";
+import { TextWithDivider } from "../components/forms/TextWithDivider";
 import { useAuth } from "../lib/auth";
 
 
@@ -37,47 +42,103 @@ export default function Login() {
     router.push('/signup');
   }
 
-  console.log(loading)
-  console.log(loginAttempt)
-
   // Checking for previous login session
   if(loading || loginAttempt) {
     return (
-      <Flex height="100vh" alignItems="center" justifyContent="center" m={5}>
-        <Flex direction="column" background="gray.100" p={12} rounded={6}>
+      <Box
+      bg={useColorModeValue('gray.50', 'inherit')}
+      minH="100vh"
+      px={{ base: '4', lg: '8' }}
+    >
+      <Flex height="100vh" alignItems="center" justifyContent="center">
+        <Flex direction="column" rounded={6}>
+        <Card>
           <Center>
-            <Spinner size="xl" />
+            <Spinner size="lg" color={'blue.300'} thickness={'3px'}/>
           </Center>
+        </Card>
         </Flex>
       </Flex>
+    </Box>
     );
   } else if (auth && !loginAttempt) {
     return (
-      <Flex height="100vh" alignItems="center" justifyContent="center" m={5}>
-        <Flex direction="column" background="gray.100" p={12} rounded={6}>
-          <Heading mb={6}>Log in as {userData.name}</Heading>
-          <Button colorScheme="blue" mb={2} onClick={navigateToApp}>Log in</Button>
-          <Button colorScheme="blue" mb={2} onClick={signOut}>Log in to a different account</Button>
-          <Button colorScheme="blue" mb={2} onClick={navigateToSignup}>Sign up</Button>
-        </Flex>
-      </Flex>
+      <Box
+      bg={useColorModeValue('gray.50', 'inherit')}
+      minH="100vh"
+      py="12"
+      px={{ base: '4', lg: '8' }}
+    >
+      <Box maxW="md" mx="auto">
+        <Heading mb={"4"} textAlign="center" size="xl" fontWeight="extrabold">
+          Log in as {userData.name}
+        </Heading>
+        <Card>
+          <Stack spacing="2">
+            <Button onClick={navigateToApp} colorScheme="blue" size="lg" fontSize="md">
+              Log in
+            </Button>
+            <Button onClick={signOut} colorScheme="blue" variant="outline" size="lg" fontSize="md">
+              Log in to another account
+            </Button>
+          </Stack>
+          <TextWithDivider my="6">or sign up</TextWithDivider>
+            <Stack>
+            <Button onClick={navigateToSignup} size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<HiMail/>}>
+                Sign up with Email
+              </Button>
+              <Button size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
+                Sign up with Google
+              </Button>
+            </Stack>
+        </Card>
+      </Box>
+    </Box>
     )
 
   }
 
   // Login Form
   return (
-    <Flex height="100vh" alignItems="center" justifyContent="center" m={5}>
-      <Flex direction="column" background="gray.100" p={12} rounded={6}>
-        <Heading mb={6}>Login to Studydesk</Heading>
-        <Input placeholder="Email" mb={3} type="email" value={email} onChange={(event) => setEmail(event.target.value)}/>
-        <Input placeholder="Password" mb={3} type="password" value={password} onChange={(event) => setPassword(event.target.value)}/>
-        <Button colorScheme="blue" mb={2} onClick={onSubmit}>Log In</Button>
-        <Button colorScheme="blue" mb={2} onClick={navigateToSignup}>Sign up</Button>
-        {error ? <Text color={'red.400'}>Error: {error}</Text> : null}
-      </Flex>
-
-    </Flex>
+    <Box
+      bg={useColorModeValue('gray.50', 'inherit')}
+      minH="100vh"
+      py="12"
+      px={{ base: '4', lg: '8' }}
+    >
+      <Box maxW="md" mx="auto">
+        <Heading textAlign="center" size="xl" fontWeight="extrabold">
+          Sign in to Studydesk
+        </Heading>
+        <Text mt="4" mb="8" align="center" maxW="md" fontWeight="medium">
+          <Text as="span">Don't have an account? </Text>
+          <Link href="/signup" color={'blue.500'} _hover={{color: 'blue.600'}} display={{ base: 'block', sm: 'inline' }}>Sign up.</Link>
+        </Text>
+        <Card>
+          <chakra.form
+            onSubmit={onSubmit}
+          >
+            <Stack spacing="6">
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input name="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+              </FormControl>
+              <PasswordField value={password} onChange={(event) => setPassword(event.target.value)}/>
+              <Button type="submit" colorScheme="blue" size="lg" fontSize="md">
+                Sign in
+              </Button>
+              {error ? <Text color={'red.400'} fontWeight="semibold" fontSize="sm">Error: {error}</Text> : null}
+            </Stack>
+          </chakra.form>
+          <TextWithDivider my="6">or continue with</TextWithDivider>
+            <Stack>
+              <Button type="submit" colorScheme="blue" size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
+                Sign in with Google
+              </Button>
+            </Stack>
+        </Card>
+      </Box>
+    </Box>
   )
 
 }
