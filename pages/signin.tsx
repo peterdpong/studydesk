@@ -6,10 +6,11 @@ import { HiLogin, HiMail } from "react-icons/hi";
 import { PasswordField } from "../components/auth/PasswordField";
 import { Card } from "../components/Card";
 import { TextWithDivider } from "../components/forms/TextWithDivider";
+import { FullPageLoading } from "../components/FullPageLoading";
 import { useAuth } from "../lib/auth";
 
 
-export default function Login() {
+export default function Signin() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -45,21 +46,7 @@ export default function Login() {
   // Checking for previous login session
   if(loading || loginAttempt) {
     return (
-      <Box
-      bg={useColorModeValue('gray.50', 'inherit')}
-      minH="100vh"
-      px={{ base: '4', lg: '8' }}
-    >
-      <Flex height="100vh" alignItems="center" justifyContent="center">
-        <Flex direction="column" rounded={6}>
-        <Card>
-          <Center>
-            <Spinner size="lg" color={'blue.300'} thickness={'3px'}/>
-          </Center>
-        </Card>
-        </Flex>
-      </Flex>
-    </Box>
+      <FullPageLoading/>
     );
   } else if (auth && !loginAttempt) {
     return (

@@ -2,6 +2,7 @@ import { Button, Center, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
 import Navbar from "../../components/app/navbar";
+import { FullPageLoading } from "../../components/FullPageLoading";
 import { useAuth } from "../../lib/auth";
 
 export default function App() {
@@ -10,17 +11,13 @@ export default function App() {
 
   useEffect(() => {
     if(!loading && !auth) {
-      router.push('/login');
+      router.push('/signin');
     }
   }, [auth, loading]);
 
   if(loading || !auth) {
     return (
-      <div>
-        <Center>
-          <Spinner size="4xl"/>
-        </Center>
-      </div>
+      <FullPageLoading/>
     );
   }
 
