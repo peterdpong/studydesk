@@ -67,26 +67,24 @@ export default function Navbar() {
           justify={'flex-end'}
           direction={'row'}
           spacing={3}>
-          {/* <Button
+          <Button
             as={'a'}
             fontSize={'sm'}
             fontWeight={400}
             variant={'outline'}
-            href={'#'}>
+            href={'/signin'}>
             Sign In
           </Button>
           <Button
+            as={'a'}
             display={'inline-flex'}
             fontSize={'sm'}
             fontWeight={600}
             colorScheme={'blue'}
-            href={'#'}
+            href={'/signup'}
             >
             Sign Up
-          </Button> */}
-          <Text>
-            <i>Coming soon.</i>
-          </Text>
+          </Button>
         </Stack>
       </Flex>
 

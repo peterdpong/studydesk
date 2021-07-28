@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react'
 
 import { IoAnalytics, IoCalendarClear, IoList } from 'react-icons/io5';
-import { BiBookOpen } from "react-icons/bi";
 import Navbar from '../components/landing/navbar'
 import Footer from '../components/landing/footer'
 import Feature from '../components/landing/feature'
@@ -138,7 +137,6 @@ export default function Home() {
           <Center>
             <Link href="#">
                 <Button 
-                leftIcon={<BiBookOpen/>} 
                 colorScheme="blue" 
                 variant="solid"
                 >
@@ -279,31 +277,52 @@ export default function Home() {
             </SimpleGrid>
           </Container>
         </Box>
-
-      <Box
-        p={10}
+        <Box
         alignContent={'center'}
-      >
+        >
           <Heading
-            size={'2xl'}
+            size={'xl'}
             m={5}
             textAlign={'center'}
           >
-            Try Studydesk today.
+            100% free and no advertising.
           </Heading>
-          <Center>
-            <Link href="#">
-                <Button 
-                rightIcon={<ArrowForwardIcon/>} 
-                colorScheme="blue" 
-                variant="solid"
-                >
-                  Sign up.
-                </Button>
-            </Link> 
-          </Center>
+          <Heading
+            size={'md'}
+            m={5}
+            textAlign={'center'}
+            fontWeight="semibold"
+          >
+            Studydesk will always be available for free and have no advertising. <br/>
+            We plan to provide extra features for a small additional cost to cover costs.
+          </Heading>
           
         </Box>
+
+        <Box
+          p={10}
+          alignContent={'center'}
+        >
+            <Heading
+              size={'2xl'}
+              m={5}
+              textAlign={'center'}
+            >
+              Try Studydesk today.
+            </Heading>
+            <Center>
+              <Link href="/signup">
+                  <Button 
+                  rightIcon={<ArrowForwardIcon/>} 
+                  colorScheme="blue" 
+                  variant="solid"
+                  >
+                    Sign up
+                  </Button>
+              </Link> 
+            </Center>
+            
+          </Box>
 
         <Footer/>
 
