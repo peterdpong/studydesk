@@ -1,6 +1,7 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react';
 import { addUser, getUserData } from './firestoredb';
 import firebase from './firebase';
+//import { UserData } from './User';
 
 interface Auth {
   uid: string;
@@ -8,6 +9,7 @@ interface Auth {
   name: string | null;
   token: string | null;
 }
+
 
 interface AuthContext {
   auth: Auth | null;
@@ -29,12 +31,15 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
   signOut: async () => {}
 });
 
+
 const formatAuthState = (user: firebase.User): Auth => ({
   uid: user.uid,
   email: user.email,
   name: user.displayName,
   token: null
 });
+
+
 
 function useProvideAuth() {
   const [auth, setAuth] = useState<Auth | null>(null);
