@@ -46,6 +46,7 @@ export default function ClassModal({ singleClass, isOpen, onClose }) {
                     </Flex>
                     
                     <AssignmentTable assignments={singleClass.assignments}/>
+                    <input type="date"></input>
 
                 </ModalBody>
                 <ModalFooter>
