@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     AspectRatio,
     Box, 
@@ -8,6 +8,11 @@ import {
     Button,
 } from "@chakra-ui/react";
 import Link from 'next/link';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import Tasks from './Tasks';
+import MainCalendar from './MainCalendar';
+
 
 export default function Classes({ user }) {
 
@@ -76,10 +81,16 @@ export default function Classes({ user }) {
         }
     ]
 
+
+    const addNewClass = (e) => {
+        e.preventDefault();
+        console.log('Add new class');
+    }
+
     return (
         <Flex>
-            <Box bg="blue.500" w="70%" p={4}>
-                <Text fontSize="35">
+            <Box bg="blue.50" w="70%" p={4}>
+                <Text fontSize={30}>
                     Classes
                 </Text>
 
@@ -88,7 +99,7 @@ export default function Classes({ user }) {
                         return(
                             <AspectRatio key={c.name} w="100%" ratio={1.5}>
                                 <Link href={`/app/class/${c.name}`}>
-                                    <Button border="none" bg="green">
+                                    <Button border="none" bg="green.300" borderRadius={20}>
                                         <Text>
                                             {c.name}
                                         </Text>
@@ -97,23 +108,17 @@ export default function Classes({ user }) {
                             </AspectRatio>
                         );
                     })}
+                    <AspectRatio w="100%" ratio={1.5}>
+                        <Button border="none" bg="green.300" borderRadius={20} onClick={addNewClass}>
+                            <Text fontSize={20}>+</Text>
+                        </Button>
+                    </AspectRatio>
                 </Grid>
             </Box>
 
-            <Box bg="red.400" w="30%" p={4}>
-                <Box h="50%">
-                    <Text fontSize={35}>Tasks</Text>
-                    {taskList.map((task) => {
-                        return(
-                            <Box key={task.name}>
-                                <Text fontSize={20}>{task.name} {task.dueDate}</Text>
-                            </Box>
-                        );
-                    })}
-                </Box>
-                <Box>
-                    <Text fontSize={35}>Calendar</Text>
-                </Box>
+            <Box bg="blue.50" w="30%" p={4}>
+                <Tasks taskList={taskList}/>
+                <MainCalendar/>
             </Box>
         </Flex>
         

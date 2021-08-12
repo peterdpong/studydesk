@@ -43,22 +43,25 @@ export default function AssignmentModal({ isOpen, onClose }) {
 
         if(assignmentName.length === 0){
             alert('Please enter a name');
+            return;
         }
 
-        else{
-            const assignmentObject = {
-                name: assignmentName,
-                dueDate: assignmentDate,
-                weight: assignmentWeight
-            }
-
-            //add to assignment list
-
-            setAssignmentName('');
-            setAssignmentDate('');
-            setAssignmentWeight(0);
-            onClose();
+        const assignmentObject = {
+            name: assignmentName,
+            dueDate: assignmentDate,
+            weight: assignmentWeight
         }
+
+        if(assignmentDate.length === 0){
+            assignmentObject.dueDate = 'N/A';
+        }
+
+        //add to assignment list
+
+        setAssignmentName('');
+        setAssignmentDate('');
+        setAssignmentWeight(0);
+        onClose();
     }
 
     return (
