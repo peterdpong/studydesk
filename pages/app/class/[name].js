@@ -6,9 +6,11 @@ import {
     Button,
     Spacer,
     Flex,
-    Text
+    Text,
+    useDisclosure
 } from "@chakra-ui/react";
 import AssignmentTable from "../../../components/app/AssignmentTable";
+import AssignmentModal from "../../../components/app/AssignmentModal";
 import Link from 'next/link';
 
 
@@ -53,13 +55,16 @@ const SingleClass = () => {
     const path = window.location.pathname;
     const currentClassPath = path.split("class/");
     const currentClass = currentClassPath[1];
-    console.log(currentClass);
+    //console.log(currentClass);
 
     //query by currentClass to get data
     /*
     const refToClassList = db.collection("classes");
     const query = refToClassList.where("name", "==", name)
     */
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
 
     return ( 
         <Box>
@@ -91,7 +96,8 @@ const SingleClass = () => {
                         </Box>
                         <Spacer/>
                         <Box mt={3}>
-                            <Button colorScheme="teal">Add</Button>
+                            <Button colorScheme="teal" onClick={onOpen}>Add</Button>
+                            <AssignmentModal isOpen={isOpen} onClose={onClose}/>
                         </Box>
                     </Flex>
                     <AssignmentTable assignments={singleClass.assignments} />
