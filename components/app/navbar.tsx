@@ -301,5 +301,9 @@ const NAV_ITEMS: Array<NavItem> = [
         href: '#',
       },
     ],
-  }
+  },
+  {
+    label: 'Timetable',
+    href: '/timetable'
+  },
 ];

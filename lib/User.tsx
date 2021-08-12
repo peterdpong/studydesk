@@ -1,8 +1,9 @@
 export type UserData = {
+  uid: string;
   firstName: string;
   lastName: string;
   school: string;
   email: string;
-  classes: [];
-  tasks: [];
+  classes: Array<string>;
+  tasks: Array<string>;
 }
