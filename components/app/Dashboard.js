@@ -6,9 +6,9 @@ import {
     Text, 
     Grid, 
     Button,
+    SimpleGrid
 } from "@chakra-ui/react";
 import Link from 'next/link';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Tasks from './Tasks';
 import MainCalendar from './MainCalendar';
@@ -88,35 +88,33 @@ export default function Classes({ user }) {
     }
 
     return (
-        <Flex>
-            <Box bg="blue.50" w="70%" p={4}>
+        <Flex direction={{ base: "column", md: "row" }}>
+            <Box bg="blue.50" w={{base: "100%", md: "70%"}} p={4}>
                 <Text fontSize={30}>
                     Classes
                 </Text>
 
-                <Grid templateColumns="repeat(4, 1fr)" gap={10} m={5} pb={10}>
-                    {classList.map((c) => {
+                <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} minChildWidth={200} spacing="10px" justifyItems="center">
+                  {classList.map((c) => {
                         return(
-                            <AspectRatio key={c.name} w="100%" ratio={1.5}>
-                                <Link href={`/app/class/${c.name}`}>
-                                    <Button border="none" bg="green.300" borderRadius={20}>
-                                        <Text>
-                                            {c.name}
-                                        </Text>
-                                    </Button>
-                                </Link>
-                            </AspectRatio>
+                          <Link href={`/app/class/${c.name}`}>
+                            <Button border="none" bg="green.300" w={200} h={125} borderRadius={20}>
+                              <Text>
+                                  {c.name}
+                              </Text>
+                            </Button>
+                            
+                          </Link>
                         );
                     })}
-                    <AspectRatio w="100%" ratio={1.5}>
-                        <Button border="none" bg="green.300" borderRadius={20} onClick={addNewClass}>
-                            <Text fontSize={20}>+</Text>
-                        </Button>
-                    </AspectRatio>
-                </Grid>
+
+                    <Button border="none" bg="green.300" w={200} h={125} borderRadius={20} onClick={addNewClass}>
+                        <Text fontSize={20}>+</Text>
+                    </Button>
+                </SimpleGrid>
             </Box>
 
-            <Box bg="blue.50" w="30%" p={4}>
+            <Box bg="blue.50" w={{base: "100%", md: "30%"}} p={4}>
                 <Tasks taskList={taskList}/>
                 <MainCalendar/>
             </Box>
