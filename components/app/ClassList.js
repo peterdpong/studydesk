@@ -35,7 +35,7 @@ export default function Classes({ classList }) {
         <SimpleGrid minChildWidth={{base: 100, md: 200}} spacing="4" justifyItems="center">
           {classList.map((c) => {
             return(
-              <Link href={`/app/class/${c.name}`}>
+              <Link href={`/app/class/${c.name}`} key={c.name}>
                 <Button border="none" colorScheme={'green'} w={{base: 100, md: 200}} h={{base: 100, md: 125}} borderRadius={20}>
                   <Text>
                     {c.name}

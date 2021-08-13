@@ -64,15 +64,38 @@ export default function Classes({ user }) {
     const taskList = [
       {
         name: "Task1",
-        dueDate: "09/26/2021"
+        dueDate: "09/26/2021",
+        className: "ECE302",
+        priority: 2,
+        checked: false
       },
       {
         name: "Task2",
-        dueDate: "09/26/2021"
+        dueDate: "09/26/2021",
+        className: "ECE345",
+        priority: 3,
+        checked: true
       },
       {
         name: "Task3",
-        dueDate: "09/26/2021"
+        dueDate: "09/26/2021",
+        className: "ECE344",
+        priority: 1,
+        checked: false
+      },
+      {
+        name: "Task4",
+        dueDate: "09/26/2021",
+        className: "ECE345",
+        priority: 4,
+        checked: true
+      },
+      {
+        name: "Task5",
+        dueDate: "09/26/2021",
+        className: "ECE344",
+        priority: 5,
+        checked: false
       }
     ]
 
