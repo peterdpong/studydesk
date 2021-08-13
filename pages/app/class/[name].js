@@ -1,4 +1,6 @@
 import React from "react";
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Navbar from "../../../components/app/navbar";
 import {
     Heading,
@@ -11,8 +13,6 @@ import {
 } from "@chakra-ui/react";
 import AssignmentTable from "../../../components/app/AssignmentTable";
 import AssignmentModal from "../../../components/app/AssignmentModal";
-import Link from 'next/link';
-
 
 
 const singleClass = {
@@ -52,59 +52,51 @@ const singleClass = {
 }
 
 const SingleClass = () => {
-    const path = window.location.pathname;
-    const currentClassPath = path.split("class/");
-    const currentClass = currentClassPath[1];
-    //console.log(currentClass);
+  const router = useRouter();
+  const { name } = router.query;
 
-    //query by currentClass to get data
-    /*
-    const refToClassList = db.collection("classes");
-    const query = refToClassList.where("name", "==", name)
-    */
-
-    const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
 
-    return ( 
-        <Box>
-            <Navbar/>
-            <Box ml={10}>
-                <Link href="/app/">
-                    <Button mt={5} mb={5}>Back</Button>
-                </Link>
-                
-                <Heading>{currentClass}</Heading>
+  return ( 
+      <Box>
+          <Navbar/>
+          <Box ml={10}>
+              <Link href="/app/">
+                  <Button mt={5} mb={5}>Back</Button>
+              </Link>
+              
+              <Heading>{name}</Heading>
 
-                <Button mt={5}>View Syllabus</Button>
+              <Button mt={5}>View Syllabus</Button>
 
-                <Box mt={5}>
-                    <Heading fontSize={20} p={2}>Class times</Heading>
-                    {singleClass.times.map((t) => {
-                        return(
-                            <Box key={t.id}>
-                                <Text fontSize={18} ml={5}>{t.time} {t.day} - {t.type}</Text>
-                            </Box>
-                        )
-                    })}
-                </Box>
+              <Box mt={5}>
+                  <Heading fontSize={20} p={2}>Class times</Heading>
+                  {singleClass.times.map((t) => {
+                      return(
+                          <Box key={t.id}>
+                              <Text fontSize={18} ml={5}>{t.time} {t.day} - {t.type}</Text>
+                          </Box>
+                      )
+                  })}
+              </Box>
 
-                <Box w="70%">
-                    <Flex mt={5}>
-                        <Box p="2">
-                            <Heading size="md">Assignments</Heading>
-                        </Box>
-                        <Spacer/>
-                        <Box mt={3}>
-                            <Button colorScheme="teal" onClick={onOpen}>Add</Button>
-                            <AssignmentModal isOpen={isOpen} onClose={onClose}/>
-                        </Box>
-                    </Flex>
-                    <AssignmentTable assignments={singleClass.assignments} />
-                </Box>
-            </Box>
-        </Box>
-    );
+              <Box w="70%">
+                  <Flex mt={5}>
+                      <Box p="2">
+                          <Heading size="md">Assignments</Heading>
+                      </Box>
+                      <Spacer/>
+                      <Box mt={3}>
+                          <Button colorScheme="teal" onClick={onOpen}>Add</Button>
+                          <AssignmentModal isOpen={isOpen} onClose={onClose}/>
+                      </Box>
+                  </Flex>
+                  <AssignmentTable assignments={singleClass.assignments} />
+              </Box>
+          </Box>
+      </Box>
+  );
 }
 
 
