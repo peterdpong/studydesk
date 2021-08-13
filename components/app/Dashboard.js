@@ -8,7 +8,9 @@ import {
     Button,
     SimpleGrid,
     Spacer,
-    Heading
+    Heading,
+    useBreakpoint,
+    useBreakpointValue
 } from "@chakra-ui/react";
 import Link from 'next/link';
 import 'react-calendar/dist/Calendar.css';
@@ -90,6 +92,8 @@ export default function Classes({ user }) {
         console.log('Add new class');
     }
 
+    const buttonSize = useBreakpointValue({base: "sm", md: "md"});
+
     return (
         <Flex direction={{ base: "column", md: "row" }}>
             <Box bg="blue.50" w={{base: "100%", md: "70%"}} p={10}>
@@ -98,16 +102,16 @@ export default function Classes({ user }) {
                     Classes
                 </Heading>
                 <Spacer/>
-                <Button colorScheme="green" size="md" onClick={addNewClass} rightIcon={<AddIcon/>}>New class</Button>
+                <Button colorScheme="green" size={buttonSize} onClick={addNewClass} rightIcon={<AddIcon/>}>New class</Button>
 
               </Flex>
                 
 
-                <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} minChildWidth={200} spacing="10px" justifyItems="center">
+                <SimpleGrid minChildWidth={{base: 100, md: 200}} spacing="4" justifyItems="center">
                   {classList.map((c) => {
                         return(
                           <Link href={`/app/class/${c.name}`}>
-                            <Button border="none" colorScheme={'green'}  w={200} h={125} borderRadius={20}>
+                            <Button border="none" colorScheme={'green'} w={{base: 100, md: 200}} h={{base: 100, md: 125}} borderRadius={20}>
                               <Text>
                                   {c.name}
                               </Text>
