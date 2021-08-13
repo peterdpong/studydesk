@@ -59,43 +59,43 @@ const SingleClass = () => {
 
 
   return ( 
-      <Box>
-          <Navbar/>
-          <Box ml={10}>
-              <Link href="/app/">
-                  <Button mt={5} mb={5}>Back</Button>
-              </Link>
-              
-              <Heading>{name}</Heading>
+    <Box>
+        <Navbar/>
+        <Box ml={10}>
+            <Link href="/app/">
+                <Button mt={5} mb={5}>Back</Button>
+            </Link>
+            
+            <Heading>{name}</Heading>
 
-              <Button mt={5}>View Syllabus</Button>
+            <Button mt={5}>View Syllabus</Button>
 
-              <Box mt={5}>
-                  <Heading fontSize={20} p={2}>Class times</Heading>
-                  {singleClass.times.map((t) => {
-                      return(
-                          <Box key={t.id}>
-                              <Text fontSize={18} ml={5}>{t.time} {t.day} - {t.type}</Text>
-                          </Box>
-                      )
-                  })}
-              </Box>
+            <Box mt={5}>
+                <Heading fontSize={20} p={2}>Class times</Heading>
+                {singleClass.times.map((t) => {
+                    return(
+                        <Box key={t.id}>
+                            <Text fontSize={18} ml={5}>{t.time} {t.day} - {t.type}</Text>
+                        </Box>
+                    )
+                })}
+            </Box>
 
-              <Box w="70%">
-                  <Flex mt={5}>
-                      <Box p="2">
-                          <Heading size="md">Assignments</Heading>
-                      </Box>
-                      <Spacer/>
-                      <Box mt={3}>
-                          <Button colorScheme="teal" onClick={onOpen}>Add</Button>
-                          <AssignmentModal isOpen={isOpen} onClose={onClose}/>
-                      </Box>
-                  </Flex>
-                  <AssignmentTable assignments={singleClass.assignments} />
-              </Box>
-          </Box>
-      </Box>
+            <Box w="70%">
+                <Flex mt={5}>
+                    <Box p="2">
+                        <Heading size="md">Assignments</Heading>
+                    </Box>
+                    <Spacer/>
+                    <Box mt={3}>
+                        <Button colorScheme="teal" onClick={onOpen}>Add</Button>
+                        <AssignmentModal isOpen={isOpen} onClose={onClose}/>
+                    </Box>
+                </Flex>
+                <AssignmentTable assignments={singleClass.assignments} />
+            </Box>
+        </Box>
+    </Box>
   );
 }
 
