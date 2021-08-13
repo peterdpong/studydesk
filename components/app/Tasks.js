@@ -8,7 +8,9 @@ import {
     ListItem,
     ListIcon,
     Spacer,
-    useDisclosure
+    useDisclosure,
+    Heading,
+    Checkbox
 } from "@chakra-ui/react";
 import { MdCheckCircle } from "react-icons/md";
 import TaskModal from './TaskModal';
@@ -21,7 +23,7 @@ export default function Tasks({ taskList }) {
     return (
         <Box>
             <Flex align="center">
-                <Text fontSize={30}>Tasks</Text>
+                <Heading>Tasks</Heading>
                 <Spacer/>
                 <Button colorScheme="green" size="sm" mr="12%" onClick={onOpen}>Add Task</Button>
             </Flex>
@@ -30,10 +32,14 @@ export default function Tasks({ taskList }) {
                 {taskList.map((task) => {
                     return(
                         <ListItem>
-                            <Flex fontSize={20}>
-                                <ListIcon mt={1.5} as={MdCheckCircle} color="green.500"/>
-                                <Text> {task.name} - {task.dueDate.substring(0, 5)}</Text>
+                          <Checkbox size={'lg'} colorScheme={'green'}>
+                            <Flex direction={'column'} fontSize={15}>
+                              <Text> {task.name} - {task.dueDate.substring(0, 5)}</Text>
+                              <Text> Class Name </Text>
+                              <Text> Priority </Text>
                             </Flex>
+                          </Checkbox>
+                   
                         </ListItem> 
                     );
                 })}

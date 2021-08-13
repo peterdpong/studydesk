@@ -6,12 +6,15 @@ import {
     Text, 
     Grid, 
     Button,
-    SimpleGrid
+    SimpleGrid,
+    Spacer,
+    Heading
 } from "@chakra-ui/react";
 import Link from 'next/link';
 import 'react-calendar/dist/Calendar.css';
 import Tasks from './Tasks';
 import MainCalendar from './MainCalendar';
+import { AddIcon } from '@chakra-ui/icons';
 
 
 export default function Classes({ user }) {
@@ -89,16 +92,22 @@ export default function Classes({ user }) {
 
     return (
         <Flex direction={{ base: "column", md: "row" }}>
-            <Box bg="blue.50" w={{base: "100%", md: "70%"}} p={4}>
-                <Text fontSize={30}>
+            <Box bg="blue.50" w={{base: "100%", md: "70%"}} p={10}>
+              <Flex align="center" pb={5}>
+                <Heading>
                     Classes
-                </Text>
+                </Heading>
+                <Spacer/>
+                <Button colorScheme="green" size="md" onClick={addNewClass} rightIcon={<AddIcon/>}>New class</Button>
+
+              </Flex>
+                
 
                 <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} minChildWidth={200} spacing="10px" justifyItems="center">
                   {classList.map((c) => {
                         return(
                           <Link href={`/app/class/${c.name}`}>
-                            <Button border="none" bg="green.300" w={200} h={125} borderRadius={20}>
+                            <Button border="none" colorScheme={'green'}  w={200} h={125} borderRadius={20}>
                               <Text>
                                   {c.name}
                               </Text>
@@ -107,14 +116,10 @@ export default function Classes({ user }) {
                           </Link>
                         );
                     })}
-
-                    <Button border="none" bg="green.300" w={200} h={125} borderRadius={20} onClick={addNewClass}>
-                        <Text fontSize={20}>+</Text>
-                    </Button>
                 </SimpleGrid>
             </Box>
 
-            <Box bg="blue.50" w={{base: "100%", md: "30%"}} p={4}>
+            <Box bg="blue.50" w={{base: "100%", md: "30%"}} p={10}>
                 <Tasks taskList={taskList}/>
                 <MainCalendar/>
             </Box>
