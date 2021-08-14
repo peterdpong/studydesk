@@ -35,7 +35,7 @@ export const PasswordFieldSignup = React.forwardRef<HTMLInputElement, InputProps
   }
 
   return (
-    <FormControl id="password">
+    <FormControl id={props.id}>
       <Flex justify="space-between">
         <FormLabel>{props.name}</FormLabel>
       </Flex>

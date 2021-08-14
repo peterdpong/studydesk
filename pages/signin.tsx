@@ -16,22 +16,41 @@ export default function Signin() {
   const [error, setError] = useState<string | null>(null);
   const [loginAttempt, setLoginAttempt] = useState<boolean>(false);
   const router = useRouter();
+  
+  //Theme colors (Note for when we implement dark mode -> call these to create a component theme)
+  const bgColor = useColorModeValue('gray.50', 'inherit');
 
-  const { signinWithEmailAndPassword, signOut , auth, loading } = useAuth();
+  const { signinWithEmailAndPassword, signinWithGoogle, signOut, auth, loading } = useAuth();
 
-  function onSubmit(event: any): void {
+  function onEmailSignin(event: any): void {
     setError(null);
     setLoginAttempt(true);
 
     signinWithEmailAndPassword(email, password).then(
       () => {
-        navigateToApp()
+        navigateToApp();
       }
     ).catch(error => {
       setError(error.message);
-      setLoginAttempt(false);
     });
 
+    setLoginAttempt(false);
+    event.preventDefault();
+  }
+
+  function onGoogleSignin(event: any): void {
+    setError(null);
+    setLoginAttempt(true);
+
+    signinWithGoogle().then(
+      () => {
+        navigateToApp();
+      }
+    ).catch(error => {
+      setError(error.message);
+    });
+
+    setLoginAttempt(false);
     event.preventDefault();
   }
 
@@ -46,49 +65,48 @@ export default function Signin() {
   // Checking for previous login session
   if(loading || loginAttempt) {
     return (
-      <FullPageLoading/>
+      <FullPageLoading bgColor={bgColor}/>
     );
   } else if (auth && !loginAttempt) {
     return (
       <Box
-      bg={useColorModeValue('gray.50', 'inherit')}
+      bg={bgColor}
       minH="100vh"
       py="12"
       px={{ base: '4', lg: '8' }}
-    >
-      <Box maxW="md" mx="auto">
-        <Heading mb={"4"} textAlign="center" size="xl" fontWeight="extrabold">
-          Log in as {auth.firstName}
-        </Heading>
-        <Card>
-          <Stack spacing="2">
-            <Button onClick={navigateToApp} colorScheme="blue" size="lg" fontSize="md">
-              Log in
-            </Button>
-            <Button onClick={signOut} colorScheme="blue" variant="outline" size="lg" fontSize="md">
-              Log in to another account
-            </Button>
-          </Stack>
-          <TextWithDivider my="6">or sign up</TextWithDivider>
-            <Stack>
-            <Button onClick={navigateToSignup} size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<HiMail/>}>
-                Sign up with Email
+      >
+        <Box maxW="md" mx="auto">
+          <Heading mb={"4"} textAlign="center" size="xl" fontWeight="extrabold">
+            Log in as {auth.firstName}
+          </Heading>
+          <Card>
+            <Stack spacing="2">
+              <Button onClick={navigateToApp} colorScheme="blue" size="lg" fontSize="md">
+                Log in
               </Button>
-              <Button size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
-                Sign up with Google
+              <Button onClick={signOut} colorScheme="blue" variant="outline" size="lg" fontSize="md">
+                Log in to another account
               </Button>
             </Stack>
-        </Card>
+            <TextWithDivider my="6">or sign up</TextWithDivider>
+              <Stack>
+              <Button onClick={navigateToSignup} size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<HiMail/>}>
+                  Sign up with Email
+                </Button>
+                <Button onClick={signinWithGoogle} size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
+                  Sign up with Google
+                </Button>
+              </Stack>
+          </Card>
+        </Box>
       </Box>
-    </Box>
     )
-
   }
 
   // Login Form
   return (
     <Box
-      bg={useColorModeValue('gray.50', 'inherit')}
+      bg={bgColor}
       minH="100vh"
       py="12"
       px={{ base: '4', lg: '8' }}
@@ -103,7 +121,7 @@ export default function Signin() {
         </Text>
         <Card>
           <chakra.form
-            onSubmit={onSubmit}
+            onSubmit={onEmailSignin}
           >
             <Stack spacing="6">
               <FormControl id="email">
@@ -119,7 +137,7 @@ export default function Signin() {
           </chakra.form>
           <TextWithDivider my="6">or continue with</TextWithDivider>
             <Stack>
-              <Button type="submit" colorScheme="blue" size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
+              <Button onClick={onGoogleSignin} type="submit" colorScheme="blue" size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
                 Sign in with Google
               </Button>
             </Stack>
