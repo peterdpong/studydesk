@@ -16,14 +16,14 @@ export default function SignUp() {
   const [passwordOne, setPasswordOne] = useState<string>("");
   const [passwordTwo, setPasswordTwo] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [signUpAttempt, setSignUpAttempt] = useState<boolean>(false);
   const router = useRouter();
 
-  const { createUserWithEmailAndPassword, signinWithGoogle } = useAuth();
+  const { createUserWithEmailAndPassword, signinWithGoogle, loading } = useAuth();
 
   function onEmailSignup(event: any) {
     setError(null);
-    setLoading(true);
+    setSignUpAttempt(true);
 
     if(passwordOne === passwordTwo) {
       createUserWithEmailAndPassword(email, passwordOne, name).then(
@@ -35,15 +35,15 @@ export default function SignUp() {
       });
     } else {
       setError("Password do not match");
+      setSignUpAttempt(false);
     }
 
-    setLoading(false);
     event.preventDefault();
   }
 
   function onGoogleSignup(event: any): void {
     setError(null);
-    setLoading(true);
+    setSignUpAttempt(true);
 
     signinWithGoogle().then(
       () => {
@@ -51,13 +51,13 @@ export default function SignUp() {
       }
     ).catch(error => {
       setError(error.message);
+      setSignUpAttempt(false);
     });
 
-    setLoading(false);
     event.preventDefault();
   }
 
-  if(loading) {
+  if(loading || signUpAttempt) {
     return(
       <FullPageLoading/>
     )
