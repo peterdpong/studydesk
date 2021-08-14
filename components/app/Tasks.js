@@ -5,15 +5,13 @@ import {
     Flex, 
     Text, 
     List,
-    ListItem,
-    ListIcon,
     Spacer,
     useDisclosure,
     Heading,
-    Checkbox
 } from "@chakra-ui/react";
 import TaskModal from './TaskModal';
 import TaskItem from './TaskItem';
+import PriorityBar from './PriorityBar';
 
 
 export default function Tasks({ taskList }) {
@@ -30,6 +28,8 @@ export default function Tasks({ taskList }) {
                 <Spacer/>
                 <Button colorScheme="green" size="sm" mr="12%" onClick={onOpen}>Add Task</Button>
             </Flex>
+
+            <PriorityBar/>
             
             <List spacing={3} mt={3}>
                 {sortedList.map((task) => {
@@ -38,6 +38,7 @@ export default function Tasks({ taskList }) {
                     );
                 })}
             </List>
+            
 
             <TaskModal isOpen={isOpen} onClose={onClose} />
 

@@ -101,11 +101,11 @@ export default function Classes({ user }) {
 
     return (
         <Flex direction={{ base: "column", md: "row" }}>
-            <Box bg="blue.50" w={{base: "100%", md: "70%"}} p={10}>
+            <Box bg="blue.50" w={{base: "100%", md: "65%"}} p={10}>
               <ClassList classList={classList}/>
             </Box>
 
-            <Box bg="blue.50" w={{base: "100%", md: "30%"}} p={10}>
+            <Box bg="blue.50" w={{base: "100%", md: "35%"}} p={10}>
                 <Tasks taskList={taskList}/>
                 <MainCalendar/>
             </Box>

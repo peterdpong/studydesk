@@ -15,88 +15,128 @@ import {
     Select
 } from "@chakra-ui/react";
 
+
+const priorityNumberPicker = (priority) => {
+  let number = 0;
+
+  switch (priority) {
+    case 'Very High':
+      number = 1;
+      break;
+    case 'High':
+      number = 2;
+      break;
+    case 'Medium':
+      number = 3;
+      break;
+    case 'Low':
+      number = 4;
+      break;
+    case 'Very Low':
+      number = 5;
+      break;
+    default:
+      number = 5;
+      break;
+  }
+  
+  return number;
+}
+
+
 export default function TaskModal({ isOpen, onClose }) {
 
-    const [ name, setName ] = useState('');
-    const [ date, setDate ] = useState('');
+  const [ name, setName ] = useState('');
+  const [ className, setClassName ] = useState('');
+  const [ dueDate, setDueDate ] = useState('');
+  const [ priority, setPriority ] = useState('');
 
-    const nameHandler = (e) => {
-        setName(e.target.value);
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if(name.length === 0){
+      alert("Please enter a name");
+      return;
     }
 
-    const dateHandler = (e) => {
-        setDate(e.target.value);
+    if(className.length === 0){
+      alert("Please enter a class name");
+      return;
     }
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-
-        if(name.length === 0){
-            alert("Please enter a name");
-            return;
-        }
-
-        const taskObject = {
-            name: name,
-            dueDate: date
-        }
-
-        if(date.length === 0){
-            taskObject.dueDate = "N/A";
-        }
-
-        //add object to task list
-
-        //console.log(taskObject.name, taskObject.dueDate);
-
-        setName('');
-        setDate('');
-        onClose();
+    if(dueDate.length === 0){
+      alert("Please select a date");
+      return;
     }
 
-    return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-            <ModalHeader>Add Task</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-                <FormControl id="assignment-name" isRequired>
-                    <FormLabel>Name</FormLabel>
-                    <Input placeholder="Assignment name" onChange={nameHandler}/>
-                </FormControl>
+    if(priority.length === 0){
+      alert("Please set a priority");
+      return;
+    }
 
-                <FormControl id="assignment-class" isRequired>
-                    <FormLabel mt={5}>Class Name</FormLabel>
-                    <Input placeholder="Class Name"/>
-                </FormControl>
+    const priorityNumber = priorityNumberPicker(priority);
 
-                <FormControl id="assignment-date">
-                    <FormLabel mt={5}>Due Date</FormLabel>
-                    <Input placeholder="Due Date" type="date" onChange={dateHandler}/>
-                </FormControl>
+    const taskObject = {
+      name,
+      className,
+      dueDate,
+      priority: priorityNumber
+    }
 
-                <FormControl id="assignment-priority" isRequired>
-                    <FormLabel mt={5}>Priority (Red: high, Blue: low)</FormLabel>
-                    <Select placeholder="Select priority">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Select>
-                </FormControl>
-            </ModalBody>
+      //add object to task list
 
-            <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={submitHandler}>
-                Submit
-                </Button>
-                <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
-                Close
-                </Button>
-            </ModalFooter>
-            </ModalContent>
-        </Modal>
-    )
+     console.log(taskObject.name, taskObject.className, taskObject.dueDate, taskObject.priority);
+
+    setName('');
+    setClassName('');
+    setDueDate('');
+    setPriority('');
+    onClose();
+  }
+
+  return (
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+        <ModalHeader>Add Task</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <FormControl id="assignment-name" isRequired>
+            <FormLabel>Name</FormLabel>
+            <Input placeholder="Assignment name" onChange={(e) => setName(e.target.value)}/>
+          </FormControl>
+
+          <FormControl id="assignment-class" isRequired>
+            <FormLabel mt={5}>Class Name</FormLabel>
+            <Input placeholder="Class Name" onChange={(e) => setClassName(e.target.value)}/>
+          </FormControl>
+
+          <FormControl id="assignment-date" isRequired>
+            <FormLabel mt={5}>Due Date</FormLabel>
+            <Input placeholder="Due Date" type="date" onChange={(e) => setDueDate(e.target.value)}/>
+          </FormControl>
+
+          <FormControl id="assignment-priority" isRequired>
+            <FormLabel mt={5}>Priority</FormLabel>
+            <Select placeholder="Select priority" onChange={(e) => setPriority(e.target.value)}>
+              <option>Very High</option>
+              <option>High</option>
+              <option>Medium</option>
+              <option>Low</option>
+              <option>Very Low</option>
+            </Select>
+          </FormControl>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button colorScheme="blue" mr={3} onClick={submitHandler}>
+          Submit
+          </Button>
+          <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
+          Close
+          </Button>
+        </ModalFooter>
+        </ModalContent>
+      </Modal>
+  )
 }
