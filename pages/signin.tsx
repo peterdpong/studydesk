@@ -17,7 +17,7 @@ export default function Signin() {
   const [loginAttempt, setLoginAttempt] = useState<boolean>(false);
   const router = useRouter();
 
-  const { signinWithEmailAndPassword, signOut , auth, userData, loading } = useAuth();
+  const { signinWithEmailAndPassword, signOut , auth, loading } = useAuth();
 
   function onSubmit(event: any): void {
     setError(null);
@@ -58,7 +58,7 @@ export default function Signin() {
     >
       <Box maxW="md" mx="auto">
         <Heading mb={"4"} textAlign="center" size="xl" fontWeight="extrabold">
-          Log in as {userData.name}
+          Log in as {auth.firstName}
         </Heading>
         <Card>
           <Stack spacing="2">
