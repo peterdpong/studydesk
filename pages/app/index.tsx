@@ -1,4 +1,3 @@
-import { Button, Center, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
 import Navbar from "../../components/app/navbar";
@@ -7,7 +6,7 @@ import { FullPageLoading } from "../../components/FullPageLoading";
 import { useAuth } from "../../lib/auth";
 
 export default function App() {
-  const {auth, loading } = useAuth();
+  const { auth, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

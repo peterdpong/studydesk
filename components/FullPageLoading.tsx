@@ -2,9 +2,9 @@ import { Box, Center, Flex, Spinner, useColorModeValue } from '@chakra-ui/react'
 import * as React from 'react'
 import { Card } from './Card'
 
-export const FullPageLoading = () => (
+export const FullPageLoading = (bgColor: any) => (
   <Box
-      bg={useColorModeValue('gray.50', 'inherit')}
+      bg={bgColor}
       minH="100vh"
       px={{ base: '4', lg: '8' }}
   >
