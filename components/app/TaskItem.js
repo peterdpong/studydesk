@@ -39,11 +39,11 @@ export default function TaskItem({ task }) {
   return (
     <ListItem>
       <Checkbox size={'lg'} colorScheme={'green'}>
-        <Flex direction={'column'} fontSize={15}>
-          <Text> {task.name} - {task.dueDate.substring(0, 5)} </Text>
-          <Text> {task.className} </Text>
-          <Box bg={priorityColor(task.priority)}> {task.priority} </Box>
-          <Text> {task.checked ? "Checked" : "Not-Checked"} </Text>
+        <Flex bg={priorityColor(task.priority)} direction={'column'} fontSize={15} borderRadius={10}>
+          <Box p={3}>
+            <Text> {task.name} - {task.dueDate.substring(0, 5)} </Text>
+            <Text> {task.priority} - {task.className} {task.checked ? "Checked" : "Not-Checked"} </Text>
+          </Box>
         </Flex>
       </Checkbox>
     </ListItem> 

@@ -11,7 +11,8 @@ import {
     Button,
     FormControl,
     FormLabel,
-    Input
+    Input,
+    Select
 } from "@chakra-ui/react";
 
 export default function TaskModal({ isOpen, onClose }) {
@@ -65,9 +66,25 @@ export default function TaskModal({ isOpen, onClose }) {
                     <Input placeholder="Assignment name" onChange={nameHandler}/>
                 </FormControl>
 
+                <FormControl id="assignment-class" isRequired>
+                    <FormLabel mt={5}>Class Name</FormLabel>
+                    <Input placeholder="Class Name"/>
+                </FormControl>
+
                 <FormControl id="assignment-date">
                     <FormLabel mt={5}>Due Date</FormLabel>
                     <Input placeholder="Due Date" type="date" onChange={dateHandler}/>
+                </FormControl>
+
+                <FormControl id="assignment-priority" isRequired>
+                    <FormLabel mt={5}>Priority (Red: high, Blue: low)</FormLabel>
+                    <Select placeholder="Select priority">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </Select>
                 </FormControl>
             </ModalBody>
 
