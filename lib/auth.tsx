@@ -119,6 +119,7 @@ function useProvideAuth() {
   ) => {
     
     if(!response.user) {
+      setLoading(false);
       throw new Error('No User');
     }
 
@@ -141,7 +142,6 @@ function useProvideAuth() {
 
       await addUser(newUserData);
       setAuth(newUserData);
-      console.log(newUserData)
 
     } else {
       setAuth(formatUserState(userData));
@@ -151,7 +151,12 @@ function useProvideAuth() {
 
   const signinWithGoogle = async() => {
     setLoading(true);
-    return firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(handleGoogleSignin);
+    return firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    .catch(error => {
+      setLoading(false);
+      throw new Error(error.message);
+    })
+    .then(handleGoogleSignin);
   };
 
   const signOut = async() => {
