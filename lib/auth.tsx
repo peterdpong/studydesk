@@ -22,7 +22,6 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
   signOut: async () => {}
 });
 
-
 const formatUserState = (userData: firebase.firestore.DocumentSnapshot): UserModel | null => {
   console.log(userData);
 
@@ -42,8 +41,6 @@ const formatUserState = (userData: firebase.firestore.DocumentSnapshot): UserMod
   }
 
 };
-
-
 
 function useProvideAuth() {
   const [auth, setAuth] = useState<UserModel | null>(null);
@@ -124,7 +121,6 @@ function useProvideAuth() {
     if(!response.user) {
       throw new Error('No User');
     }
-
 
     const userData = await getUserData(response.user.uid)
 
