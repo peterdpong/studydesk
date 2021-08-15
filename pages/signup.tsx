@@ -16,34 +16,48 @@ export default function SignUp() {
   const [passwordOne, setPasswordOne] = useState<string>("");
   const [passwordTwo, setPasswordTwo] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [signUpAttempt, setSignUpAttempt] = useState<boolean>(false);
   const router = useRouter();
 
-  const { createUserWithEmailAndPassword } = useAuth();
+  const { createUserWithEmailAndPassword, signinWithGoogle, loading } = useAuth();
 
-  function onSubmit(event: any) {
+  function onEmailSignup(event: any) {
     setError(null);
-    setLoading(true);
+    setSignUpAttempt(true);
 
     if(passwordOne === passwordTwo) {
       createUserWithEmailAndPassword(email, passwordOne, name).then(
         (authUser: any) => {
-          console.log("User created");
           router.push('/app');
-          
         }
       ).catch(error => {
         setError(error.message);
       });
     } else {
       setError("Password do not match");
+      setSignUpAttempt(false);
     }
 
-    setLoading(false);
     event.preventDefault();
   }
 
-  if(loading) {
+  function onGoogleSignup(event: any): void {
+    setError(null);
+    setSignUpAttempt(true);
+
+    signinWithGoogle().then(
+      () => {
+        router.push('/app');
+      }
+    ).catch(error => {
+      setError(error.message);
+      setSignUpAttempt(false);
+    });
+
+    event.preventDefault();
+  }
+
+  if(loading || signUpAttempt) {
     return(
       <FullPageLoading/>
     )
@@ -66,7 +80,7 @@ export default function SignUp() {
         </Text>
         <Card>
           <chakra.form
-            onSubmit={onSubmit}
+            onSubmit={onEmailSignup}
           >
             <Stack spacing="6">
             <FormControl id="name">
@@ -77,8 +91,8 @@ export default function SignUp() {
                 <FormLabel>Email address</FormLabel>
                 <Input name="email" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
               </FormControl>
-              <PasswordFieldSignup name={"Password"} value={passwordOne} onChange={(event) => setPasswordOne(event.target.value)}/>
-              <PasswordFieldSignup name={"Confirm Password"} value={passwordTwo} onChange={(event) => setPasswordTwo(event.target.value)}/>
+              <PasswordFieldSignup id={"password-1"} name={"Password"} value={passwordOne} onChange={(event) => setPasswordOne(event.target.value)}/>
+              <PasswordFieldSignup id={"password-2"} name={"Confirm Password"} value={passwordTwo} onChange={(event) => setPasswordTwo(event.target.value)}/>
               <Button type="submit" colorScheme="blue" size="lg" fontSize="md">
                 Sign up
               </Button>
@@ -87,7 +101,7 @@ export default function SignUp() {
           </chakra.form>
           <TextWithDivider my="6">or continue with</TextWithDivider>
             <Stack>
-              <Button type="submit" colorScheme="blue" size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
+              <Button onClick={onGoogleSignup} type="submit" colorScheme="blue" size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
                 Sign up with Google
               </Button>
             </Stack>

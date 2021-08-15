@@ -1,19 +1,11 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react';
 import { addUser, getUserData } from './firestoredb';
 import firebase from './firebase';
-//import { UserData } from './User';
-
-interface Auth {
-  uid: string;
-  email: string | null;
-  name: string | null;
-  token: string | null;
-}
-
-
+import { UserModel } from './models/User';
+import { Class } from './models/Class';
+import { Task } from './models/Task';
 interface AuthContext {
-  auth: Auth | null;
-  userData: any;
+  auth: UserModel | null;
   loading: boolean;
   signinWithEmailAndPassword: (email: string, password: string) => Promise<any>;
   createUserWithEmailAndPassword: (email: string, password: string, name: string) => Promise<any>;
@@ -23,7 +15,6 @@ interface AuthContext {
 
 const authContext: Context<AuthContext> = createContext<AuthContext>({
   auth: null,
-  userData: {},
   loading: true,
   signinWithEmailAndPassword: async (email: string, password: string) => {},
   createUserWithEmailAndPassword: async (email: string, password: string, name: string) => {},
@@ -31,19 +22,28 @@ const authContext: Context<AuthContext> = createContext<AuthContext>({
   signOut: async () => {}
 });
 
+const formatUserState = (userData: firebase.firestore.DocumentSnapshot): UserModel | null => {
+  console.log(userData);
 
-const formatAuthState = (user: firebase.User): Auth => ({
-  uid: user.uid,
-  email: user.email,
-  name: user.displayName,
-  token: null
-});
+  if(userData.data() === undefined) {
+    return null;
+  }
+  
+  return {
+    uid: userData?.get('uid'),
+    provider: userData?.get('provider'),
+    firstName: userData?.get('firstName'),
+    lastName: userData?.get('lastName'),
+    email: userData?.get('email'),
+    school: userData?.get('school'),
+    classes: userData?.get('classes'),
+    tasks: userData?.get('tasks')
+  }
 
-
+};
 
 function useProvideAuth() {
-  const [auth, setAuth] = useState<Auth | null>(null);
-  const [userData, setUserData] = useState<any>({});
+  const [auth, setAuth] = useState<UserModel | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleAuthChange = async (authState: firebase.User | null) => {
@@ -52,31 +52,13 @@ function useProvideAuth() {
       return;
     }
 
-    const formattedAuth = formatAuthState(authState);
-    const userData = await getUserData(formattedAuth.uid);
-    formattedAuth.token = await authState.getIdToken();
-    setAuth(formattedAuth);
-    setUserData(userData.data());
+    const userData = await getUserData(authState.uid);
+    setAuth(formatUserState(userData));
     setLoading(false);
-  }
-
-  const signedIn = async (
-    response: firebase.auth.UserCredential,
-    provider: String = 'google'
-  ) => {
-    if(!response.user) {
-      throw new Error('No User');
-    }
-
-    const authUser = formatAuthState(response.user);
-    const userData = await getUserData(authUser.uid)
-    await addUser({...authUser, provider});
-    setUserData(userData.data());
   }
 
   const clear = () => {
     setAuth(null);
-    setUserData({});
     setLoading(true);
   };
 
@@ -90,9 +72,8 @@ function useProvideAuth() {
           throw new Error('No User');
         }
 
-        const authUser = formatAuthState(response.user);
-        setUserData(getUserData(authUser.uid));
-        setAuth(authUser);
+        const userData = await getUserData(response.user.uid);
+        setAuth(formatUserState(userData));
         setLoading(false);
       }).catch(error => {
         setLoading(false);
@@ -103,24 +84,79 @@ function useProvideAuth() {
   const createUserWithEmailAndPassword = (email: string, password: string, name: string): any => {
     return firebase.auth().createUserWithEmailAndPassword(email, password).then(async (
       response: firebase.auth.UserCredential,
-      provider: String = 'email'
+      provider: string = 'email'
     ) => {
+
+      setLoading(true);
+
       if(!response.user) {
         throw new Error('No User');
       }
 
-      const authUser = formatAuthState(response.user);
-      const userData = await getUserData(authUser.uid);
-      authUser.name = name;
-      setUserData(userData.data());
-      setAuth(authUser);
-      await addUser({...authUser, provider});
+      const fullNameSplit: string[] = name.split(' ');
+
+      const newUserData: UserModel = {
+        uid: response.user.uid,
+        provider: provider,
+        firstName: fullNameSplit[0],
+        lastName: fullNameSplit[1],
+        email: email,
+        school: "",
+        classes: new Array<Class>(),
+        tasks: new Array<Task>()
+      }
+
+      setAuth(newUserData);
+      await addUser({...newUserData, provider});
+
+      setLoading(false);
     });
+  }
+
+  const handleGoogleSignin = async (
+    response: firebase.auth.UserCredential,
+    provider: string = 'google'
+  ) => {
+    
+    if(!response.user) {
+      setLoading(false);
+      throw new Error('No User');
+    }
+
+    const userData = await getUserData(response.user.uid)
+
+    // Check if new or existing user
+    if(userData.exists === false) {
+      const fullNameSplit: string[] | undefined = response.user.displayName?.split(' ');
+
+      const newUserData: UserModel = {
+        uid: response.user.uid,
+        provider: provider,
+        firstName: fullNameSplit ? fullNameSplit[0] : undefined,
+        lastName: fullNameSplit ? fullNameSplit[1] : undefined,
+        email: response.user.email,
+        school: "",
+        classes: new Array<Class>(),
+        tasks: new Array<Task>()
+      }
+
+      await addUser(newUserData);
+      setAuth(newUserData);
+
+    } else {
+      setAuth(formatUserState(userData));
+    }
+    setLoading(false);
   }
 
   const signinWithGoogle = async() => {
     setLoading(true);
-    return firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(signedIn);
+    return firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    .catch(error => {
+      setLoading(false);
+      throw new Error(error.message);
+    })
+    .then(handleGoogleSignin);
   };
 
   const signOut = async() => {
@@ -132,9 +168,19 @@ function useProvideAuth() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if(auth?.uid) {
+      const unsubscribe = firebase.firestore()
+      .collection('users')
+      .doc(auth?.uid)
+      .onSnapshot((doc) => setAuth(formatUserState(doc)));
+
+      return () => unsubscribe();
+    }
+  }, [])
+
   return {
     auth,
-    userData,
     loading,
     signinWithEmailAndPassword,
     createUserWithEmailAndPassword,
