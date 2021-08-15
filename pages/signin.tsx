@@ -32,9 +32,9 @@ export default function Signin() {
       }
     ).catch(error => {
       setError(error.message);
+      setLoginAttempt(false);
     });
 
-    setLoginAttempt(false);
     event.preventDefault();
   }
 
