@@ -5,20 +5,21 @@ import {
     Flex, 
     Text, 
     List,
-    ListItem,
-    ListIcon,
     Spacer,
     useDisclosure,
     Heading,
-    Checkbox
 } from "@chakra-ui/react";
-import { MdCheckCircle } from "react-icons/md";
 import TaskModal from './TaskModal';
+import TaskItem from './TaskItem';
+import PriorityBar from './PriorityBar';
 
 
 export default function Tasks({ taskList }) {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const sortByPriority = taskList.sort((x, y) => x.priority - y.priority);
+    const sortedList = sortByPriority.sort((x, y) => x.checked - y.checked);
 
     return (
         <Box>
@@ -27,23 +28,17 @@ export default function Tasks({ taskList }) {
                 <Spacer/>
                 <Button colorScheme="green" size="sm" mr="12%" onClick={onOpen}>Add Task</Button>
             </Flex>
+
+            <PriorityBar/>
             
             <List spacing={3} mt={3}>
-                {taskList.map((task) => {
+                {sortedList.map((task) => {
                     return(
-                        <ListItem>
-                          <Checkbox size={'lg'} colorScheme={'green'}>
-                            <Flex direction={'column'} fontSize={15}>
-                              <Text> {task.name} - {task.dueDate.substring(0, 5)}</Text>
-                              <Text> Class Name </Text>
-                              <Text> Priority </Text>
-                            </Flex>
-                          </Checkbox>
-                   
-                        </ListItem> 
+                        <TaskItem task={task} key={task.name}/>
                     );
                 })}
             </List>
+            
 
             <TaskModal isOpen={isOpen} onClose={onClose} />
 

@@ -3,7 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import {
     Box, 
-    Text, 
+    Heading
 } from "@chakra-ui/react";
 
 export default function MainCalendar() {
@@ -23,11 +23,14 @@ export default function MainCalendar() {
 
     return (
         <Box mt={5}>
-            <Text fontSize={30} mb={2}>Calendar</Text>
-            <Calendar
-                onChange={onChange}
-                value={value}
-            />
+            <Heading mb={2}>Calendar</Heading>
+            <Box align="center" mt={5}>
+                <Calendar
+                    onChange={onChange}
+                    value={value}
+                />
+            </Box>
+            
         </Box>
     )
 }
