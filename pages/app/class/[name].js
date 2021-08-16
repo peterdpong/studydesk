@@ -13,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import AssignmentTable from "../../../components/app/AssignmentTable";
 import AssignmentModal from "../../../components/app/AssignmentModal";
+import { useAuth } from '../../../lib/auth';
+import firebase from '../../../lib/firebase';
 
 
 const singleClass = {
@@ -54,9 +56,14 @@ const singleClass = {
 const SingleClass = () => {
   const router = useRouter();
   const { name } = router.query;
+  const { auth } = useAuth();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  //const refToClass = firebase.firestore().collection("users").doc(auth.uid);
+
+  //const currentClass = auth.classes.filter((c) => c.name === name)
+  //console.log(currentClass);
 
   return ( 
     <Box>

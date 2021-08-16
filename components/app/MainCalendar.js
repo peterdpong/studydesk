@@ -14,7 +14,6 @@ export default function MainCalendar() {
         const dateString = nextValue
             .toISOString()
             .substring(0, 10)
-            .replaceAll("-", "/");
 
         //run a for loop of assignments and tasks that match the date
 

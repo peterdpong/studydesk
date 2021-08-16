@@ -42,7 +42,7 @@ export default function TaskItem({ task }) {
       <Checkbox size={'lg'} colorScheme={'green'} isChecked={task.checked} onChange={(e) => console.log(e.target.checked)}>
         <Flex bg={priorityColor(task.priority)} direction={'column'} fontSize={15} borderRadius={10}>
           <Box p={3}>
-            <Text> {task.name} ({task.className}) - {task.dueDate.substring(0, 5)} </Text>
+            <Text> {task.name} ({task.className}) - {task.dueDate.substring(5, 10).replace('-', '/')} </Text>
           </Box>
         </Flex>
       </Checkbox>

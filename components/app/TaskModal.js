@@ -14,6 +14,8 @@ import {
     Input,
     Select
 } from "@chakra-ui/react";
+import { useAuth } from '../../lib/auth';
+import firebase from '../../lib/firebase';
 
 
 const priorityNumberPicker = (priority) => {
@@ -49,7 +51,10 @@ export default function TaskModal({ isOpen, onClose }) {
   const [ name, setName ] = useState('');
   const [ className, setClassName ] = useState('');
   const [ dueDate, setDueDate ] = useState('');
-  const [ priority, setPriority ] = useState('');
+  const [ priority, setPriority ] = useState('');    
+  const { auth } = useAuth();
+
+  const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -78,14 +83,22 @@ export default function TaskModal({ isOpen, onClose }) {
 
     const taskObject = {
       name,
-      className,
       dueDate,
-      priority: priorityNumber
+      className,
+      priority: priorityNumber,
+      checked: false
     }
 
-      //add object to task list
+    const updatedTasks = auth.tasks.concat(taskObject);
 
-     console.log(taskObject.name, taskObject.className, taskObject.dueDate, taskObject.priority);
+    refToUserData
+      .update({
+        tasks: updatedTasks
+      })
+      .catch(
+        (err) => console.log(err)
+      );
+
 
     setName('');
     setClassName('');

@@ -13,10 +13,15 @@ import {
     FormLabel,
     Input
 } from "@chakra-ui/react";
+import { useAuth } from '../../lib/auth';
+import firebase from '../../lib/firebase';
 
 export default function ClassListModal({ isOpen, onClose }) {
 
     const [ name, setName ] = useState('');
+    const { auth } = useAuth();
+
+    const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
 
     const nameHandler = (e) => {
         setName(e.target.value);
@@ -32,11 +37,32 @@ export default function ClassListModal({ isOpen, onClose }) {
 
         const classObject = {
             name: name,
-            times: [],
-            assignments: []
+            times: [
+                {
+                    id: 1,
+                    time: "9:00-10:00",
+                    day: "Mon",
+                    type: "Lecture"
+                }
+            ],
+            assignments: [
+                {
+                    name: "Example Assignment",
+                    dueDate: "2021-09-08",
+                    weight: 5
+                }
+            ]
         }
 
-        console.log('New Class: ', classObject.name);
+        const updatedClasses = auth.classes.concat(classObject);
+
+        refToUserData
+            .update({
+                classes: updatedClasses
+            })
+            .catch(
+                (err) => console.log(err)
+            )
 
         setName('');
         onClose();
