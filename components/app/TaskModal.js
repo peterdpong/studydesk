@@ -120,8 +120,14 @@ export default function TaskModal({ isOpen, onClose }) {
           </FormControl>
 
           <FormControl id="assignment-class" isRequired>
-            <FormLabel mt={5}>Class Name</FormLabel>
-            <Input placeholder="Class Name" onChange={(e) => setClassName(e.target.value)}/>
+            <FormLabel mt={5}>Class</FormLabel>
+            <Select placeholder="Select Class" onChange={(e) => setClassName(e.target.value)}>
+              {auth.classes.map((c) => {
+                return(
+                  <option key={c.name}>{c.name}</option>
+                )
+              })}
+            </Select>
           </FormControl>
 
           <FormControl id="assignment-date" isRequired>

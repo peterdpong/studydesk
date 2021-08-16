@@ -12,7 +12,30 @@ const priorityColor = (priority) => {
 
   switch (priority) {
     case 1:
-      color = "red.400";
+      color = "teal";
+      break;
+    case 2:
+      color = "teal.400";
+      break;
+    case 3:
+      color = "teal.200";
+      break;
+    case 4:
+      color = "teal.100";
+      break;
+    case 5:
+      color = "teal.50";
+      break;
+    default:
+      color = "blue.50";
+      break;
+  }
+  
+  return color;
+}
+
+/*case 1:
+      color = "red.500";
       break;
     case 2:
       color = "orange.300";
@@ -28,11 +51,7 @@ const priorityColor = (priority) => {
       break;
     default:
       color = "blue.50";
-      break;
-  }
-  
-  return color;
-}
+      break; */
 
 
 export default function TaskItem({ task }) {

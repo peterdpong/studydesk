@@ -177,7 +177,7 @@ function useProvideAuth() {
 
       return () => unsubscribe();
     }
-  }, [])
+  }, []);
 
   return {
     auth,
