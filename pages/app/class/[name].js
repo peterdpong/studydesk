@@ -51,7 +51,6 @@ const SingleClass = () => {
 
   const currentClass = auth.classes.filter((c) => c.name === name);
 
-
   return ( 
     <Box>
         <Navbar/>
