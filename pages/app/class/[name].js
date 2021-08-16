@@ -17,6 +17,7 @@ import ClassTimesTable from "../../../components/app/ClassTimesTable";
 import { useAuth } from '../../../lib/auth';
 import firebase from '../../../lib/firebase';
 import { FullPageLoading } from '../../../components/FullPageLoading';
+import ClassTimeModal from '../../../components/app/ClassTimeModal';
 
 
 const SingleClass = () => {
@@ -25,6 +26,8 @@ const SingleClass = () => {
   const { auth, loading } = useAuth();
 
   const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
+  const { isOpen: isTimeOpen, onOpen: onTimeOpen, onClose: onTimeClose } = useDisclosure();  
+
   const refToUsers = firebase.firestore().collection("users");
 
   const deleteHandler = () => {
@@ -78,7 +81,8 @@ const SingleClass = () => {
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="teal" onClick={onAssignmentOpen}>Add</Button>
+                        <Button colorScheme="teal" onClick={onTimeOpen}>Add</Button>
+                        <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name}/>
                     </Box>
                 </Flex>
                 <ClassTimesTable times={currentClass[0].times} />
