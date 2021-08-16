@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import AssignmentTable from "../../../components/app/AssignmentTable";
 import AssignmentModal from "../../../components/app/AssignmentModal";
+import ClassTimesTable from "../../../components/app/ClassTimesTable";
 import { useAuth } from '../../../lib/auth';
 import firebase from '../../../lib/firebase';
 import { FullPageLoading } from '../../../components/FullPageLoading';
@@ -23,13 +24,14 @@ const SingleClass = () => {
   const { name } = router.query;
   const { auth, loading } = useAuth();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();  
-  const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
+  const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
+  const refToUsers = firebase.firestore().collection("users");
 
   const deleteHandler = () => {
     if(confirm(`Are you sure you want to delete this class?`)){
         const updatedClasses = auth.classes.filter((c) => c.name !== name);
-        refToUserData
+        refToUsers
+            .doc(auth.uid)
             .update({
                 classes: updatedClasses
             })
@@ -50,6 +52,7 @@ const SingleClass = () => {
   }
 
   const currentClass = auth.classes.filter((c) => c.name === name);
+  
 
   return ( 
     <Box>
@@ -68,26 +71,28 @@ const SingleClass = () => {
 
             <Button mt={5}>View Syllabus</Button>
 
-            <Box mt={5}>
-                <Heading fontSize={20} p={2}>Class times</Heading>
-                {currentClass[0].times.map((t) => {
-                    return(
-                        <Box key={t.id}>
-                            <Text fontSize={18} ml={5}>{t.time} {t.day} - {t.type}</Text>
-                        </Box>
-                    )
-                })}
+            <Box w="40%">
+                <Flex mt={10}>
+                    <Box p="2">
+                        <Heading size="md">Class Times</Heading>
+                    </Box>
+                    <Spacer/>
+                    <Box mt={3}>
+                        <Button colorScheme="teal" onClick={onAssignmentOpen}>Add</Button>
+                    </Box>
+                </Flex>
+                <ClassTimesTable times={currentClass[0].times} />
             </Box>
 
             <Box w="70%">
-                <Flex mt={5}>
+                <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Assignments</Heading>
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="teal" onClick={onOpen}>Add</Button>
-                        <AssignmentModal isOpen={isOpen} onClose={onClose}/>
+                        <Button colorScheme="teal" onClick={onAssignmentOpen}>Add</Button>
+                        <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name}/>
                     </Box>
                 </Flex>
                 <AssignmentTable assignments={currentClass[0].assignments} />

@@ -11,6 +11,7 @@ import { useAuth } from '../../lib/auth';
 import firebase from '../../lib/firebase';
 
 
+
 const classList = [
   {
     name: "Example Class",
@@ -75,11 +76,9 @@ const taskList = [
 
 export default function Classes({ user }) {
 
-  const { auth } = useAuth();
+  const refToUserData = firebase.firestore().collection("users").doc(user.uid);
 
-  const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
-
-  if(auth.classes.length === 0){
+  if(user.classes.length === 0){
     refToUserData
     .update({
       classes: classList
@@ -89,7 +88,7 @@ export default function Classes({ user }) {
     )
   }
 
-  if(auth.tasks.length === 0){
+  if(user.tasks.length === 0){
     refToUserData
     .update({
       tasks: taskList
@@ -98,15 +97,15 @@ export default function Classes({ user }) {
         (err) => console.log(err)
     )
   }
-
+  
   return (
     <Flex direction={{ base: "column", md: "row" }}>
       <Box w={{base: "100%", md: "65%"}} p={10}>
-        <ClassList classList={auth.classes}/>
+        <ClassList classList={user.classes}/>
       </Box>
 
       <Box w={{base: "100%", md: "35%"}} p={10}>
-        <Tasks taskList={auth.tasks}/>
+        <Tasks taskList={user.tasks}/>
         <MainCalendar/>
       </Box>
     </Flex>
