@@ -15,8 +15,9 @@ import {
     Select
 } from "@chakra-ui/react";
 import { useAuth } from '../../lib/auth';
-import firebase from '../../lib/firebase';
 import { v4 as uuidv4 } from 'uuid';
+import { addClassTime } from '../../lib/writeTodb';
+//import firebase from '../../lib/firebase';
   
 
 export default function ClassTimeModal({ isOpen, onClose, name }) {
@@ -28,7 +29,13 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
     const [ classroom, setClassroom ] = useState('');
     const { auth } = useAuth();
 
-    const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
+    const resetVariables = () => {
+        setStartTime('');
+        setEndTime('');
+        setClassDay('');
+        setClassType('');
+        setClassroom('');
+    }
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -66,26 +73,8 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
             classroom: classroom
         }
 
-        const previousClasses = auth.classes.filter((c) => c.name !== name);
-        const updatedClass = auth.classes.filter((c) => c.name === name)[0];
-        const previousTimes = updatedClass.times;
-        const updatedTimes = previousTimes.concat(classTimeObject);
-        updatedClass.times = updatedTimes;
-        previousClasses.push(updatedClass);
-
-        refToUserData
-            .update({
-                classes: previousClasses
-            })
-            .catch(
-                (err) => console.log(err)
-            )
-
-        setStartTime('');
-        setEndTime('');
-        setClassDay('');
-        setClassType('');
-        setClassroom('');
+        addClassTime(auth.uid, auth.classes, classTimeObject, name);
+        resetVariables();
         onClose();
     }
 

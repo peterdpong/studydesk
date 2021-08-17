@@ -19,7 +19,8 @@ import {
     Input
 } from "@chakra-ui/react";
 import { useAuth } from '../../lib/auth';
-import firebase from '../../lib/firebase';
+//import firebase from '../../lib/firebase';
+import { addAssignment } from '../../lib/writeTodb';
   
 
 export default function AssignmentModal({ isOpen, onClose, name }) {
@@ -29,7 +30,11 @@ export default function AssignmentModal({ isOpen, onClose, name }) {
     const [ assignmentWeight, setAssignmentWeight ] = useState(0);
     const { auth } = useAuth();
 
-    const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
+    const resetVariables = () => {
+        setAssignmentName('');
+        setAssignmentDate('');
+        setAssignmentWeight(0);
+    }
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -49,27 +54,8 @@ export default function AssignmentModal({ isOpen, onClose, name }) {
             assignmentObject.dueDate = 'N/A';
         }
 
-        //add to assignment list
-
-        const previousClasses = auth.classes.filter((c) => c.name !== name);
-        const updatedClass = auth.classes.filter((c) => c.name === name)[0];
-        const previousAssignments = updatedClass.assignments;
-        const updatedAssignments = previousAssignments.concat(assignmentObject);
-        updatedClass.assignments = updatedAssignments;
-        previousClasses.push(updatedClass);
-        console.log(previousClasses);
-
-        refToUserData
-            .update({
-                classes: previousClasses
-            })
-            .catch(
-                (err) => console.log(err)
-            )
-
-        setAssignmentName('');
-        setAssignmentDate('');
-        setAssignmentWeight(0);
+        addAssignment(auth.uid, auth.classes, assignmentObject, name);
+        resetVariables();
         onClose();
     }
 
