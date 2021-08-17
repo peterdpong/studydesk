@@ -81,7 +81,7 @@ const SingleClass = () => {
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="teal" onClick={onTimeOpen}>Add</Button>
+                        <Button colorScheme="green" onClick={onTimeOpen}>Add</Button>
                         <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name}/>
                     </Box>
                 </Flex>
@@ -95,7 +95,7 @@ const SingleClass = () => {
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="teal" onClick={onAssignmentOpen}>Add</Button>
+                        <Button colorScheme="green" onClick={onAssignmentOpen}>Add</Button>
                         <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name}/>
                     </Box>
                 </Flex>

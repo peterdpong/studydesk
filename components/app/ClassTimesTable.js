@@ -8,7 +8,7 @@ import {
     Td
 } from "@chakra-ui/react";
 
-export default function ClassTimesTable({times}) {
+export default function ClassTimesTable({ times }) {
     return (
         <Table variant="simple">
             <Thead>
@@ -16,6 +16,7 @@ export default function ClassTimesTable({times}) {
                     <Th>Time</Th>
                     <Th>Day</Th>
                     <Th>Type</Th>
+                    <Th>Classroom</Th>
                 </Tr>
             </Thead>
             <Tbody>
@@ -25,6 +26,7 @@ export default function ClassTimesTable({times}) {
                             <Td>{t.time}</Td>
                             <Td>{t.day}</Td>
                             <Td>{t.type}</Td>
+                            <Td>{t.classroom}</Td>
                         </Tr>
                     )
                 })}

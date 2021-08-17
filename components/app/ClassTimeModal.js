@@ -11,17 +11,21 @@ import {
     Button,
     FormControl,
     FormLabel,
-    Input
+    Input, 
+    Select
 } from "@chakra-ui/react";
 import { useAuth } from '../../lib/auth';
 import firebase from '../../lib/firebase';
+import { v4 as uuidv4 } from 'uuid';
   
 
 export default function ClassTimeModal({ isOpen, onClose, name }) {
 
-    const [ classTime, setClassTime ] = useState('');
+    const [ startTime, setStartTime ] = useState('');
+    const [ endTime, setEndTime ] = useState('');
     const [ classDay, setClassDay ] = useState('');
     const [ classType, setClassType ] = useState('');
+    const [ classroom, setClassroom ] = useState('');
     const { auth } = useAuth();
 
     const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
@@ -29,8 +33,13 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
     const submitHandler = (e) => {
         e.preventDefault();
 
-        if(classTime.length === 0){
-            alert('Please enter a time');
+        if(startTime.length === 0){
+            alert('Please enter a starting time');
+            return;
+        }
+
+        if(endTime.length === 0){
+            alert('Please enter an ending time');
             return;
         }
 
@@ -44,13 +53,18 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
             return;
         }
 
-        const classTimeObject = {
-            time: classTime,
-            day: classDay,
-            type: classType
+        if(classroom.length === 0){
+            alert('Please enter a classroom');
+            return;
         }
 
-        //add to assignment list
+        const classTimeObject = {
+            id: uuidv4(),
+            time: startTime + '-' + endTime,
+            day: classDay,
+            type: classType,
+            classroom: classroom
+        }
 
         const previousClasses = auth.classes.filter((c) => c.name !== name);
         const updatedClass = auth.classes.filter((c) => c.name === name)[0];
@@ -58,7 +72,6 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
         const updatedTimes = previousTimes.concat(classTimeObject);
         updatedClass.times = updatedTimes;
         previousClasses.push(updatedClass);
-        console.log(previousClasses);
 
         refToUserData
             .update({
@@ -68,9 +81,11 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
                 (err) => console.log(err)
             )
 
-        setClassTime('');
+        setStartTime('');
+        setEndTime('');
         setClassDay('');
         setClassType('');
+        setClassroom('');
         onClose();
     }
 
@@ -81,19 +96,39 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
             <ModalHeader>Add Class Time</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                <FormControl id="class-time" isRequired>
-                    <FormLabel>Time</FormLabel>
-                    <Input placeholder="Class time" onChange={(e) => setClassTime(e.target.value)}/>
+                <FormControl id="class-time-start" isRequired>
+                    <FormLabel>Start time</FormLabel>
+                    <Input placeholder="Starting time" type="time" onChange={(e) => setStartTime(e.target.value)}/>
+                </FormControl>
+
+                <FormControl id="class-time-end" isRequired>
+                    <FormLabel mt={5}>End time</FormLabel>
+                    <Input placeholder="Ending time" type="time" onChange={(e) => setEndTime(e.target.value)}/>
                 </FormControl>
 
                 <FormControl id="class-day" isRequired>
                     <FormLabel mt={5}>Day</FormLabel>
-                    <Input placeholder="Class day" onChange={(e) => setClassDay(e.target.value)}/>
+                    <Select placeholder="Class day" onChange={(e) => setClassDay(e.target.value)}>
+                        <option>Mon</option>
+                        <option>Tue</option>
+                        <option>Wed</option>
+                        <option>Thu</option>
+                        <option>Fri</option>
+                    </Select>
                 </FormControl>
                     
                 <FormControl id="class-type" isRequired>
-                    <FormLabel mt={5}>Type (Lecture, Tutorial, Practical)</FormLabel>
-                    <Input placeholder="Class type" onChange={(e) => setClassType(e.target.value)}/>
+                    <FormLabel mt={5}>Type (LEC, TUT, PRA)</FormLabel>
+                    <Select placeholder="Class type" onChange={(e) => setClassType(e.target.value)}>
+                        <option>Lecture</option>
+                        <option>Tutorial</option>
+                        <option>Practical</option>
+                    </Select>
+                </FormControl>
+
+                <FormControl id="classroom" isRequired>
+                    <FormLabel mt={5}>Classroom</FormLabel>
+                    <Input placeholder="Classroom" onChange={(e) => setClassroom(e.target.value)}/>
                 </FormControl>
             </ModalBody>
 
