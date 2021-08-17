@@ -74,7 +74,7 @@ const SingleClass = () => {
 
             <Button mt={5}>View Syllabus</Button>
 
-            <Box w="40%">
+            <Box w="50%">
                 <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Class Times</Heading>
@@ -88,7 +88,7 @@ const SingleClass = () => {
                 <ClassTimesTable times={currentClass[0].times} />
             </Box>
 
-            <Box w="70%">
+            <Box w="60%">
                 <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Assignments</Heading>
