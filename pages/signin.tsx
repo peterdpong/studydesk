@@ -20,7 +20,8 @@ export default function Signin() {
   //Theme colors (Note for when we implement dark mode -> call these to create a component theme)
   const bgColor = useColorModeValue('gray.50', 'inherit');
 
-  const { signinWithEmailAndPassword, signinWithGoogle, signOut, auth, loading } = useAuth();
+  const { signinWithEmailAndPassword, signinWithGoogle, signOut, useRequiredAuth, loading } = useAuth();
+  const user = useRequiredAuth();
 
   function onEmailSignin(event: any): void {
     setError(null);
@@ -67,7 +68,7 @@ export default function Signin() {
     return (
       <FullPageLoading bgColor={bgColor}/>
     );
-  } else if (auth && !loginAttempt) {
+  } else if (user && !loginAttempt) {
     return (
       <Box
       bg={bgColor}
@@ -77,7 +78,7 @@ export default function Signin() {
       >
         <Box maxW="md" mx="auto">
           <Heading mb={"4"} textAlign="center" size="xl" fontWeight="extrabold">
-            Log in as {auth.firstName}
+            Log in as {user.firstName}
           </Heading>
           <Card>
             <Stack spacing="2">
@@ -93,7 +94,7 @@ export default function Signin() {
               <Button onClick={navigateToSignup} size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<HiMail/>}>
                   Sign up with Email
                 </Button>
-                <Button onClick={signinWithGoogle} size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
+                <Button onClick={onGoogleSignin} size="lg" fontSize="md" color="currentColor" variant="outline" leftIcon={<FaGoogle/>}>
                   Sign up with Google
                 </Button>
               </Stack>
