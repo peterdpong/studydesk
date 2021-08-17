@@ -168,7 +168,7 @@ function useProvideAuth() {
     const router = useRouter();
 
     useEffect(() => {
-      if(auth === null) {
+      if(!auth && !loading) {
         router.push('/signin');
       }
 
