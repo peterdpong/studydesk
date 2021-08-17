@@ -6,8 +6,9 @@ import { FullPageLoading } from "../../components/FullPageLoading";
 import { useAuth } from "../../lib/auth";
 
 export default function App() {
-  const { auth, loading } = useAuth();
+  const { useRequiredAuth, loading } = useAuth();
   const router = useRouter();
+  const auth = useRequiredAuth();
 
   useEffect(() => {
     if(!loading && !auth) {

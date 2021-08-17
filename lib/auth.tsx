@@ -4,8 +4,9 @@ import firebase from './firebase';
 import { UserModel } from './models/User';
 import { Class } from './models/Class';
 import { Task } from './models/Task';
+import { useRouter } from 'next/dist/client/router';
 interface AuthContext {
-  auth: UserModel | null;
+  useRequiredAuth: () => UserModel | null;
   loading: boolean;
   signinWithEmailAndPassword: (email: string, password: string) => Promise<any>;
   createUserWithEmailAndPassword: (email: string, password: string, name: string) => Promise<any>;
@@ -14,7 +15,7 @@ interface AuthContext {
 }
 
 const authContext: Context<AuthContext> = createContext<AuthContext>({
-  auth: null,
+  useRequiredAuth: () => { return null },
   loading: true,
   signinWithEmailAndPassword: async (email: string, password: string) => {},
   createUserWithEmailAndPassword: async (email: string, password: string, name: string) => {},
@@ -163,6 +164,19 @@ function useProvideAuth() {
     return firebase.auth().signOut().then(clear);
   }
 
+  const useRequiredAuth = () => {
+    const router = useRouter();
+
+    useEffect(() => {
+      if(auth === null) {
+        router.push('/signin');
+      }
+
+    }, [auth, router]);
+
+    return auth;
+  }
+
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(handleAuthChange);
     return () => unsubscribe();
@@ -180,7 +194,7 @@ function useProvideAuth() {
   }, [])
 
   return {
-    auth,
+    useRequiredAuth,
     loading,
     signinWithEmailAndPassword,
     createUserWithEmailAndPassword,
@@ -188,7 +202,6 @@ function useProvideAuth() {
     signOut
   };
 }
-
 
 export function AuthProvider({children}: any) {
   const auth = useProvideAuth();
