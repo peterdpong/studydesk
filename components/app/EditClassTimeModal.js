@@ -67,6 +67,8 @@ export default function EditClassTimeModal({ timeObject, isOpen, onClose, name }
             return;
         }
 
+        //filter by object id, edit
+
         const classTimeObject = {
             id: timeObject.id,
             time: startTime + '-' + endTime,

@@ -20,9 +20,8 @@ import { addClassTime } from '../../lib/writeTodb';
   
 
 export default function ClassTimeModal({ isOpen, onClose, name }) {
-
     const [ startTime, setStartTime ] = useState('');
-    const [ endTime, setEndTime ] = useState('');
+    const [ endTime, setEndTime ] = useState('') ;
     const [ classDay, setClassDay ] = useState('');
     const [ classType, setClassType ] = useState('');
     const [ classroom, setClassroom ] = useState('');
@@ -84,19 +83,19 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
             <ModalHeader>Add Class Time</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                <FormControl id="class-time-start" isRequired>
+                <FormControl isRequired>
                     <FormLabel>Start time</FormLabel>
-                    <Input placeholder="Starting time" type="time" onChange={(e) => setStartTime(e.target.value)}/>
+                    <Input placeholder="Starting time" value={startTime} type="time" onChange={(e) => setStartTime(e.target.value)}/>
                 </FormControl>
 
-                <FormControl id="class-time-end" isRequired>
+                <FormControl isRequired>
                     <FormLabel mt={5}>End time</FormLabel>
-                    <Input placeholder="Ending time" type="time" onChange={(e) => setEndTime(e.target.value)}/>
+                    <Input placeholder="Ending time" type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)}/>
                 </FormControl>
 
-                <FormControl id="class-day" isRequired>
+                <FormControl isRequired>
                     <FormLabel mt={5}>Day</FormLabel>
-                    <Select placeholder="Class day" onChange={(e) => setClassDay(e.target.value)}>
+                    <Select placeholder="Class day" value={classDay} onChange={(e) => setClassDay(e.target.value)}>
                         <option>Mon</option>
                         <option>Tue</option>
                         <option>Wed</option>
@@ -105,18 +104,18 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
                     </Select>
                 </FormControl>
                     
-                <FormControl id="class-type" isRequired>
+                <FormControl isRequired>
                     <FormLabel mt={5}>Type (LEC, TUT, PRA)</FormLabel>
-                    <Select placeholder="Class type" onChange={(e) => setClassType(e.target.value)}>
+                    <Select placeholder="Class type" value={classType} onChange={(e) => setClassType(e.target.value)}>
                         <option>Lecture</option>
                         <option>Tutorial</option>
                         <option>Practical</option>
                     </Select>
                 </FormControl>
 
-                <FormControl id="classroom" isRequired>
+                <FormControl isRequired>
                     <FormLabel mt={5}>Classroom</FormLabel>
-                    <Input placeholder="Classroom" onChange={(e) => setClassroom(e.target.value)}/>
+                    <Input placeholder="Classroom" value={classroom} onChange={(e) => setClassroom(e.target.value)}/>
                 </FormControl>
             </ModalBody>
 

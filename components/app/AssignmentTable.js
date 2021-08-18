@@ -13,8 +13,9 @@ import {
     Icon
 } from "@chakra-ui/react";
 import { EditIcon } from '@chakra-ui/icons';
+import AssignmentTableItem from './AssignmentTableItem';
 
-export default function AssignmentTable({ assignments }) {
+export default function AssignmentTable({ assignments, name }) {
     return (
         <Table variant="simple">
             <Thead>
@@ -27,28 +28,7 @@ export default function AssignmentTable({ assignments }) {
             <Tbody>
                 {assignments.map((a) => {
                     return(
-                        <Tr key={a.id}>
-                            <Td>{a.name}</Td>
-                            <Td>{a.dueDate}</Td>
-                            <Td>
-                                <Flex align="center">
-                                    {a.weight}%
-                                    <Spacer/>
-                                    <IconButton
-                                        variant="ghost"
-                                        colorScheme="blue"
-                                        aria-label="Send email"
-                                        icon={<EditIcon />}
-                                        size="lg"
-                                        _hover={{
-                                            background: "blue.500",
-                                            color: "white"
-                                        }}
-                                        onClick={() => console.log('click')}
-                                    />
-                                </Flex>
-                            </Td>
-                        </Tr>
+                        <AssignmentTableItem a={a} key={a.id} classname={name} />
                     )
                 })}
             </Tbody>

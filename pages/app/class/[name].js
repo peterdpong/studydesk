@@ -56,6 +56,13 @@ const SingleClass = () => {
 
   const currentClass = auth.classes.filter((c) => c.name === name);
   
+  const emptyTimeObject = {
+      id: Math.random(),
+      time: '',
+      day: '',
+      type: '',
+      classroom: ''
+  }
 
   return ( 
     <Box>
@@ -82,10 +89,10 @@ const SingleClass = () => {
                     <Spacer/>
                     <Box mt={3}>
                         <Button colorScheme="green" onClick={onTimeOpen}>Add</Button>
-                        <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name}/>
+                        <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} />
                     </Box>
                 </Flex>
-                <ClassTimesTable times={currentClass[0].times} />
+                <ClassTimesTable times={currentClass[0].times} name={name}/>
             </Box>
 
             <Box w="60%">
@@ -99,7 +106,7 @@ const SingleClass = () => {
                         <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name}/>
                     </Box>
                 </Flex>
-                <AssignmentTable assignments={currentClass[0].assignments} />
+                <AssignmentTable assignments={currentClass[0].assignments} name={name} />
             </Box>
         </Box>
     </Box>
