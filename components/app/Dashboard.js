@@ -36,7 +36,8 @@ const classList = [
 //get classes using user id
 
 const taskList = [
-  {
+  { 
+    id: Math.random(),
     name: "Task1",
     dueDate: "2021-09-26",
     className: "ECE302",
@@ -44,6 +45,7 @@ const taskList = [
     checked: false
   },
   {
+    id: Math.random(),
     name: "Task2",
     dueDate: "2021-09-26",
     className: "ECE345",
@@ -51,6 +53,7 @@ const taskList = [
     checked: true
   },
   {
+    id: Math.random(),
     name: "Task3",
     dueDate: "2021-09-26",
     className: "ECE344",
@@ -58,6 +61,7 @@ const taskList = [
     checked: false
   },
   {
+    id: Math.random(),
     name: "Task4",
     dueDate: "2021-09-26",
     className: "ECE345",
@@ -65,6 +69,7 @@ const taskList = [
     checked: true
   },
   {
+    id: Math.random(),
     name: "Task5",
     dueDate: "2021-09-26",
     className: "ECE344",

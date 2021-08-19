@@ -85,6 +85,7 @@ export default function TaskModal({ isOpen, onClose, uid, tasks, classes }) {
     const priorityNumber = priorityNumberPicker(priority);
 
     const taskObject = {
+      id: Math.random(),
       name,
       dueDate,
       className,

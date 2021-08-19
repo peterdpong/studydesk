@@ -34,7 +34,7 @@ export default function Tasks({ taskList, classList, uid }) {
             <List spacing={3} mt={3}>
                 {sortedList.map((task) => {
                     return(
-                        <TaskItem task={task} key={task.name}/>
+                        <TaskItem task={task} uid={uid} key={task.id} allTasks={taskList} />
                     );
                 })}
             </List>
