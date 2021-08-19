@@ -7,9 +7,7 @@ import 'react-calendar/dist/Calendar.css';
 import Tasks from './Tasks';
 import MainCalendar from './MainCalendar';
 import ClassList from './ClassList';
-import { useAuth } from '../../lib/auth';
 import firebase from '../../lib/firebase';
-
 
 
 const classList = [
@@ -76,11 +74,11 @@ const taskList = [
 ]
 
 
-export default function Classes({ user }) {
+export default function Classes({ auth }) {
 
-  const refToUserData = firebase.firestore().collection("users").doc(user.uid);
+  const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
 
-  if(user.classes.length === 0){
+  if(auth.classes.length === 0){
     refToUserData
     .update({
       classes: classList
@@ -90,7 +88,7 @@ export default function Classes({ user }) {
     )
   }
 
-  if(user.tasks.length === 0){
+  if(auth.tasks.length === 0){
     refToUserData
     .update({
       tasks: taskList
@@ -103,11 +101,11 @@ export default function Classes({ user }) {
   return (
     <Flex direction={{ base: "column", md: "row" }}>
       <Box w={{base: "100%", md: "65%"}} p={10}>
-        <ClassList classList={user.classes}/>
+        <ClassList classList={auth.classes} uid={auth.uid}/>
       </Box>
 
       <Box w={{base: "100%", md: "35%"}} p={10}>
-        <Tasks taskList={user.tasks}/>
+        <Tasks taskList={auth.tasks} classList={auth.classes} uid={auth.uid}/>
         <MainCalendar/>
       </Box>
     </Flex>

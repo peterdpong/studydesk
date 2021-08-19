@@ -14,8 +14,6 @@ import {
     Input,
     Select
 } from "@chakra-ui/react";
-import { useAuth } from '../../lib/auth';
-//import firebase from '../../lib/firebase';
 import { addTask } from '../../lib/writeTodb';
 
 
@@ -47,13 +45,12 @@ const priorityNumberPicker = (priority) => {
 }
 
 
-export default function TaskModal({ isOpen, onClose }) {
+export default function TaskModal({ isOpen, onClose, uid, tasks, classes }) {
 
   const [ name, setName ] = useState('');
   const [ className, setClassName ] = useState('');
   const [ dueDate, setDueDate ] = useState('');
   const [ priority, setPriority ] = useState('');    
-  const { auth } = useAuth();
 
   const resetVariables = () => {
     setName('');
@@ -95,8 +92,8 @@ export default function TaskModal({ isOpen, onClose }) {
       checked: false
     }
 
-    const updatedTasks = auth.tasks.concat(taskObject);
-    addTask(auth.uid, updatedTasks);
+    const updatedTasks = tasks.concat(taskObject);
+    addTask(uid, updatedTasks);
     resetVariables();
     onClose();
   }
@@ -116,7 +113,7 @@ export default function TaskModal({ isOpen, onClose }) {
           <FormControl id="assignment-class" isRequired>
             <FormLabel mt={5}>Class</FormLabel>
             <Select placeholder="Select Class" onChange={(e) => setClassName(e.target.value)}>
-              {auth.classes.map((c) => {
+              {classes.map((c) => {
                 return(
                   <option key={c.name}>{c.name}</option>
                 )

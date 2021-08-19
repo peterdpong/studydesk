@@ -10,8 +10,8 @@ import {
     EditablePreview,
     Box
 } from "@chakra-ui/react";
-import { CheckIcon } from '@chakra-ui/icons';
-import { editClassTime } from '../../lib/writeTodb';
+import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
+import { editClassTime, deleteTime } from '../../lib/writeTodb';
 
 
 export default function TimeTableItem({ classname, t, uid, classes }) {
@@ -33,6 +33,15 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
 
         editClassTime(uid, classes, timeObject, classname);
         setEditing(false);
+    }
+
+    const deleteHandler = () => {
+        if(confirm(`Are you sure you want to delete this time?`)){
+            deleteTime(uid, classes, classname, id);
+        }
+        else{
+            return;
+        }
     }
 
     return (
@@ -115,6 +124,18 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
                     <Flex>
                     </Flex>
                     }
+                    <IconButton
+                        variant="ghost"
+                        colorScheme="red"
+                        aria-label="Send email"
+                        icon={<DeleteIcon />}
+                        size="md"
+                        _hover={{
+                            background: "red",
+                            color: "white"
+                        }}
+                        onClick={deleteHandler}
+                    />
                 </Flex>
             </Td>
         </Tr>

@@ -14,7 +14,7 @@ import TaskItem from './TaskItem';
 import PriorityBar from './PriorityBar';
 
 
-export default function Tasks({ taskList }) {
+export default function Tasks({ taskList, classList, uid }) {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -39,8 +39,7 @@ export default function Tasks({ taskList }) {
                 })}
             </List>
             
-
-            <TaskModal isOpen={isOpen} onClose={onClose} />
+            <TaskModal isOpen={isOpen} onClose={onClose} uid={uid} tasks={taskList} classes={classList} />
 
         </Box>
     )

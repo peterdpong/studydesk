@@ -85,7 +85,7 @@ const SingleClass = () => {
                 <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
             </Box>
 
-            <Box w="60%">
+            <Box w="60%" mb={10}>
                 <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Assignments</Heading>
