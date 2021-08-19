@@ -8,7 +8,17 @@ import {
     Editable, 
     EditableInput,
     EditablePreview,
-    Box
+    Box,
+    Button,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+    PopoverHeader,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverBody,
+    PopoverFooter,
+    ButtonGroup
 } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
 import { editClassTime, deleteTime } from '../../lib/writeTodb';
@@ -24,6 +34,8 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
     const [ type, setType ] = useState(t.type);
     const [ classroom, setClassroom ] = useState(t.classroom);
 
+    const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
+
     const submitHandler = () => {
         //check errors
 
@@ -36,12 +48,7 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
     }
 
     const deleteHandler = () => {
-        if(confirm(`Are you sure you want to delete this time?`)){
-            deleteTime(uid, classes, classname, id);
-        }
-        else{
-            return;
-        }
+        deleteTime(uid, classes, classname, id);
     }
 
     return (
@@ -124,18 +131,42 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
                     <Flex>
                     </Flex>
                     }
-                    <IconButton
-                        variant="ghost"
-                        colorScheme="red"
-                        aria-label="Send email"
-                        icon={<DeleteIcon />}
-                        size="md"
-                        _hover={{
-                            background: "red",
-                            color: "white"
-                        }}
-                        onClick={deleteHandler}
-                    />
+                    <Popover
+                        returnFocusOnClose={false}
+                        isOpen={isDeleteOpen}
+                        onClose={() => setIsDeleteOpen(false)}
+                        placement="right"
+                        closeOnBlur={false}
+                    >
+                        <PopoverTrigger>
+                            <IconButton
+                                variant="ghost"
+                                colorScheme="red"
+                                aria-label="Send email"
+                                icon={<DeleteIcon />}
+                                size="md"
+                                _hover={{
+                                    background: "red",
+                                    color: "white"
+                                }}
+                                onClick={() => setIsDeleteOpen(!isDeleteOpen)}
+                            />
+                        </PopoverTrigger>
+                        <PopoverContent>
+                        <PopoverHeader fontWeight="semibold">Confirmation</PopoverHeader>
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <PopoverBody>
+                            Are you sure you want to delete this class time?
+                        </PopoverBody>
+                        <PopoverFooter d="flex" justifyContent="flex-end">
+                            <ButtonGroup size="sm">
+                            <Button variant="outline" onClick={() => setIsDeleteOpen(false)}>Cancel</Button>
+                            <Button colorScheme="red" onClick={deleteHandler}>Delete</Button>
+                            </ButtonGroup>
+                        </PopoverFooter>
+                        </PopoverContent>
+                    </Popover>
                 </Flex>
             </Td>
         </Tr>
