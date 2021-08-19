@@ -11,17 +11,15 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon } from '@chakra-ui/icons';
 import { editAssignment } from '../../lib/writeTodb';
-import { useAuth } from '../../lib/auth';
 
 
-export default function AssignmentTableItem({ a, classname }) {
+export default function AssignmentTableItem({ a, classname, uid, classes }) {
 
     const [ editing, setEditing ] = useState(false);
     const id = a.id;
     const [ name, setName ] = useState(a.name);
     const [ dueDate, setDueDate ] = useState(a.dueDate);
     const [ weight, setWeight ] = useState(a.weight);
-    const { auth } = useAuth();
 
     const submitHandler = () => {
 
@@ -29,7 +27,7 @@ export default function AssignmentTableItem({ a, classname }) {
             id, name, dueDate, weight
         }
 
-        editAssignment(auth.uid, auth.classes, assignmentObject, classname);
+        editAssignment(uid, classes, assignmentObject, classname);
         setEditing(false);
     }
 
@@ -51,7 +49,7 @@ export default function AssignmentTableItem({ a, classname }) {
                     defaultValue={a.dueDate}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
-                    onChange={(e) => setName(e)}
+                    onChange={(e) => setDueDate(e)}
                     onSubmit={submitHandler}>
                     <EditablePreview />
                     <EditableInput type="date" />
@@ -63,7 +61,7 @@ export default function AssignmentTableItem({ a, classname }) {
                         defaultValue={a.weight}
                         onEdit={() => setEditing(true)}
                         onCancel={() => setEditing(false)}
-                        onChange={(e) => setName(e)}
+                        onChange={(e) => setWeight(e)}
                         onSubmit={submitHandler}>
                         <EditablePreview />
                         <EditableInput />

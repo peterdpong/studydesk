@@ -56,14 +56,6 @@ const SingleClass = () => {
 
   const currentClass = auth.classes.filter((c) => c.name === name);
   
-  const emptyTimeObject = {
-      id: Math.random(),
-      time: '',
-      day: '',
-      type: '',
-      classroom: ''
-  }
-
   return ( 
     <Box>
         <Navbar/>
@@ -75,10 +67,8 @@ const SingleClass = () => {
                 <Spacer/>
                     <Button mr={10} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
             </Flex>
-            
-            
-            <Heading>{name}</Heading>
 
+            <Heading>{name}</Heading>
             <Button mt={5}>View Syllabus</Button>
 
             <Box w="50%">
@@ -89,10 +79,10 @@ const SingleClass = () => {
                     <Spacer/>
                     <Box mt={3}>
                         <Button colorScheme="green" onClick={onTimeOpen}>Add</Button>
-                        <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} />
+                        <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} uid={auth.uid} classes={auth.classes}/>
                     </Box>
                 </Flex>
-                <ClassTimesTable times={currentClass[0].times} name={name}/>
+                <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
             </Box>
 
             <Box w="60%">
@@ -103,16 +93,15 @@ const SingleClass = () => {
                     <Spacer/>
                     <Box mt={3}>
                         <Button colorScheme="green" onClick={onAssignmentOpen}>Add</Button>
-                        <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name}/>
+                        <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name} uid={auth.uid} classes={auth.classes} />
                     </Box>
                 </Flex>
-                <AssignmentTable assignments={currentClass[0].assignments} name={name} />
+                <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
             </Box>
         </Box>
     </Box>
   );
 }
-
 
  
 export default SingleClass;

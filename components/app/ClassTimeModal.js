@@ -14,18 +14,15 @@ import {
     Input, 
     Select
 } from "@chakra-ui/react";
-import { useAuth } from '../../lib/auth';
 import { addClassTime } from '../../lib/writeTodb';
-//import firebase from '../../lib/firebase';
   
 
-export default function ClassTimeModal({ isOpen, onClose, name }) {
+export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) {
     const [ startTime, setStartTime ] = useState('');
     const [ endTime, setEndTime ] = useState('') ;
     const [ classDay, setClassDay ] = useState('');
     const [ classType, setClassType ] = useState('');
     const [ classroom, setClassroom ] = useState('');
-    const { auth } = useAuth();
 
     const resetVariables = () => {
         setStartTime('');
@@ -65,13 +62,14 @@ export default function ClassTimeModal({ isOpen, onClose, name }) {
 
         const classTimeObject = {
             id: Math.random(),
-            time: startTime + '-' + endTime,
+            startTime: startTime,
+            endTime: endTime,
             day: classDay,
             type: classType,
             classroom: classroom
         }
 
-        addClassTime(auth.uid, auth.classes, classTimeObject, name);
+        addClassTime(uid, classes, classTimeObject, name);
         resetVariables();
         onClose();
     }

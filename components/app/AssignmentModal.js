@@ -18,17 +18,14 @@ import {
     NumberDecrementStepper,
     Input
 } from "@chakra-ui/react";
-import { useAuth } from '../../lib/auth';
-//import firebase from '../../lib/firebase';
 import { addAssignment } from '../../lib/writeTodb';
   
 
-export default function AssignmentModal({ isOpen, onClose, name }) {
+export default function AssignmentModal({ isOpen, onClose, name, uid, classes }) {
 
     const [ assignmentName, setAssignmentName ] = useState('');
     const [ assignmentDate, setAssignmentDate ] = useState('');
     const [ assignmentWeight, setAssignmentWeight ] = useState(0);
-    const { auth } = useAuth();
 
     const resetVariables = () => {
         setAssignmentName('');
@@ -55,7 +52,7 @@ export default function AssignmentModal({ isOpen, onClose, name }) {
             assignmentObject.dueDate = 'N/A';
         }
 
-        addAssignment(auth.uid, auth.classes, assignmentObject, name);
+        addAssignment(uid, classes, assignmentObject, name);
         resetVariables();
         onClose();
     }

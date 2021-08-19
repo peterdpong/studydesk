@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Table,
     Thead,
@@ -9,7 +9,7 @@ import {
 import TimeTableItem from './TimeTableItem';
 
 
-export default function ClassTimesTable({ times, name }) {
+export default function ClassTimesTable({ times, name, uid, classes }) {
 
     return (
         <Table variant="simple">
@@ -22,11 +22,9 @@ export default function ClassTimesTable({ times, name }) {
                 </Tr>
             </Thead>
             <Tbody>
-                {times.map((t) => {       
-                    //const { isOpen, onOpen, onClose } = useDisclosure();  
-             
+                {times.map((t) => {
                     return(
-                        <TimeTableItem t={t} classname={name} key={t.id}/>
+                        <TimeTableItem t={t} classname={name} key={t.id} uid={uid} classes={classes} />
                     )
                 })}
             </Tbody>

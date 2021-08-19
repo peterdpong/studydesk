@@ -8,46 +8,59 @@ import {
     Editable, 
     EditableInput,
     EditablePreview,
+    Box
 } from "@chakra-ui/react";
 import { CheckIcon } from '@chakra-ui/icons';
-import { useAuth } from '../../lib/auth';
 import { editClassTime } from '../../lib/writeTodb';
 
 
-export default function TimeTableItem({ classname, t }) {
+export default function TimeTableItem({ classname, t, uid, classes }) {
 
     const [ editing, setEditing ] = useState(false);
     const id = t.id;
-    const [ time, setTime ] = useState(t.time);
+    const [ startTime, setStartTime ] = useState(t.startTime);
+    const [ endTime, setEndTime ] = useState(t.endTime);
     const [ day, setDay ] = useState(t.day);
     const [ type, setType ] = useState(t.type);
     const [ classroom, setClassroom ] = useState(t.classroom);
-
-    const { auth } = useAuth();
 
     const submitHandler = () => {
         //check errors
 
         const timeObject = {
-            id, time, day, type, classroom
+            id, startTime, endTime, day, type, classroom
         }
 
-        editClassTime(auth.uid, auth.classes, timeObject, classname);
+        editClassTime(uid, classes, timeObject, classname);
         setEditing(false);
     }
 
     return (
         <Tr>
             <Td>
+                <Flex>
                 <Editable 
-                    defaultValue={t.time}
+                    defaultValue={t.startTime}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
-                    onChange={(e) => setTime(e)}
+                    onChange={(e) => setStartTime(e)}
                     onSubmit={submitHandler}>
                     <EditablePreview />
-                    <EditableInput />
+                    <EditableInput type="time" />
                 </Editable>
+                <Box mt={0.5}>
+                -
+                </Box>
+                <Editable 
+                    defaultValue={t.endTime}
+                    onEdit={() => setEditing(true)}
+                    onCancel={() => setEditing(false)}
+                    onChange={(e) => setEndTime(e)}
+                    onSubmit={submitHandler}>
+                    <EditablePreview />
+                    <EditableInput type="time" />
+                </Editable>
+                </Flex>
             </Td>
             <Td>
                 <Editable 

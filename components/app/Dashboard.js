@@ -17,14 +17,16 @@ const classList = [
     name: "Example Class",
     times: [
       {
-        id: 1,
-        time: "9:00-10:00",
+        id: Math.random(),
+        startTime: "09:00",
+        endTime: "10:00",
         day: "Mon",
         type: "Lecture"
     }
     ],
     assignments: [
       {
+        id: Math.random(),
         name: "Example Assignment",
         dueDate: "2021-09-08",
         weight: 5
