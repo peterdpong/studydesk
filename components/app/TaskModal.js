@@ -12,7 +12,8 @@ import {
     FormControl,
     FormLabel,
     Input,
-    Select
+    Select,
+    Flex
 } from "@chakra-ui/react";
 import { addTask, editTask } from '../../lib/writeTodb';
 
