@@ -14,8 +14,35 @@ import {
     Input,
     Select
 } from "@chakra-ui/react";
-import { addTask } from '../../lib/writeTodb';
+import { addTask, editTask } from '../../lib/writeTodb';
 
+
+const priorityPicker = (priorityNumber) => {
+  let priority = 0;
+
+  switch (priorityNumber) {
+    case 1:
+      priority = 'Very High';
+      break;
+    case 2:
+      priority = 'High';
+      break;
+    case 3:
+      priority = 'Medium';
+      break;
+    case 4:
+      priority = 'Low';
+      break;
+    case 5:
+      priority = 'Very Low';
+      break;
+    default:
+      priority = 'Priority';
+      break;
+  }
+  
+  return priority;
+}
 
 const priorityNumberPicker = (priority) => {
   let number = 0;
@@ -45,12 +72,12 @@ const priorityNumberPicker = (priority) => {
 }
 
 
-export default function TaskModal({ isOpen, onClose, uid, tasks, classes }) {
+export default function TaskModal({ isOpen, onClose, uid, tasks, classes, isEdit, taskObject }) {
 
-  const [ name, setName ] = useState('');
-  const [ className, setClassName ] = useState('');
-  const [ dueDate, setDueDate ] = useState('');
-  const [ priority, setPriority ] = useState('');    
+  const [ name, setName ] = isEdit ? useState(taskObject.name) : useState('');
+  const [ className, setClassName ] = isEdit ? useState(taskObject.className) : useState('');
+  const [ dueDate, setDueDate ] = isEdit ? useState(taskObject.dueDate) : useState('');
+  const [ priority, setPriority ] = isEdit ? useState(priorityPicker(taskObject.priority)) : useState('');    
 
   const resetVariables = () => {
     setName('');
@@ -68,7 +95,7 @@ export default function TaskModal({ isOpen, onClose, uid, tasks, classes }) {
     }
 
     if(className.length === 0){
-      alert("Please enter a class name");
+      alert("Please select a class name");
       return;
     }
 
@@ -84,18 +111,24 @@ export default function TaskModal({ isOpen, onClose, uid, tasks, classes }) {
 
     const priorityNumber = priorityNumberPicker(priority);
 
-    const taskObject = {
-      id: Math.random(),
+    const newObject = {
       name,
       dueDate,
       className,
-      priority: priorityNumber,
-      checked: false
+      priority: priorityNumber
     }
 
-    const updatedTasks = tasks.concat(taskObject);
-    addTask(uid, updatedTasks);
-    resetVariables();
+    if(isEdit){
+      const editObject = {...newObject, id: taskObject.id, checked: taskObject.checked};
+      editTask(uid, tasks, taskObject.id, editObject);
+    }
+    else{
+      const addObject = {...newObject, id: Math.random(), checked: false};
+      const updatedTasks = tasks.concat(addObject);
+      addTask(uid, updatedTasks);
+      resetVariables();
+    }
+    
     onClose();
   }
 
@@ -103,17 +136,21 @@ export default function TaskModal({ isOpen, onClose, uid, tasks, classes }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-        <ModalHeader>Add Task</ModalHeader>
+        {isEdit ? 
+          <ModalHeader>Edit Task</ModalHeader>
+          :
+          <ModalHeader>Add Task</ModalHeader>
+        }
         <ModalCloseButton />
         <ModalBody>
           <FormControl id="assignment-name" isRequired>
             <FormLabel>Name</FormLabel>
-            <Input placeholder="Assignment name" onChange={(e) => setName(e.target.value)}/>
+            <Input placeholder="Assignment name" value={name} onChange={(e) => setName(e.target.value)}/>
           </FormControl>
 
           <FormControl id="assignment-class" isRequired>
             <FormLabel mt={5}>Class</FormLabel>
-            <Select placeholder="Select Class" onChange={(e) => setClassName(e.target.value)}>
+            <Select placeholder="Select class" value={className} onChange={(e) => setClassName(e.target.value)}>
               {classes.map((c) => {
                 return(
                   <option key={c.name}>{c.name}</option>
@@ -124,12 +161,12 @@ export default function TaskModal({ isOpen, onClose, uid, tasks, classes }) {
 
           <FormControl id="assignment-date" isRequired>
             <FormLabel mt={5}>Due Date</FormLabel>
-            <Input placeholder="Due Date" type="date" onChange={(e) => setDueDate(e.target.value)}/>
+            <Input placeholder="Due Date" value={dueDate} type="date" onChange={(e) => setDueDate(e.target.value)}/>
           </FormControl>
 
           <FormControl id="assignment-priority" isRequired>
             <FormLabel mt={5}>Priority</FormLabel>
-            <Select placeholder="Select priority" onChange={(e) => setPriority(e.target.value)}>
+            <Select placeholder="Select priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
               <option>Very High</option>
               <option>High</option>
               <option>Medium</option>
@@ -141,7 +178,11 @@ export default function TaskModal({ isOpen, onClose, uid, tasks, classes }) {
 
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={submitHandler}>
-          Submit
+          {isEdit ?
+          <Text>Save changes</Text>
+            :
+          <Text>Submit</Text>
+          }
           </Button>
           <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
           Close

@@ -5,8 +5,11 @@ import {
     Text, 
     ListItem,
     Checkbox,
+    Button,
+    useDisclosure
 } from "@chakra-ui/react";
-import { editTask } from '../../lib/writeTodb';
+import { toggleTask } from '../../lib/writeTodb';
+import TaskModal from './TaskModal';
 
 const priorityColor = (priority) => {
   let color = '';
@@ -55,30 +58,29 @@ const priorityColor = (priority) => {
       break; */
 
 
-export default function TaskItem({ task, uid, allTasks }) {
+export default function TaskItem({ task, uid, allTasks, allClasses }) {
 
   const [ boxChecked, setBoxChecked ] = useState(task.checked);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toggleHandler = (e) => {
     setBoxChecked(e.target.checked);
-    editTask(uid, allTasks, task.id);
+    toggleTask(uid, allTasks, task.id);
   }
-
-  //console.log(boxChecked);
 
   return (
     <ListItem>
-      <Checkbox size={'lg'} colorScheme={'green'} isChecked={boxChecked} onChange={toggleHandler}>
-        <Flex bg={priorityColor(task.priority)} direction={'column'} fontSize={15} borderRadius={10}>
-          <Box p={3}>
-            {boxChecked ?
-            <Text textDecorationLine="line-through" textDecorationColor="red"> {task.name} ({task.className}) - {task.dueDate.substring(5, 10).replace('-', '/')} </Text>
-              :
-            <Text> {task.name} ({task.className}) - {task.dueDate.substring(5, 10).replace('-', '/')} </Text>
-            }
-          </Box>
-        </Flex>
-      </Checkbox>
+      <Flex>
+        <Checkbox size={'lg'} colorScheme={'green'} isChecked={boxChecked} onChange={toggleHandler} />
+        <Button p={5} bg={priorityColor(task.priority)} fontSize={15} borderRadius={10} ml={2} fontWeight="medium" onClick={onOpen}>
+          {boxChecked ?
+          <Text textDecorationLine="line-through" textDecorationColor="black"> {task.name} ({task.className}) - {task.dueDate.substring(5, 10).replace('-', '/')} </Text>
+            :
+          <Text> {task.name} ({task.className}) - {task.dueDate.substring(5, 10).replace('-', '/')} </Text>
+          }
+        </Button>
+        <TaskModal isOpen={isOpen} onClose={onClose} uid={uid} tasks={allTasks} classes={allClasses} isEdit={true} taskObject={task} />
+      </Flex>
     </ListItem> 
   )
 }

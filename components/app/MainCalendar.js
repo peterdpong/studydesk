@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import {
     Box, 
-    Heading
+    Heading,
+    Text
 } from "@chakra-ui/react";
+import { findCalendarMatch } from '../../lib/writeTodb';
 
-export default function MainCalendar() {
+export default function MainCalendar({ uid, tasks, classes }) {
     const [value, setValue] = useState(new Date());
 
     function onChange(nextValue) {
@@ -15,9 +17,10 @@ export default function MainCalendar() {
             .toISOString()
             .substring(0, 10)
 
-        //run a for loop of assignments and tasks that match the date
-
         console.log('Show classes on:', dateString);
+        const { assignmentArray, taskArray } = findCalendarMatch(tasks, classes, dateString);
+        console.log('assignments:', assignmentArray);
+        console.log('tasks:', taskArray);
     }
 
     return (
@@ -29,7 +32,6 @@ export default function MainCalendar() {
                     value={value}
                 />
             </Box>
-            
         </Box>
     )
 }

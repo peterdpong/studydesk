@@ -34,12 +34,12 @@ export default function Tasks({ taskList, classList, uid }) {
             <List spacing={3} mt={3}>
                 {sortedList.map((task) => {
                     return(
-                        <TaskItem task={task} uid={uid} key={task.id} allTasks={taskList} />
+                        <TaskItem task={task} uid={uid} key={task.id} allTasks={taskList} allClasses={classList} />
                     );
                 })}
             </List>
             
-            <TaskModal isOpen={isOpen} onClose={onClose} uid={uid} tasks={taskList} classes={classList} />
+            <TaskModal isOpen={isOpen} onClose={onClose} uid={uid} tasks={taskList} classes={classList} isEdit={false} />
 
         </Box>
     )
