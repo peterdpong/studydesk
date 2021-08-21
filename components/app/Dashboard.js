@@ -28,6 +28,7 @@ const classList = [
       {
         id: Math.random(),
         name: "Example Assignment",
+        className: "Example Class",
         dueDate: "2021-09-08",
         weight: 5
       }
@@ -41,7 +42,7 @@ const taskList = [
     id: Math.random(),
     name: "Task1",
     dueDate: "2021-09-26",
-    className: "ECE302",
+    className: "Example Class",
     priority: 2,
     checked: false
   }

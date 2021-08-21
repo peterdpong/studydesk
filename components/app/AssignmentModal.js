@@ -44,6 +44,7 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
         const assignmentObject = {
             id: Math.random(),
             name: assignmentName,
+            className: name,
             dueDate: assignmentDate,
             weight: assignmentWeight
         }
