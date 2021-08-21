@@ -18,7 +18,7 @@ export default function App() {
   return (
     <div>
       <Navbar/>
-      <Dashboard user={auth}/>
+      <Dashboard auth={auth}/>
     </div>
   );
 }

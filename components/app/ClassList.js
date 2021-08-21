@@ -16,7 +16,7 @@ import ClassListModal from './ClassListModal';
 
 
 
-export default function Classes({ classList }) {
+export default function Classes({ classList, uid }) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -46,7 +46,7 @@ export default function Classes({ classList }) {
           })}
         </SimpleGrid>
 
-        <ClassListModal isOpen={isOpen} onClose={onClose}/>
+        <ClassListModal isOpen={isOpen} onClose={onClose} uid={uid} classes={classList} />
 
       </Box>
     )

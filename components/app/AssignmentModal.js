@@ -18,24 +18,19 @@ import {
     NumberDecrementStepper,
     Input
 } from "@chakra-ui/react";
+import { addAssignment } from '../../lib/writeTodb';
   
 
-export default function AssignmentModal({ isOpen, onClose }) {
+export default function AssignmentModal({ isOpen, onClose, name, uid, classes }) {
 
     const [ assignmentName, setAssignmentName ] = useState('');
     const [ assignmentDate, setAssignmentDate ] = useState('');
     const [ assignmentWeight, setAssignmentWeight ] = useState(0);
 
-    const nameHandler = (e) => {
-        setAssignmentName(e.target.value);
-    }
-
-    const dateHandler = (e) => {
-        setAssignmentDate(e.target.value);
-    }
-
-    const weightHandler = (e) => {
-        setAssignmentWeight(e);
+    const resetVariables = () => {
+        setAssignmentName('');
+        setAssignmentDate('');
+        setAssignmentWeight(0);
     }
 
     const submitHandler = (e) => {
@@ -47,6 +42,7 @@ export default function AssignmentModal({ isOpen, onClose }) {
         }
 
         const assignmentObject = {
+            id: Math.random(),
             name: assignmentName,
             dueDate: assignmentDate,
             weight: assignmentWeight
@@ -56,11 +52,8 @@ export default function AssignmentModal({ isOpen, onClose }) {
             assignmentObject.dueDate = 'N/A';
         }
 
-        //add to assignment list
-
-        setAssignmentName('');
-        setAssignmentDate('');
-        setAssignmentWeight(0);
+        addAssignment(uid, classes, assignmentObject, name);
+        resetVariables();
         onClose();
     }
 
@@ -73,17 +66,17 @@ export default function AssignmentModal({ isOpen, onClose }) {
             <ModalBody>
                 <FormControl id="assignment-name" isRequired>
                     <FormLabel>Name</FormLabel>
-                    <Input placeholder="Assignment name" onChange={nameHandler}/>
+                    <Input placeholder="Assignment name" onChange={(e) => setAssignmentName(e.target.value)}/>
                 </FormControl>
 
                 <FormControl id="assignment-date">
                     <FormLabel mt={5}>Due Date</FormLabel>
-                    <Input placeholder="Due Date" type="date" onChange={dateHandler}/>
+                    <Input placeholder="Due Date" type="date" onChange={(e) => setAssignmentDate(e.target.value)}/>
                 </FormControl>
                     
                 <FormControl id="assignment-weight">
                     <FormLabel mt={5}>Weight (%)</FormLabel>
-                    <NumberInput max={100} min={0} onChange={weightHandler}>
+                    <NumberInput max={100} min={0} onChange={(e) => setAssignmentWeight(e)}>
                         <NumberInputField />
                         <NumberInputStepper>
                             <NumberIncrementStepper />
@@ -95,10 +88,10 @@ export default function AssignmentModal({ isOpen, onClose }) {
 
             <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={submitHandler}>
-                Submit
+                    Submit
                 </Button>
                 <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
-                Close
+                    Close
                 </Button>
             </ModalFooter>
             </ModalContent>

@@ -14,7 +14,7 @@ import TaskItem from './TaskItem';
 import PriorityBar from './PriorityBar';
 
 
-export default function Tasks({ taskList }) {
+export default function Tasks({ taskList, classList, uid }) {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -34,13 +34,12 @@ export default function Tasks({ taskList }) {
             <List spacing={3} mt={3}>
                 {sortedList.map((task) => {
                     return(
-                        <TaskItem task={task} key={task.name}/>
+                        <TaskItem task={task} uid={uid} key={task.id} allTasks={taskList} allClasses={classList} />
                     );
                 })}
             </List>
             
-
-            <TaskModal isOpen={isOpen} onClose={onClose} />
+            <TaskModal isOpen={isOpen} onClose={onClose} uid={uid} tasks={taskList} classes={classList} isEdit={false} />
 
         </Box>
     )

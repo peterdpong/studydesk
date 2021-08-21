@@ -13,8 +13,9 @@ import {
     FormLabel,
     Input
 } from "@chakra-ui/react";
+import { addClass } from '../../lib/writeTodb';
 
-export default function ClassListModal({ isOpen, onClose }) {
+export default function ClassListModal({ isOpen, onClose, uid, classes }) {
 
     const [ name, setName ] = useState('');
 
@@ -32,12 +33,28 @@ export default function ClassListModal({ isOpen, onClose }) {
 
         const classObject = {
             name: name,
-            times: [],
-            assignments: []
+            times: [
+                {
+                    id: Math.random(),
+                    startTime: "09:00",
+                    endTime: "10:00",
+                    day: "Mon",
+                    type: "Lecture",
+                    classroom: "MH100"
+                }
+            ],
+            assignments: [
+                {
+                    id: Math.random(),
+                    name: "Example Assignment",
+                    dueDate: "2021-09-08",
+                    weight: 5
+                }
+            ]
         }
 
-        console.log('New Class: ', classObject.name);
-
+        const updatedClasses = classes.concat(classObject);
+        addClass(uid, updatedClasses);
         setName('');
         onClose();
     }

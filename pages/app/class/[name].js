@@ -13,92 +13,95 @@ import {
 } from "@chakra-ui/react";
 import AssignmentTable from "../../../components/app/AssignmentTable";
 import AssignmentModal from "../../../components/app/AssignmentModal";
+import ClassTimesTable from "../../../components/app/ClassTimesTable";
+import { useAuth } from '../../../lib/auth';
+import firebase from '../../../lib/firebase';
+import { FullPageLoading } from '../../../components/FullPageLoading';
+import ClassTimeModal from '../../../components/app/ClassTimeModal';
 
-
-const singleClass = {
-    name: "ECE302",
-    times: [
-        {
-            id: 1,
-            time: "9:00-10:00",
-            day: "Mon",
-            type: "Lecture"
-        },
-        {
-            id: 2,
-            time: "13:00-14:00",
-            day: "Wed",
-            type: "Tutorial"
-        },
-        {
-            id: 3,
-            time: "16:00-18:00",
-            day: "Thu",
-            type: "Practical"
-        },
-    ],
-    assignments: [
-        {
-            name: "Default",
-            dueDate: "09/16/2021",
-            weight: 10
-        },
-        {
-            name: "Default2",
-            dueDate: "09/16/2021",
-            weight: 20
-        }
-    ]
-}
 
 const SingleClass = () => {
   const router = useRouter();
   const { name } = router.query;
+  const { auth, loading } = useAuth();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
+  const { isOpen: isTimeOpen, onOpen: onTimeOpen, onClose: onTimeClose } = useDisclosure();  
 
+  const refToUsers = firebase.firestore().collection("users");
 
+  const deleteHandler = () => {
+    if(confirm(`Are you sure you want to delete this class?`)){
+        const updatedClasses = auth.classes.filter((c) => c.name !== name);
+        refToUsers
+            .doc(auth.uid)
+            .update({
+                classes: updatedClasses
+            })
+            .catch(
+                (err) => console.log(err)
+            )
+        router.push("/app/");
+    }
+    else{
+        return;
+    }
+  }
+
+  if(loading){
+    return(
+        <FullPageLoading/>
+      )
+  }
+
+  const currentClass = auth.classes.filter((c) => c.name === name);
+  
   return ( 
     <Box>
         <Navbar/>
         <Box ml={10}>
-            <Link href="/app/">
-                <Button mt={5} mb={5}>Back</Button>
-            </Link>
-            
-            <Heading>{name}</Heading>
+            <Flex mt={5} mb={5}>
+                <Link href="/app/">
+                    <Button>Back</Button>
+                </Link>
+                <Spacer/>
+                    <Button mr={10} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
+            </Flex>
 
+            <Heading>{name}</Heading>
             <Button mt={5}>View Syllabus</Button>
 
-            <Box mt={5}>
-                <Heading fontSize={20} p={2}>Class times</Heading>
-                {singleClass.times.map((t) => {
-                    return(
-                        <Box key={t.id}>
-                            <Text fontSize={18} ml={5}>{t.time} {t.day} - {t.type}</Text>
-                        </Box>
-                    )
-                })}
+            <Box w="50%">
+                <Flex mt={10}>
+                    <Box p="2">
+                        <Heading size="md">Class Times</Heading>
+                    </Box>
+                    <Spacer/>
+                    <Box mt={3}>
+                        <Button colorScheme="green" onClick={onTimeOpen}>Add</Button>
+                        <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} uid={auth.uid} classes={auth.classes}/>
+                    </Box>
+                </Flex>
+                <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
             </Box>
 
-            <Box w="70%">
-                <Flex mt={5}>
+            <Box w="60%" mb={10}>
+                <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Assignments</Heading>
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="teal" onClick={onOpen}>Add</Button>
-                        <AssignmentModal isOpen={isOpen} onClose={onClose}/>
+                        <Button colorScheme="green" onClick={onAssignmentOpen}>Add</Button>
+                        <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name} uid={auth.uid} classes={auth.classes} />
                     </Box>
                 </Flex>
-                <AssignmentTable assignments={singleClass.assignments} />
+                <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
             </Box>
         </Box>
     </Box>
   );
 }
-
 
  
 export default SingleClass;

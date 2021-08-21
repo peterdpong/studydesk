@@ -191,7 +191,7 @@ function useProvideAuth() {
 
       return () => unsubscribe();
     }
-  }, [])
+  }, [loading]);
 
   return {
     useRequiredAuth,

@@ -5,10 +5,10 @@ import {
     Tbody,
     Tr,
     Th,
-    Td
 } from "@chakra-ui/react";
+import AssignmentTableItem from './AssignmentTableItem';
 
-export default function AssignmentTable({assignments}) {
+export default function AssignmentTable({ assignments, name, uid, classes }) {
     return (
         <Table variant="simple">
             <Thead>
@@ -21,14 +21,28 @@ export default function AssignmentTable({assignments}) {
             <Tbody>
                 {assignments.map((a) => {
                     return(
-                        <Tr key={a.name}>
-                            <Td>{a.name}</Td>
-                            <Td>{a.dueDate}</Td>
-                            <Td>{a.weight}%</Td>
-                        </Tr>
+                        <AssignmentTableItem a={a} key={a.id} classname={name} uid={uid} classes={classes} />
                     )
                 })}
             </Tbody>
         </Table>
     )
 }
+
+/*<Button 
+    bgColor="white" 
+    onClick={() => console.log('click')}
+    p={0}
+    _hover={{
+        background: "blue.400"
+    }}>
+    <Icon 
+        color={'blue.400'} 
+        w={5} 
+        h={5} 
+        as={EditIcon}
+        _hover={{
+            color: "white"
+        }}
+    />
+</Button>*/
