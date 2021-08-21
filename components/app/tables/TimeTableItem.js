@@ -21,7 +21,7 @@ import {
     ButtonGroup
 } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
-import { editClassTime, deleteTime } from '../../lib/writeTodb';
+import { editClassTime, deleteTime } from '../../../lib/writeTodb';
 
 
 export default function TimeTableItem({ classname, t, uid, classes }) {

@@ -18,7 +18,7 @@ import {
     NumberDecrementStepper,
     Input
 } from "@chakra-ui/react";
-import { addAssignment } from '../../lib/writeTodb';
+import { addAssignment } from '../../../lib/writeTodb';
   
 
 export default function AssignmentModal({ isOpen, onClose, name, uid, classes }) {

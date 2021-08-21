@@ -20,7 +20,7 @@ import {
     ButtonGroup
 } from "@chakra-ui/react";
 import { toggleTask, deleteTask} from '../../lib/writeTodb';
-import TaskModal from './TaskModal';
+import TaskModal from './modals/TaskModal';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
 

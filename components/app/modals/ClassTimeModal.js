@@ -14,7 +14,7 @@ import {
     Input, 
     Select
 } from "@chakra-ui/react";
-import { addClassTime } from '../../lib/writeTodb';
+import { addClassTime } from '../../../lib/writeTodb';
   
 
 export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) {

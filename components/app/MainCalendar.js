@@ -7,11 +7,11 @@ import {
     useDisclosure
 } from "@chakra-ui/react";
 import { findCalendarMatch } from '../../lib/writeTodb';
-import CalendarModal from './CalendarModal';
+import CalendarModal from './modals/CalendarModal';
 
 
 const sortByTime = (times) => {
-    times.sort(function (a, b) {
+    times.sort((a, b) => {
         return a.startTime.localeCompare(b.startTime);
     });
 

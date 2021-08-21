@@ -20,7 +20,7 @@ import {
     ButtonGroup
 } from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
-import { editAssignment, deleteAssignment } from '../../lib/writeTodb';
+import { editAssignment, deleteAssignment } from '../../../lib/writeTodb';
 
 
 export default function AssignmentTableItem({ a, classname, uid, classes }) {

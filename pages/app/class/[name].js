@@ -11,12 +11,12 @@ import {
     Text,
     useDisclosure
 } from "@chakra-ui/react";
-import AssignmentTable from "../../../components/app/AssignmentTable";
-import AssignmentModal from "../../../components/app/AssignmentModal";
-import ClassTimesTable from "../../../components/app/ClassTimesTable";
+import AssignmentTable from "../../../components/app/tables/AssignmentTable";
+import AssignmentModal from "../../../components/app/modals/AssignmentModal";
+import ClassTimesTable from "../../../components/app/tables/ClassTimesTable";
 import { useAuth } from '../../../lib/auth';
 import { FullPageLoading } from '../../../components/FullPageLoading';
-import ClassTimeModal from '../../../components/app/ClassTimeModal';
+import ClassTimeModal from '../../../components/app/modals/ClassTimeModal';
 import { deleteClass } from '../../../lib/writeTodb';
 
 

@@ -3,13 +3,12 @@ import {
     Box, 
     Button,
     Flex, 
-    Text, 
     List,
     Spacer,
     useDisclosure,
     Heading,
 } from "@chakra-ui/react";
-import TaskModal from './TaskModal';
+import TaskModal from './modals/TaskModal';
 import TaskItem from './TaskItem';
 import PriorityBar from './PriorityBar';
 

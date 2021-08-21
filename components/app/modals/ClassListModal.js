@@ -7,13 +7,12 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    Text,
     Button,
     FormControl,
     FormLabel,
     Input
 } from "@chakra-ui/react";
-import { addClass } from '../../lib/writeTodb';
+import { addClass } from '../../../lib/writeTodb';
 
 export default function ClassListModal({ isOpen, onClose, uid, classes }) {
 

@@ -12,8 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
-import ClassListModal from './ClassListModal';
-
+import ClassListModal from './modals/ClassListModal';
 
 
 export default function Classes({ classList, uid }) {
