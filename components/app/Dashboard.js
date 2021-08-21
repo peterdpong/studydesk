@@ -16,10 +16,12 @@ const classList = [
     times: [
       {
         id: Math.random(),
+        className: "Example Class",
         startTime: "09:00",
         endTime: "10:00",
         day: "Mon",
-        type: "Lecture"
+        type: "Lecture",
+        classroom: "Example Classroom"
     }
     ],
     assignments: [
@@ -33,7 +35,6 @@ const classList = [
   }
 ]
 
-//get classes using user id
 
 const taskList = [
   { 
@@ -42,38 +43,6 @@ const taskList = [
     dueDate: "2021-09-26",
     className: "ECE302",
     priority: 2,
-    checked: false
-  },
-  {
-    id: Math.random(),
-    name: "Task2",
-    dueDate: "2021-09-26",
-    className: "ECE345",
-    priority: 3,
-    checked: true
-  },
-  {
-    id: Math.random(),
-    name: "Task3",
-    dueDate: "2021-09-26",
-    className: "ECE344",
-    priority: 1,
-    checked: false
-  },
-  {
-    id: Math.random(),
-    name: "Task4",
-    dueDate: "2021-09-26",
-    className: "ECE345",
-    priority: 4,
-    checked: true
-  },
-  {
-    id: Math.random(),
-    name: "Task5",
-    dueDate: "2021-09-26",
-    className: "ECE344",
-    priority: 5,
     checked: false
   }
 ]

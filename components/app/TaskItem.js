@@ -105,7 +105,7 @@ export default function TaskItem({ task, uid, allTasks, allClasses }) {
           isOpen={isModOpen}
           onClose={() => setIsModOpen(false)}
           placement="bottom"
-          closeOnBlur={false}
+          closeOnBlur={true}
           matchWidth={true}
         >
           <PopoverTrigger>

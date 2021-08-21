@@ -40,7 +40,7 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
         //check errors
 
         const timeObject = {
-            id, startTime, endTime, day, type, classroom
+            id, startTime, endTime, day, type, classroom, className: classname
         }
 
         editClassTime(uid, classes, timeObject, classname);

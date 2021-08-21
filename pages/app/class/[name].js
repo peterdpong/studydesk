@@ -15,9 +15,9 @@ import AssignmentTable from "../../../components/app/AssignmentTable";
 import AssignmentModal from "../../../components/app/AssignmentModal";
 import ClassTimesTable from "../../../components/app/ClassTimesTable";
 import { useAuth } from '../../../lib/auth';
-import firebase from '../../../lib/firebase';
 import { FullPageLoading } from '../../../components/FullPageLoading';
 import ClassTimeModal from '../../../components/app/ClassTimeModal';
+import { deleteClass } from '../../../lib/writeTodb';
 
 
 const SingleClass = () => {
@@ -28,19 +28,9 @@ const SingleClass = () => {
   const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
   const { isOpen: isTimeOpen, onOpen: onTimeOpen, onClose: onTimeClose } = useDisclosure();  
 
-  const refToUsers = firebase.firestore().collection("users");
-
   const deleteHandler = () => {
     if(confirm(`Are you sure you want to delete this class?`)){
-        const updatedClasses = auth.classes.filter((c) => c.name !== name);
-        refToUsers
-            .doc(auth.uid)
-            .update({
-                classes: updatedClasses
-            })
-            .catch(
-                (err) => console.log(err)
-            )
+        deleteClass(auth.uid, auth.classes, name);
         router.push("/app/");
     }
     else{

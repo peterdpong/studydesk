@@ -62,6 +62,7 @@ export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) 
 
         const classTimeObject = {
             id: Math.random(),
+            className: name,
             startTime: startTime,
             endTime: endTime,
             day: classDay,
