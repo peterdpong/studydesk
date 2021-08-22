@@ -36,11 +36,11 @@ export default function AssignmentTableItem({ a, classname, uid, classes }) {
 
     const submitHandler = () => {
 
+        //check for error
+        
         const assignmentObject = {
             id, name, dueDate, weight, grade
         }
-
-        console.log(typeof assignmentObject.grade);
 
         editAssignment(uid, classes, assignmentObject, classname);
         setEditing(false);

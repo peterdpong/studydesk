@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Navbar from "../../../components/app/navbar";
@@ -9,7 +9,8 @@ import {
     Spacer,
     Flex,
     Text,
-    useDisclosure
+    useDisclosure,
+    Center
 } from "@chakra-ui/react";
 import AssignmentTable from "../../../components/app/tables/AssignmentTable";
 import AssignmentModal from "../../../components/app/modals/AssignmentModal";
@@ -17,6 +18,7 @@ import ClassTimesTable from "../../../components/app/tables/ClassTimesTable";
 import { useAuth } from '../../../lib/auth';
 import { FullPageLoading } from '../../../components/FullPageLoading';
 import ClassTimeModal from '../../../components/app/modals/ClassTimeModal';
+import GradeModal from '../../../components/app/modals/GradeModal';
 import { deleteClass } from '../../../lib/writeTodb';
 
 
@@ -27,6 +29,7 @@ const SingleClass = () => {
 
   const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
   const { isOpen: isTimeOpen, onOpen: onTimeOpen, onClose: onTimeClose } = useDisclosure();  
+  const { isOpen: isGradeOpen, onOpen: onGradeOpen, onClose: onGradeClose } = useDisclosure();
 
   const deleteHandler = () => {
     if(confirm(`Are you sure you want to delete this class?`)){
@@ -60,9 +63,8 @@ const SingleClass = () => {
 
             <Heading>{name}</Heading>
 
-            <Flex mt={5}>
+            <Flex mt={5} align="center">
                 <Button>View Syllabus</Button>
-                <Button ml={5}>Calculate Grade</Button>
             </Flex>
             
 
@@ -92,6 +94,10 @@ const SingleClass = () => {
                     </Box>
                 </Flex>
                 <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
+                <Center>
+                    <Button mt={5} colorScheme="red" onClick={onGradeOpen}>Calculate Grade</Button>
+                    <GradeModal isOpen={isGradeOpen} onClose={onGradeClose} assignments={currentClass[0].assignments} />
+                </Center>
             </Box>
         </Box>
     </Box>
