@@ -30,7 +30,8 @@ const classList = [
         name: "Example Assignment",
         className: "Example Class",
         dueDate: "2021-09-08",
-        weight: 5
+        weight: 5,
+        grade: 80
       }
     ]
   }

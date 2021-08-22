@@ -30,14 +30,17 @@ export default function AssignmentTableItem({ a, classname, uid, classes }) {
     const [ name, setName ] = useState(a.name);
     const [ dueDate, setDueDate ] = useState(a.dueDate);
     const [ weight, setWeight ] = useState(a.weight);
+    const [ grade, setGrade ] = useState(a.grade);
 
     const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
 
     const submitHandler = () => {
 
         const assignmentObject = {
-            id, name, dueDate, weight
+            id, name, dueDate, weight, grade
         }
+
+        console.log(typeof assignmentObject.grade);
 
         editAssignment(uid, classes, assignmentObject, classname);
         setEditing(false);
@@ -80,7 +83,21 @@ export default function AssignmentTableItem({ a, classname, uid, classes }) {
                         onChange={(e) => setWeight(e)}
                         onSubmit={submitHandler}>
                         <EditablePreview />
-                        <EditableInput />
+                        <EditableInput type="number" />
+                    </Editable>
+                    %
+                </Flex>
+            </Td>
+            <Td>
+                <Flex align="center">
+                    <Editable 
+                        defaultValue={a.grade}
+                        onEdit={() => setEditing(true)}
+                        onCancel={() => setEditing(false)}
+                        onChange={(e) => setGrade(e)}
+                        onSubmit={submitHandler}>
+                        <EditablePreview />
+                        <EditableInput type="number" />
                     </Editable>
                     %
                     <Spacer/>

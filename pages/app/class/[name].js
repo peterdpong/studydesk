@@ -59,7 +59,12 @@ const SingleClass = () => {
             </Flex>
 
             <Heading>{name}</Heading>
-            <Button mt={5}>View Syllabus</Button>
+
+            <Flex mt={5}>
+                <Button>View Syllabus</Button>
+                <Button ml={5}>Calculate Grade</Button>
+            </Flex>
+            
 
             <Box w="50%">
                 <Flex mt={10}>

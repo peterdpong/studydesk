@@ -46,7 +46,8 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
             name: assignmentName,
             className: name,
             dueDate: assignmentDate,
-            weight: assignmentWeight
+            weight: assignmentWeight,
+            grade: 80
         }
 
         if(assignmentDate.length === 0){

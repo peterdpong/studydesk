@@ -16,6 +16,7 @@ export default function AssignmentTable({ assignments, name, uid, classes }) {
                     <Th>Name</Th>
                     <Th>Due Date</Th>
                     <Th>Weight</Th>
+                    <Th>Grade Received</Th>
                 </Tr>
             </Thead>
             <Tbody>
@@ -28,21 +29,3 @@ export default function AssignmentTable({ assignments, name, uid, classes }) {
         </Table>
     )
 }
-
-/*<Button 
-    bgColor="white" 
-    onClick={() => console.log('click')}
-    p={0}
-    _hover={{
-        background: "blue.400"
-    }}>
-    <Icon 
-        color={'blue.400'} 
-        w={5} 
-        h={5} 
-        as={EditIcon}
-        _hover={{
-            color: "white"
-        }}
-    />
-</Button>*/
