@@ -36,8 +36,11 @@ import {
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import { WiStars } from 'react-icons/wi';
 import { useAuth } from '../../lib/auth';
+import { useRouter } from 'next/router';
+
 
 export default function Navbar() {
+  const router = useRouter();
   const { signOut } = useAuth();
   const { isOpen, onToggle } = useDisclosure();
   const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
@@ -106,7 +109,7 @@ export default function Navbar() {
                   </Center>
               </MenuButton>
               <MenuList>
-                <MenuItem>Settings</MenuItem>
+                <MenuItem onClick={() => router.push('/app/settings')}>Settings</MenuItem>
                 <MenuItem onClick={signOut}>Log out</MenuItem>
               </MenuList>
             </Menu>
