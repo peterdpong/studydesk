@@ -47,7 +47,8 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
                     id: Math.random(),
                     name: "Example Assignment",
                     dueDate: "2021-09-08",
-                    weight: 5
+                    weight: 5,
+                    grade: 80
                 }
             ]
         }

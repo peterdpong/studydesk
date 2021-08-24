@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import {
     Box,
@@ -9,20 +9,56 @@ import {
     FormControl,
     Input,
     FormLabel,
-    Center
 } from '@chakra-ui/react';
 import Navbar from '../../../components/app/navbar';
 import { useAuth } from '../../../lib/auth';
 import { FullPageLoading } from '../../../components/FullPageLoading';
+import { updateUserProfile } from '../../../lib/writeTodb';
 
 export default function settings() {
     const router = useRouter();
     const { auth, loading } = useAuth();
-
+    
     if(loading){
         return(
             <FullPageLoading/>
         )
+    }
+
+
+    const [ username, setUsername ] = useState(auth.firstName + ' ' + auth.lastName);
+    const [ school, setSchool ] = useState(auth.school);
+    const [ email, setEmail ] = useState(auth.email);
+
+
+    const updateProfile = () => {
+        
+        let emailChange = false;
+
+        if(username.length === 0){
+            alert('Please enter a username');
+            return;
+        }
+
+        if(school.length === 0){
+            alert('Please enter a school');
+            return;
+        }
+
+        if(email.length === 0){
+            alert('Please enter an email');
+            return;
+        }
+
+        if(email !== auth.email){
+            emailChange = true;
+        }
+
+        const profileObject = {
+            username, school, email, emailChange
+        }
+
+        updateUserProfile(auth.uid, profileObject);
     }
 
     return (
@@ -36,27 +72,27 @@ export default function settings() {
                 <FormControl id="username">
                     <Flex justifyContent="flex-end">
                         <FormLabel alignSelf="center" mt={2} mr={5}>Username</FormLabel>
-                        <Input value={auth.firstName + ' ' + auth.lastName} w="70%" />
+                        <Input value={username} w="70%" onChange={(e) => setUsername(e.target.value)} />
                     </Flex>
                 </FormControl>
 
                 <FormControl id="school" mt={8}>
                     <Flex justifyContent="flex-end">
                         <FormLabel alignSelf="center" mt={2} mr={5}>School</FormLabel>
-                        <Input value={auth.school} w="70%" />
+                        <Input value={school} w="70%" onChange={(e) => setSchool(e.target.value)} />
                     </Flex>
                 </FormControl>
 
                 <FormControl id="email" mt={8}>
                     <Flex justifyContent="flex-end">
                         <FormLabel alignSelf="center" mt={2} mr={5}>Email</FormLabel>
-                        <Input value={auth.email} w="70%" />
+                        <Input value={email} w="70%" onChange={(e) => setEmail(e.target.value)} />
                     </Flex>
                 </FormControl>
             </Box>
             <Flex mt={10} ml="37%" flexDirection="row">
-                <Button alignSelf="center" colorScheme="blue">Update Profile</Button>
-                <Button alignSelf="center" colorScheme="red" ml={5}>Change Password</Button>
+                <Button alignSelf="center" variant="outline" colorScheme="blue" onClick={updateProfile}>Update Profile</Button>
+                <Button alignSelf="center" variant="outline" colorScheme="red" onClick={() => console.log('change')} ml={5}>Change Password</Button>
             </Flex>
         </Box>
     )
