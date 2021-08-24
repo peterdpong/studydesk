@@ -39,7 +39,8 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
                     endTime: "10:00",
                     day: "Mon",
                     type: "Lecture",
-                    classroom: "MH100"
+                    classroom: "MH100",
+                    className: name
                 }
             ],
             assignments: [

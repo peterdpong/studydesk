@@ -9,11 +9,13 @@ import {
     FormControl,
     Input,
     FormLabel,
+    useDisclosure
 } from '@chakra-ui/react';
 import Navbar from '../../../components/app/navbar';
 import { useAuth } from '../../../lib/auth';
 import { FullPageLoading } from '../../../components/FullPageLoading';
 import { updateUserProfile } from '../../../lib/writeTodb';
+import PasswordModal from '../../../components/app/modals/PasswordModal';
 
 export default function settings() {
     const router = useRouter();
@@ -25,11 +27,13 @@ export default function settings() {
         )
     }
 
+    console.log(auth);
 
     const [ username, setUsername ] = useState(auth.firstName + ' ' + auth.lastName);
     const [ school, setSchool ] = useState(auth.school);
     const [ email, setEmail ] = useState(auth.email);
 
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const updateProfile = () => {
         
@@ -92,7 +96,8 @@ export default function settings() {
             </Box>
             <Flex mt={10} ml="37%" flexDirection="row">
                 <Button alignSelf="center" variant="outline" colorScheme="blue" onClick={updateProfile}>Update Profile</Button>
-                <Button alignSelf="center" variant="outline" colorScheme="red" onClick={() => console.log('change')} ml={5}>Change Password</Button>
+                <Button alignSelf="center" variant="outline" colorScheme="red" onClick={onOpen} ml={5}>Change Password</Button>
+                <PasswordModal isOpen={isOpen} onClose={onClose} />
             </Flex>
         </Box>
     )
