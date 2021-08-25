@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
     Box,
@@ -20,20 +20,26 @@ import PasswordModal from '../../../components/app/modals/PasswordModal';
 export default function settings() {
     const router = useRouter();
     const { auth, loading } = useAuth();
+
+    const [ username, setUsername ] = useState('');
+    const [ school, setSchool ] = useState('');
+    const [ email, setEmail ] = useState('');
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    useEffect(() => {
+        if(auth){
+            setUsername(auth.firstName + ' ' + auth.lastName);
+            setSchool(auth.school);
+            setEmail(auth.email);
+        }
+    }, [auth])
     
     if(loading){
         return(
             <FullPageLoading/>
         )
     }
-
-    console.log(auth);
-
-    const [ username, setUsername ] = useState(auth.firstName + ' ' + auth.lastName);
-    const [ school, setSchool ] = useState(auth.school);
-    const [ email, setEmail ] = useState(auth.email);
-
-    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const updateProfile = () => {
         
