@@ -22,11 +22,13 @@ export default function Tasks({ taskList, classList, uid }) {
 
     return (
         <Box>
-            <Flex align="center">
+            <Box align="center" display={{md: "flex"}}>
                 <Heading>Tasks</Heading>
                 <Spacer/>
-                <Button colorScheme="green" size="sm" mr="12%" onClick={onOpen}>Add Task</Button>
-            </Flex>
+                <Box align="right" mr={{md: "12%"}} mt={2}>
+                    <Button colorScheme="green" size="sm" onClick={onOpen}>Add Task</Button>
+                </Box>
+            </Box>
 
             <PriorityBar/>
             
@@ -43,3 +45,9 @@ export default function Tasks({ taskList, classList, uid }) {
         </Box>
     )
 }
+
+/*<Flex align="center">
+                <Heading>Tasks</Heading>
+                <Spacer/>
+                <Button colorScheme="green" size="sm" mr="12%" onClick={onOpen}>Add Task</Button>
+            </Flex> */

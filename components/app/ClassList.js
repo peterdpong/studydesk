@@ -23,13 +23,15 @@ export default function Classes({ classList, uid }) {
   
     return (
       <Box>
-        <Flex align="center" pb={5}>
-          <Heading>
-              Classes
+        <Box display={{md: "flex"}} pb={5}>
+          <Heading textAlign={{base: "center"}}>
+            Classes
           </Heading>
           <Spacer/>
-          <Button colorScheme="green" size={buttonSize} onClick={onOpen} rightIcon={<AddIcon/>}>New class</Button>
-        </Flex>
+          <Box align="right" mt={{md: "0", base: "3"}}>
+            <Button colorScheme="green" size={buttonSize} onClick={onOpen} rightIcon={<AddIcon/>}>New class</Button>
+          </Box>
+        </Box> 
 
         <SimpleGrid minChildWidth={{base: 100, md: 200}} spacing="4" justifyItems="center">
           {classList.map((c) => {

@@ -24,6 +24,7 @@ export default function settings() {
     const [ username, setUsername ] = useState('');
     const [ school, setSchool ] = useState('');
     const [ email, setEmail ] = useState('');
+    const [ error, setError ] = useState('');
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -68,17 +69,17 @@ export default function settings() {
             username, school, email, emailChange
         }
 
-        updateUserProfile(auth.uid, profileObject);
+        const response = updateUserProfile(auth.uid, profileObject);
     }
 
     return (
         <Box>
             <Navbar/>
             <Heading textAlign="center" mt={4}>Settings</Heading>
-            <Button onClick={() => router.push('/app')} ml={10} mt={4} colorScheme="teal">
-                Back to dashboard
+            <Button onClick={() => router.push('/app')} ml={{md: 10, base: 4}} mt={4} colorScheme="teal">
+                Back
             </Button>
-            <Box w="40%" ml="25%" mt={8}>
+            <Box w={{md: "40%", base: "95%"}} ml={{md: "25%", base: "0%"}} mt={8}>
                 <FormControl id="username">
                     <Flex justifyContent="flex-end">
                         <FormLabel alignSelf="center" mt={2} mr={5}>Username</FormLabel>
@@ -100,11 +101,12 @@ export default function settings() {
                     </Flex>
                 </FormControl>
             </Box>
-            <Flex mt={10} ml="37%" flexDirection="row">
+            <Flex mt={10} ml={{md: "37%", base: "5%"}} flexDirection="row">
                 <Button alignSelf="center" variant="outline" colorScheme="blue" onClick={updateProfile}>Update Profile</Button>
                 <Button alignSelf="center" variant="outline" colorScheme="red" onClick={onOpen} ml={5}>Change Password</Button>
                 <PasswordModal isOpen={isOpen} onClose={onClose} />
             </Flex>
+            <Text textAlign="center">{error}</Text>
         </Box>
     )
 }

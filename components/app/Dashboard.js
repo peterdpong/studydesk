@@ -82,7 +82,9 @@ export default function Classes({ auth }) {
 
       <Box w={{base: "100%", md: "35%"}} p={10}>
         <Tasks taskList={auth.tasks} classList={auth.classes} uid={auth.uid}/>
-        <MainCalendar uid={auth.uid} tasks={auth.tasks} classes={auth.classes} />
+        <Box mt={50}>
+          <MainCalendar uid={auth.uid} tasks={auth.tasks} classes={auth.classes}/>
+        </Box>
       </Box>
     </Flex>
   )

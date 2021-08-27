@@ -22,6 +22,7 @@ import GradeModal from '../../../components/app/modals/GradeModal';
 import { deleteClass } from '../../../lib/writeTodb';
 
 
+
 const SingleClass = () => {
   const router = useRouter();
   const { name } = router.query;
@@ -58,7 +59,7 @@ const SingleClass = () => {
                     <Button>Back</Button>
                 </Link>
                 <Spacer/>
-                    <Button mr={10} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
+                    <Button mr={{base: 0, md: 10}} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
             </Flex>
 
             <Heading>{name}</Heading>
@@ -68,7 +69,7 @@ const SingleClass = () => {
             </Flex>
             
 
-            <Box w="50%">
+            <Box w={{md: "50%", sm: "70%", base: "100%"}}>
                 <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Class Times</Heading>
@@ -79,10 +80,12 @@ const SingleClass = () => {
                         <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} uid={auth.uid} classes={auth.classes}/>
                     </Box>
                 </Flex>
-                <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
+                <Box overflowX={{base: "auto", sm: "initial"}}>
+                    <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
+                </Box>
             </Box>
 
-            <Box w="60%" mb={10}>
+            <Box w={{md: "60%", sm: "80%"}} mb={10}>
                 <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Assignments</Heading>
@@ -93,7 +96,9 @@ const SingleClass = () => {
                         <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name} uid={auth.uid} classes={auth.classes} />
                     </Box>
                 </Flex>
-                <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
+                <Box overflowX="auto">
+                    <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
+                </Box>
                 <Center>
                     <Button mt={5} colorScheme="red" onClick={onGradeOpen}>Calculate Grade</Button>
                     <GradeModal isOpen={isGradeOpen} onClose={onGradeClose} assignments={currentClass[0].assignments} />
