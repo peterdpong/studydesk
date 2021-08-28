@@ -15,16 +15,18 @@ import Navbar from '../../../components/app/navbar';
 import { useAuth } from '../../../lib/auth';
 import { FullPageLoading } from '../../../components/FullPageLoading';
 import { updateUserProfile } from '../../../lib/writeTodb';
-import PasswordModal from '../../../components/app/modals/PasswordModal';
+import EmailPasswordModal from '../../../components/app/modals/EmailPasswordModal';
 
 export default function settings() {
     const router = useRouter();
-    const { auth, loading } = useAuth();
+    const { signinWithEmailAndPassword, signinWithGoogle, auth, loading } = useAuth();
 
     const [ username, setUsername ] = useState('');
     const [ school, setSchool ] = useState('');
     const [ email, setEmail ] = useState('');
-    const [ error, setError ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ error, setError ] = useState(null);
+    const [ authenticated, setAuthenticated ] = useState(false);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -42,34 +44,51 @@ export default function settings() {
         )
     }
 
-    const updateProfile = () => {
+    const updateProfile = async (emailOnly) => {
         
         let emailChange = false;
 
-        if(username.length === 0){
-            alert('Please enter a username');
-            return;
-        }
+        if(authenticated){
+            if(email.length === 0){
+                alert('Please enter an email');
+                return;
+            }
+            
+            if(!emailOnly && password.length === 0){
+                alert('Please enter a password');
+                return;
+            }
 
-        if(school.length === 0){
-            alert('Please enter a school');
-            return;
-        }
-
-        if(email.length === 0){
-            alert('Please enter an email');
-            return;
-        }
-
-        if(email !== auth.email){
             emailChange = true;
+        }
+        else{
+            if(username.length === 0){
+                alert('Please enter a username');
+                return;
+            }
+
+            if(school.length === 0){
+                alert('Please enter a school');
+                return;
+            }
         }
 
         const profileObject = {
-            username, school, email, emailChange
+            username, school, email, password, emailChange, emailOnly
         }
 
-        const response = updateUserProfile(auth.uid, profileObject);
+        const response = await updateUserProfile(auth.uid, profileObject);
+
+        if(authenticated){
+            if(response === 'No error'){
+                setAuthenticated(false);
+                setPassword('');
+                setError('');
+            }
+            else{
+                setError(response);
+            }
+        }
     }
 
     return (
@@ -80,33 +99,59 @@ export default function settings() {
                 Back
             </Button>
             <Box w={{md: "40%", base: "95%"}} ml={{md: "25%", base: "0%"}} mt={8}>
-                <FormControl id="username">
-                    <Flex justifyContent="flex-end">
-                        <FormLabel alignSelf="center" mt={2} mr={5}>Username</FormLabel>
-                        <Input value={username} w="70%" onChange={(e) => setUsername(e.target.value)} />
-                    </Flex>
-                </FormControl>
-
-                <FormControl id="school" mt={8}>
-                    <Flex justifyContent="flex-end">
-                        <FormLabel alignSelf="center" mt={2} mr={5}>School</FormLabel>
-                        <Input value={school} w="70%" onChange={(e) => setSchool(e.target.value)} />
-                    </Flex>
-                </FormControl>
-
-                <FormControl id="email" mt={8}>
+                {authenticated ? 
+                <Box>
+                    <FormControl id="email" mt={8}>
                     <Flex justifyContent="flex-end">
                         <FormLabel alignSelf="center" mt={2} mr={5}>Email</FormLabel>
                         <Input value={email} w="70%" onChange={(e) => setEmail(e.target.value)} />
                     </Flex>
-                </FormControl>
+                    </FormControl>
+                    <FormControl id="password" mt={8}>
+                        <Flex justifyContent="flex-end">
+                            <FormLabel alignSelf="center" mt={2} mr={5}>Password</FormLabel>
+                            <Input value={password} w="70%" type="password" onChange={(e) => setPassword(e.target.value)} />
+                        </Flex>
+                    </FormControl>
+                </Box>
+                :
+                <Box>
+                    <FormControl id="username">
+                        <Flex justifyContent="flex-end">
+                            <FormLabel alignSelf="center" mt={2} mr={5}>Username</FormLabel>
+                            <Input value={username} w="70%" onChange={(e) => setUsername(e.target.value)} />
+                        </Flex>
+                    </FormControl>
+
+                    <FormControl id="school" mt={8}>
+                        <Flex justifyContent="flex-end">
+                            <FormLabel alignSelf="center" mt={2} mr={5}>School</FormLabel>
+                            <Input value={school} w="70%" onChange={(e) => setSchool(e.target.value)} />
+                        </Flex>
+                    </FormControl>
+                    <Box mt={8} textAlign="center" ml={{md: "30%", base: "5%"}}>
+                        <Text fontSize={15}>Please click the Authenticate Button below to modify your email or password</Text>
+                    </Box>
+                </Box>
+                }
             </Box>
-            <Flex mt={10} ml={{md: "37%", base: "5%"}} flexDirection="row">
-                <Button alignSelf="center" variant="outline" colorScheme="blue" onClick={updateProfile}>Update Profile</Button>
-                <Button alignSelf="center" variant="outline" colorScheme="red" onClick={onOpen} ml={5}>Change Password</Button>
-                <PasswordModal isOpen={isOpen} onClose={onClose} />
+
+            <Flex mt={10} justifyContent="center" flexDirection="row">
+                {!authenticated ?
+                <Flex>
+                    <Button alignSelf="center" variant="outline" colorScheme="blue" onClick={() => updateProfile(false)}>Update Profile</Button>
+                    <Button alignSelf="center" variant="outline" colorScheme="red" onClick={onOpen} ml={5}>Authenticate</Button>
+                </Flex>
+                :
+                <Flex>
+                    <Button alignSelf="center" variant="outline" colorScheme="blue" onClick={() => updateProfile(true)}>Change Email Only</Button>
+                    <Button alignSelf="center" variant="outline" colorScheme="red" onClick={() => updateProfile(false)} ml={5}>Update Both</Button>
+                </Flex>
+                }
+                <EmailPasswordModal isOpen={isOpen} onClose={onClose} setAuthenticated={setAuthenticated} emailPassword={signinWithEmailAndPassword} google={signinWithGoogle} setError={setError} />
             </Flex>
-            <Text textAlign="center">{error}</Text>
+            
+            <Text mt={5} textAlign="center">{error}</Text>
         </Box>
     )
 }
