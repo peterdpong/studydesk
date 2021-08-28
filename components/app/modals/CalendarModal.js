@@ -16,7 +16,7 @@ export default function CalendarModal({ isOpen, onClose, classList, assignmentLi
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>{date} {day}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
@@ -59,7 +59,7 @@ export default function CalendarModal({ isOpen, onClose, classList, assignmentLi
                     {taskList.map((t) => {
                         return(
                             <Box key={t.id}>
-                                <Text>· {t.name}</Text>
+                                <Text>· {t.name} ({t.className})</Text>
                             </Box>
                         )
                     })}

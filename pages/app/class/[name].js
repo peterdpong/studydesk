@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Navbar from "../../../components/app/navbar";
@@ -27,6 +27,7 @@ const SingleClass = () => {
   const router = useRouter();
   const { name } = router.query;
   const { auth, loading } = useAuth();
+  const [ currentClass, setCurrentClass ] = useState(null);
 
   const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
   const { isOpen: isTimeOpen, onOpen: onTimeOpen, onClose: onTimeClose } = useDisclosure();  
@@ -34,32 +35,39 @@ const SingleClass = () => {
 
   const deleteHandler = () => {
     if(confirm(`Are you sure you want to delete this class?`)){
-        deleteClass(auth.uid, auth.classes, name);
         router.push("/app/");
+        deleteClass(auth.uid, auth.classes, name);
     }
     else{
         return;
     }
   }
 
-  if(loading){
+  useEffect(() => {
+    if(auth){
+        setCurrentClass(auth.classes.filter((c) => c.name === name));
+    }
+  }, [auth])
+
+
+  if(loading || currentClass === null){
     return(
         <FullPageLoading/>
       )
   }
 
-  const currentClass = auth.classes.filter((c) => c.name === name);
+  //const currentClass = auth.classes.filter((c) => c.name === name);
   
   return ( 
     <Box>
         <Navbar/>
-        <Box ml={10}>
+        <Box ml={{md: 10, base: 2}}>
             <Flex mt={5} mb={5}>
                 <Link href="/app/">
                     <Button>Back</Button>
                 </Link>
                 <Spacer/>
-                    <Button mr={{base: 0, md: 10}} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
+                    <Button mr={{base: 2, md: 10}} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
             </Flex>
 
             <Heading>{name}</Heading>
@@ -76,11 +84,11 @@ const SingleClass = () => {
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="green" onClick={onTimeOpen}>Add</Button>
+                        <Button colorScheme="green" onClick={onTimeOpen} mr={{base: 2, md: 0}}>Add</Button>
                         <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} uid={auth.uid} classes={auth.classes}/>
                     </Box>
                 </Flex>
-                <Box overflowX={{base: "auto", sm: "initial"}}>
+                <Box overflowX={{base: "auto", sm: "initial"}} w={{base: "90%", md: "100%"}}>
                     <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
                 </Box>
             </Box>
@@ -92,11 +100,11 @@ const SingleClass = () => {
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="green" onClick={onAssignmentOpen}>Add</Button>
+                        <Button colorScheme="green" onClick={onAssignmentOpen} mr={{base: 2, md: 0}}>Add</Button>
                         <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name} uid={auth.uid} classes={auth.classes} />
                     </Box>
                 </Flex>
-                <Box overflowX="auto">
+                <Box overflowX={{base: "auto", sm: "initial"}} w={{base: "90%", md: "100%"}}>
                     <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
                 </Box>
                 <Center>

@@ -62,7 +62,7 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Add Assignment</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

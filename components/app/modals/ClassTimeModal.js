@@ -78,7 +78,7 @@ export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Add Class Time</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

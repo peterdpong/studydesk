@@ -70,7 +70,7 @@ export default function GradeModal({ isOpen, onClose, assignments }) {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Current Grade</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

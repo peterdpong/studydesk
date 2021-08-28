@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Modal,
     ModalOverlay,
@@ -27,6 +27,13 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
 
         if(name.length === 0){
             alert("Please enter a name");
+            return;
+        }
+
+        const checkOverlap = classes.filter((c) => c.name === name);
+
+        if(checkOverlap[0]){
+            alert("This class already exists!");
             return;
         }
 
