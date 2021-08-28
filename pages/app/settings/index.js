@@ -9,17 +9,22 @@ import {
     FormControl,
     Input,
     FormLabel,
-    useDisclosure
+    useDisclosure,
+    useSafeLayoutEffect
 } from '@chakra-ui/react';
 import Navbar from '../../../components/app/navbar';
 import { useAuth } from '../../../lib/auth';
 import { FullPageLoading } from '../../../components/FullPageLoading';
 import { updateUserProfile } from '../../../lib/writeTodb';
 import EmailPasswordModal from '../../../components/app/modals/EmailPasswordModal';
+import FormAlert from '../../../components/app/FormAlert';
+import useFirstRender from '../../../components/app/useFirstRender';
+
 
 export default function settings() {
     const router = useRouter();
     const { signinWithEmailAndPassword, signinWithGoogle, auth, loading } = useAuth();
+    const firstRender = useFirstRender();
 
     const [ username, setUsername ] = useState('');
     const [ school, setSchool ] = useState('');
@@ -27,8 +32,11 @@ export default function settings() {
     const [ password, setPassword ] = useState('');
     const [ error, setError ] = useState(null);
     const [ authenticated, setAuthenticated ] = useState(false);
+    const [ alertMessage, setAlertMessage ] = useState('');
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
+
 
     useEffect(() => {
         if(auth){
@@ -37,6 +45,12 @@ export default function settings() {
             setEmail(auth.email);
         }
     }, [auth])
+
+    useEffect(() => {
+        if(!firstRender){
+            onAlertOpen();
+        }
+    }, [alertMessage])
     
     if(loading){
         return(
@@ -50,12 +64,12 @@ export default function settings() {
 
         if(authenticated){
             if(email.length === 0){
-                alert('Please enter an email');
+                setAlertMessage('Please enter an email');
                 return;
             }
             
             if(!emailOnly && password.length === 0){
-                alert('Please enter a password');
+                setAlertMessage('Please enter a password');
                 return;
             }
 
@@ -63,12 +77,12 @@ export default function settings() {
         }
         else{
             if(username.length === 0){
-                alert('Please enter a username');
+                setAlertMessage('Please enter a username');
                 return;
             }
 
             if(school.length === 0){
-                alert('Please enter a school');
+                setAlertMessage('Please enter a school');
                 return;
             }
         }
@@ -79,16 +93,19 @@ export default function settings() {
 
         const response = await updateUserProfile(auth.uid, profileObject);
 
-        if(authenticated){
-            if(response === 'No error'){
+        if(response === 'No error'){
+            if(authenticated){
                 setAuthenticated(false);
                 setPassword('');
-                setError('');
             }
-            else{
-                setError(response);
-            }
+            
+            setError('');
         }
+        else{
+            setError(response);
+        }
+        
+        setAlertMessage('User Profile Updated Successfully!');
     }
 
     return (
@@ -135,6 +152,8 @@ export default function settings() {
                 </Box>
                 }
             </Box>
+
+            <FormAlert onClose={onAlertClose} isOpen={isAlertOpen} text={alertMessage} />
 
             <Flex mt={10} justifyContent="center" flexDirection="row">
                 {!authenticated ?
