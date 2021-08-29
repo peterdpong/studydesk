@@ -7,7 +7,7 @@ import 'react-calendar/dist/Calendar.css';
 import Tasks from './Tasks';
 import MainCalendar from './MainCalendar';
 import ClassList from './ClassList';
-import firebase from '../../lib/firebase';
+import { newClass, newTask } from '../../lib/writeTodb';
 
 
 const classList = [
@@ -52,26 +52,12 @@ const taskList = [
 
 export default function Classes({ auth }) {
 
-  const refToUserData = firebase.firestore().collection("users").doc(auth.uid);
-
   if(auth.classes.length === 0){
-    refToUserData
-    .update({
-      classes: classList
-    })
-    .catch(
-        (err) => console.log(err)
-    )
+    newClass(auth.uid, classList);
   }
 
   if(auth.tasks.length === 0){
-    refToUserData
-    .update({
-      tasks: taskList
-    })
-    .catch(
-        (err) => console.log(err)
-    )
+    newTask(auth.uid, taskList);
   }
   
   return (
