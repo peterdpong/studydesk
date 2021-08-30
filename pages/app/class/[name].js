@@ -19,6 +19,7 @@ import { useAuth } from '../../../lib/auth';
 import { FullPageLoading } from '../../../components/FullPageLoading';
 import ClassTimeModal from '../../../components/app/modals/ClassTimeModal';
 import GradeModal from '../../../components/app/modals/GradeModal';
+import SyllabusModal from '../../../components/app/modals/SyllabusModal';
 import { deleteClass } from '../../../lib/writeTodb';
 
 
@@ -32,6 +33,10 @@ const SingleClass = () => {
   const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
   const { isOpen: isTimeOpen, onOpen: onTimeOpen, onClose: onTimeClose } = useDisclosure();  
   const { isOpen: isGradeOpen, onOpen: onGradeOpen, onClose: onGradeClose } = useDisclosure();
+  const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose } = useDisclosure();
+
+
+  let uploaded = false;
 
   const deleteHandler = () => {
     if(confirm(`Are you sure you want to delete this class?`)){
@@ -73,7 +78,12 @@ const SingleClass = () => {
             <Heading>{name}</Heading>
 
             <Flex mt={5} align="center">
-                <Button>View Syllabus</Button>
+                {uploaded ? 
+                    <Button>View Syllabus</Button>
+                :
+                    <Button onClick={onUploadOpen}>Upload Syllabus</Button>
+                }
+                <SyllabusModal isOpen={isUploadOpen} onClose={onUploadClose} />
             </Flex>
             
 
