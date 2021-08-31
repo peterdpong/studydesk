@@ -21,6 +21,7 @@ import { FullPageLoading } from '../../../components/FullPageLoading';
 import ClassTimeModal from '../../../components/app/modals/ClassTimeModal';
 import GradeModal from '../../../components/app/modals/GradeModal';
 import SyllabusModal from '../../../components/app/modals/SyllabusModal';
+import DeletePopover from '../../../components/app/DeletePopover';
 import { deleteClass, deleteSyllabus, deleteFile } from '../../../lib/writeTodb';
 
 
@@ -30,6 +31,8 @@ const SingleClass = () => {
   const { name } = router.query;
   const { auth, loading } = useAuth();
   const [ currentClass, setCurrentClass ] = useState(null);
+  const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
+
 
   const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
   const { isOpen: isTimeOpen, onOpen: onTimeOpen, onClose: onTimeClose } = useDisclosure();  
@@ -37,10 +40,10 @@ const SingleClass = () => {
   const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose } = useDisclosure();
 
 
-  const deleteHandler = () => {
+  const deleteHandler = async () => {
     if(confirm(`Are you sure you want to delete this class?`)){
         router.push("/app/");
-        deleteClass(auth.uid, auth.classes, name);
+        await deleteClass(auth.uid, auth.classes, name);
     }
     else{
         return;
@@ -80,14 +83,15 @@ const SingleClass = () => {
                 {currentClass[0].syllabus ? 
                     <Flex>
                         <Link href={currentClass[0].syllabus} isExternal>
-                            <Button>View Syllabus</Button>
+                            <Button mr={2}>View Syllabus</Button>
                         </Link>
-                        <Button 
-                            ml={3} 
-                            colorScheme="red"
-                            onClick={() => {deleteFile(currentClass[0].syllabus); deleteSyllabus(auth.uid, auth.classes, name);}}
-                        >
-                        Delete</Button>
+                        
+                        <DeletePopover 
+                            isDeleteOpen={isDeleteOpen}
+                            setIsDeleteOpen={setIsDeleteOpen}
+                            deleteHandler={() => {deleteFile(currentClass[0].syllabus); deleteSyllabus(auth.uid, auth.classes, name);}}
+                            body="Are you sure you want to delete the syllabus?"
+                        />
                     </Flex>
                 :
                     <Button onClick={onUploadOpen}>Upload Syllabus</Button>
