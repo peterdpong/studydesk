@@ -39,6 +39,7 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
 
         const classObject = {
             name: name,
+            syllabus: "",
             times: [
                 {
                     id: Math.random(),

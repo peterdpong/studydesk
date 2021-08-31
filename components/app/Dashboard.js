@@ -13,6 +13,7 @@ import { newClass, newTask } from '../../lib/writeTodb';
 const classList = [
   {
     name: "Example Class",
+    syllabus: "",
     times: [
       {
         id: Math.random(),

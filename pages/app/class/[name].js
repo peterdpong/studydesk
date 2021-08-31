@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import Navbar from "../../../components/app/navbar";
 import {
     Heading,
@@ -10,7 +10,8 @@ import {
     Flex,
     Text,
     useDisclosure,
-    Center
+    Center,
+    Link
 } from "@chakra-ui/react";
 import AssignmentTable from "../../../components/app/tables/AssignmentTable";
 import AssignmentModal from "../../../components/app/modals/AssignmentModal";
@@ -20,7 +21,7 @@ import { FullPageLoading } from '../../../components/FullPageLoading';
 import ClassTimeModal from '../../../components/app/modals/ClassTimeModal';
 import GradeModal from '../../../components/app/modals/GradeModal';
 import SyllabusModal from '../../../components/app/modals/SyllabusModal';
-import { deleteClass } from '../../../lib/writeTodb';
+import { deleteClass, deleteSyllabus, deleteFile } from '../../../lib/writeTodb';
 
 
 
@@ -35,8 +36,6 @@ const SingleClass = () => {
   const { isOpen: isGradeOpen, onOpen: onGradeOpen, onClose: onGradeClose } = useDisclosure();
   const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose } = useDisclosure();
 
-
-  let uploaded = false;
 
   const deleteHandler = () => {
     if(confirm(`Are you sure you want to delete this class?`)){
@@ -68,9 +67,9 @@ const SingleClass = () => {
         <Navbar/>
         <Box ml={{md: 10, base: 2}}>
             <Flex mt={5} mb={5}>
-                <Link href="/app/">
+                <NextLink href="/app/">
                     <Button>Back</Button>
-                </Link>
+                </NextLink>
                 <Spacer/>
                     <Button mr={{base: 2, md: 10}} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
             </Flex>
@@ -78,12 +77,22 @@ const SingleClass = () => {
             <Heading>{name}</Heading>
 
             <Flex mt={5} align="center">
-                {uploaded ? 
-                    <Button>View Syllabus</Button>
+                {currentClass[0].syllabus ? 
+                    <Flex>
+                        <Link href={currentClass[0].syllabus} isExternal>
+                            <Button>View Syllabus</Button>
+                        </Link>
+                        <Button 
+                            ml={3} 
+                            colorScheme="red"
+                            onClick={() => {deleteFile(currentClass[0].syllabus); deleteSyllabus(auth.uid, auth.classes, name);}}
+                        >
+                        Delete</Button>
+                    </Flex>
                 :
                     <Button onClick={onUploadOpen}>Upload Syllabus</Button>
                 }
-                <SyllabusModal isOpen={isUploadOpen} onClose={onUploadClose} />
+                <SyllabusModal isOpen={isUploadOpen} onClose={onUploadClose} name={name} uid={auth.uid} classes={auth.classes}/>
             </Flex>
             
 

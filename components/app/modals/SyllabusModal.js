@@ -15,17 +15,23 @@ import {
     FormLabel,
     Input
 } from "@chakra-ui/react";
-import { newFile } from '../../../lib/writeTodb';
+import { newFile, deleteFile, addSyllabus } from '../../../lib/writeTodb';
 
 
-export default function SyllabusModal({ isOpen, onClose }) {
+export default function SyllabusModal({ isOpen, onClose, name, uid, classes }) {
 
     const [ fileURL, setFileURL ] = useState('');
 
     const onFileChange = async (e) => {
         const file = e.target.files[0];
-        const newFileURL = await newFile(file);
-        setFileURL(newFileURL);
+        if(file){
+            const newFileURL = await newFile(file);
+            setFileURL(newFileURL);
+        }
+        else{
+            return;
+        }
+        
     }
 
     const submitHandler = (e) => {
@@ -35,23 +41,25 @@ export default function SyllabusModal({ isOpen, onClose }) {
             alert('Please choose a file');
         }
 
-        // console.log(fileURL);
-        // add to user profile
-
+        addSyllabus(uid, fileURL, classes, name);
         setFileURL('');
         onClose();
     }
 
 
-    const closeHandler = () => {
+    const closeHandler = async () => {
         if(fileURL.length === 0){
             setFileURL('');
             onClose();
             return;
         }
         else{
-            // delete from storage
-            console.log('delete from storage');
+            const response = await deleteFile(fileURL);
+
+            if(response.length !== 0){
+                console.log(response);
+            }
+
             setFileURL('');
             onClose();
             return;
