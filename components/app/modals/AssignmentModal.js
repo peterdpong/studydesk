@@ -18,7 +18,7 @@ import {
     NumberDecrementStepper,
     Input
 } from "@chakra-ui/react";
-import { addAssignment } from '../../lib/writeTodb';
+import { addAssignment } from '../../../lib/writeTodb';
   
 
 export default function AssignmentModal({ isOpen, onClose, name, uid, classes }) {
@@ -44,8 +44,10 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
         const assignmentObject = {
             id: Math.random(),
             name: assignmentName,
+            className: name,
             dueDate: assignmentDate,
-            weight: assignmentWeight
+            weight: assignmentWeight,
+            grade: 80
         }
 
         if(assignmentDate.length === 0){
@@ -60,7 +62,7 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Add Assignment</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

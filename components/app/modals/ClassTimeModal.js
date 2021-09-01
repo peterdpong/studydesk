@@ -14,7 +14,7 @@ import {
     Input, 
     Select
 } from "@chakra-ui/react";
-import { addClassTime } from '../../lib/writeTodb';
+import { addClassTime } from '../../../lib/writeTodb';
   
 
 export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) {
@@ -62,6 +62,7 @@ export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) 
 
         const classTimeObject = {
             id: Math.random(),
+            className: name,
             startTime: startTime,
             endTime: endTime,
             day: classDay,
@@ -77,7 +78,7 @@ export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Add Class Time</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

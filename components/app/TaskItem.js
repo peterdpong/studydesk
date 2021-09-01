@@ -20,7 +20,7 @@ import {
     ButtonGroup
 } from "@chakra-ui/react";
 import { toggleTask, deleteTask} from '../../lib/writeTodb';
-import TaskModal from './TaskModal';
+import TaskModal from './modals/TaskModal';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
 
@@ -105,7 +105,7 @@ export default function TaskItem({ task, uid, allTasks, allClasses }) {
           isOpen={isModOpen}
           onClose={() => setIsModOpen(false)}
           placement="bottom"
-          closeOnBlur={false}
+          closeOnBlur={true}
           matchWidth={true}
         >
           <PopoverTrigger>

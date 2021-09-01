@@ -15,7 +15,7 @@ import {
     Select,
     Flex
 } from "@chakra-ui/react";
-import { addTask, editTask } from '../../lib/writeTodb';
+import { addTask, editTask } from '../../../lib/writeTodb';
 
 
 const priorityPicker = (priorityNumber) => {

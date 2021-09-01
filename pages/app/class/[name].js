@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import NextLink from 'next/link';
 import Navbar from "../../../components/app/navbar";
 import {
     Heading,
@@ -9,94 +9,131 @@ import {
     Spacer,
     Flex,
     Text,
-    useDisclosure
+    useDisclosure,
+    Center,
+    Link
 } from "@chakra-ui/react";
-import AssignmentTable from "../../../components/app/AssignmentTable";
-import AssignmentModal from "../../../components/app/AssignmentModal";
-import ClassTimesTable from "../../../components/app/ClassTimesTable";
+import AssignmentTable from "../../../components/app/tables/AssignmentTable";
+import AssignmentModal from "../../../components/app/modals/AssignmentModal";
+import ClassTimesTable from "../../../components/app/tables/ClassTimesTable";
 import { useAuth } from '../../../lib/auth';
-import firebase from '../../../lib/firebase';
 import { FullPageLoading } from '../../../components/FullPageLoading';
-import ClassTimeModal from '../../../components/app/ClassTimeModal';
+import ClassTimeModal from '../../../components/app/modals/ClassTimeModal';
+import GradeModal from '../../../components/app/modals/GradeModal';
+import SyllabusModal from '../../../components/app/modals/SyllabusModal';
+import DeletePopover from '../../../components/app/DeletePopover';
+import { deleteClass, deleteSyllabus, deleteFile } from '../../../lib/writeTodb';
+
 
 
 const SingleClass = () => {
   const router = useRouter();
   const { name } = router.query;
   const { auth, loading } = useAuth();
+  const [ currentClass, setCurrentClass ] = useState(null);
+  const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
+
 
   const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
   const { isOpen: isTimeOpen, onOpen: onTimeOpen, onClose: onTimeClose } = useDisclosure();  
+  const { isOpen: isGradeOpen, onOpen: onGradeOpen, onClose: onGradeClose } = useDisclosure();
+  const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose } = useDisclosure();
 
-  const refToUsers = firebase.firestore().collection("users");
 
-  const deleteHandler = () => {
+  const deleteHandler = async () => {
     if(confirm(`Are you sure you want to delete this class?`)){
-        const updatedClasses = auth.classes.filter((c) => c.name !== name);
-        refToUsers
-            .doc(auth.uid)
-            .update({
-                classes: updatedClasses
-            })
-            .catch(
-                (err) => console.log(err)
-            )
         router.push("/app/");
+        await deleteClass(auth.uid, auth.classes, name);
     }
     else{
         return;
     }
   }
 
-  if(loading){
+  useEffect(() => {
+    if(auth){
+        setCurrentClass(auth.classes.filter((c) => c.name === name));
+    }
+  }, [auth])
+
+
+  if(loading || currentClass === null){
     return(
         <FullPageLoading/>
       )
   }
 
-  const currentClass = auth.classes.filter((c) => c.name === name);
+  //const currentClass = auth.classes.filter((c) => c.name === name);
   
   return ( 
     <Box>
         <Navbar/>
-        <Box ml={10}>
+        <Box ml={{md: 10, base: 2}}>
             <Flex mt={5} mb={5}>
-                <Link href="/app/">
+                <NextLink href="/app/">
                     <Button>Back</Button>
-                </Link>
+                </NextLink>
                 <Spacer/>
-                    <Button mr={10} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
+                    <Button mr={{base: 2, md: 10}} colorScheme="red" onClick={deleteHandler}>Delete Class</Button>
             </Flex>
 
             <Heading>{name}</Heading>
-            <Button mt={5}>View Syllabus</Button>
 
-            <Box w="50%">
+            <Flex mt={5} align="center">
+                {currentClass[0].syllabus ? 
+                    <Flex>
+                        <Link href={currentClass[0].syllabus} isExternal>
+                            <Button mr={2}>View Syllabus</Button>
+                        </Link>
+                        
+                        <DeletePopover 
+                            isDeleteOpen={isDeleteOpen}
+                            setIsDeleteOpen={setIsDeleteOpen}
+                            deleteHandler={() => {deleteFile(currentClass[0].syllabus); deleteSyllabus(auth.uid, auth.classes, name);}}
+                            body="Are you sure you want to delete the syllabus?"
+                        />
+                    </Flex>
+                :
+                    <Button onClick={onUploadOpen}>Upload Syllabus</Button>
+                }
+                <SyllabusModal isOpen={isUploadOpen} onClose={onUploadClose} name={name} uid={auth.uid} classes={auth.classes}/>
+            </Flex>
+            
+
+            <Box w={{md: "50%", sm: "70%", base: "100%"}}>
                 <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Class Times</Heading>
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="green" onClick={onTimeOpen}>Add</Button>
+                        <Button colorScheme="green" onClick={onTimeOpen} mr={{base: 2, md: 0}}>Add</Button>
                         <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} uid={auth.uid} classes={auth.classes}/>
                     </Box>
                 </Flex>
-                <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
+                <Box overflowX={{base: "auto", sm: "initial"}} w={{base: "90%", md: "100%"}}>
+                    <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
+                </Box>
             </Box>
 
-            <Box w="60%" mb={10}>
+            <Box w={{md: "60%", sm: "80%"}} mb={10}>
                 <Flex mt={10}>
                     <Box p="2">
                         <Heading size="md">Assignments</Heading>
                     </Box>
                     <Spacer/>
                     <Box mt={3}>
-                        <Button colorScheme="green" onClick={onAssignmentOpen}>Add</Button>
+                        <Button colorScheme="green" onClick={onAssignmentOpen} mr={{base: 2, md: 0}}>Add</Button>
                         <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name} uid={auth.uid} classes={auth.classes} />
                     </Box>
                 </Flex>
-                <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
+                <Box overflowX={{base: "auto", sm: "initial"}} w={{base: "90%", md: "100%"}}>
+                    <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
+                </Box>
+                <Center>
+                    <Button mt={5} colorScheme="red" onClick={onGradeOpen}>Calculate Grade</Button>
+                    <GradeModal isOpen={isGradeOpen} onClose={onGradeClose} assignments={currentClass[0].assignments} />
+                </Center>
             </Box>
         </Box>
     </Box>

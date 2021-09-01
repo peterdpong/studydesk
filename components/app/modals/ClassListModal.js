@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Modal,
     ModalOverlay,
@@ -7,13 +7,12 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    Text,
     Button,
     FormControl,
     FormLabel,
     Input
 } from "@chakra-ui/react";
-import { addClass } from '../../lib/writeTodb';
+import { addClass } from '../../../lib/writeTodb';
 
 export default function ClassListModal({ isOpen, onClose, uid, classes }) {
 
@@ -31,8 +30,16 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
             return;
         }
 
+        const checkOverlap = classes.filter((c) => c.name === name);
+
+        if(checkOverlap[0]){
+            alert("This class already exists!");
+            return;
+        }
+
         const classObject = {
             name: name,
+            syllabus: "",
             times: [
                 {
                     id: Math.random(),
@@ -40,7 +47,8 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
                     endTime: "10:00",
                     day: "Mon",
                     type: "Lecture",
-                    classroom: "MH100"
+                    classroom: "MH100",
+                    className: name
                 }
             ],
             assignments: [
@@ -48,7 +56,8 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
                     id: Math.random(),
                     name: "Example Assignment",
                     dueDate: "2021-09-08",
-                    weight: 5
+                    weight: 5,
+                    grade: 80
                 }
             ]
         }
