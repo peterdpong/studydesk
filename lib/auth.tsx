@@ -165,14 +165,14 @@ function useProvideAuth() {
   }
 
   const useRequiredAuth = () => {
-    const router = useRouter();
+    // const router = useRouter();
 
-    useEffect(() => {
-      if(!auth && !loading) {
-        router.push('/signin');
-      }
+    // useEffect(() => {
+    //   if(!auth && !loading) {
+    //     router.push('/signin');
+    //   }
 
-    }, [auth, router]);
+    // }, [auth, router]);
 
     return auth;
   }
