@@ -7,7 +7,7 @@ export type UserModel = {
   firstName: string | undefined;
   lastName: string | undefined;
   school: string | undefined;
-  email: string | null;
+  email: string | undefined;
   classes: Class[] | undefined;
   tasks: Task[] | undefined;
 }

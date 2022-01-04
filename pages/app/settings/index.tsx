@@ -9,8 +9,7 @@ import {
     FormControl,
     Input,
     FormLabel,
-    useDisclosure,
-    useSafeLayoutEffect
+    useDisclosure
 } from '@chakra-ui/react';
 import Navbar from '../../../components/app/navbar';
 import { useAuth } from '../../../lib/auth';
@@ -21,19 +20,23 @@ import FormAlert from '../../../components/app/FormAlert';
 import useFirstRender from '../../../components/app/useFirstRender';
 import { protectedRoute } from '../../../lib/hoc/protectedRoute';
 
+// Settings Page Review
+// Look at useFirstRender Component
+// Review auth verification -> seems to be broken to update password/email .etc
 
 function Settings() {
     const router = useRouter();
-    const { signinWithEmailAndPassword, signinWithGoogle, auth, loading } = useAuth();
+    const { signinWithEmailAndPassword, signinWithGoogle, useRequiredAuth, loading } = useAuth();
+    const auth = useRequiredAuth(); // Update auth flow to just return auth instead of a function to get auth
     const firstRender = useFirstRender();
 
-    const [ username, setUsername ] = useState('');
-    const [ school, setSchool ] = useState('');
-    const [ email, setEmail ] = useState('');
-    const [ password, setPassword ] = useState('');
-    const [ error, setError ] = useState(null);
-    const [ authenticated, setAuthenticated ] = useState(false);
-    const [ alertMessage, setAlertMessage ] = useState('');
+    const [ username, setUsername ] = useState<string>('');
+    const [ school, setSchool ] = useState<string | undefined>('');
+    const [ email, setEmail ] = useState<string | undefined>('');
+    const [ password, setPassword ] = useState<string>('');
+    const [ error, setError ] = useState<string | undefined>(undefined);
+    const [ authenticated, setAuthenticated ] = useState<boolean>(false);
+    const [ alertMessage, setAlertMessage ] = useState<string>('');
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
@@ -59,12 +62,12 @@ function Settings() {
         )
     }
 
-    const updateProfile = async (emailOnly) => {
+    const updateProfile = async (emailOnly: boolean) => {
         
         let emailChange = false;
 
         if(authenticated){
-            if(email.length === 0){
+            if(email?.length === 0){
                 setAlertMessage('Please enter an email');
                 return;
             }
@@ -82,7 +85,7 @@ function Settings() {
                 return;
             }
 
-            if(school.length === 0){
+            if(school?.length === 0){
                 setAlertMessage('Please enter a school');
                 return;
             }
@@ -92,7 +95,7 @@ function Settings() {
             username, school, email, password, emailChange, emailOnly
         }
 
-        const response = await updateUserProfile(auth.uid, profileObject);
+        const response = await updateUserProfile(auth?.uid, profileObject);
 
         if(response === 'No error'){
             if(authenticated){

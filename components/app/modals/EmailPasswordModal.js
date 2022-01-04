@@ -19,7 +19,7 @@ import { TextWithDivider } from "../../forms/TextWithDivider";
 
 
 
-export default function EmailPasswordModal({ isOpen, onClose, setAuthenticated, emailPassword, google, setError, uid }) {
+export default function EmailPasswordModal({ isOpen, onClose, setAuthenticated, emailPassword, google, setError }) {
 
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');

@@ -7,7 +7,7 @@ function Timetable() {
     return (
         <div>
             <Navbar/>
-            timetable
+            Timetable Index
         </div>
     )
 }
