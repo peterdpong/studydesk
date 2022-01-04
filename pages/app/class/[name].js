@@ -23,7 +23,7 @@ import GradeModal from '../../../components/app/modals/GradeModal';
 import SyllabusModal from '../../../components/app/modals/SyllabusModal';
 import DeletePopover from '../../../components/app/DeletePopover';
 import { deleteClass, deleteSyllabus, deleteFile } from '../../../lib/writeTodb';
-
+import { protectedRoute } from '../../../lib/hoc/protectedRoute'
 
 
 const SingleClass = () => {
@@ -141,4 +141,4 @@ const SingleClass = () => {
 }
 
  
-export default SingleClass;
+export default protectedRoute(SingleClass);

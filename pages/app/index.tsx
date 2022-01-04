@@ -1,24 +1,19 @@
-import { useRouter } from "next/dist/client/router";
-import { useEffect } from "react";
 import Navbar from "../../components/app/navbar";
 import Dashboard from "../../components/app/Dashboard";
-import { FullPageLoading } from "../../components/FullPageLoading";
 import { useAuth } from "../../lib/auth";
+import { protectedRoute } from "../../lib/hoc/protectedRoute";
 
-export default function App() {
-  const { useRequiredAuth, loading } = useAuth();
+function App() {
+  const { useRequiredAuth } = useAuth();
   const auth = useRequiredAuth();
 
-  if(loading || !auth) {
-    return (
-      <FullPageLoading/>
-    );
-  }
-
+  // Note remove passing of auth to Dashboard component
   return (
     <div>
       <Navbar/>
-      <Dashboard auth={auth}/>
+      <Dashboard auth={auth}/> 
     </div>
   );
 }
+
+export default protectedRoute(App);

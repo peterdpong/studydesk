@@ -1,5 +1,4 @@
 import React from 'react'
-import router from 'next/router';
 import { protectedRoute } from '../../../lib/hoc/protectedRoute'
 
 function index() {

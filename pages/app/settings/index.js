@@ -19,9 +19,10 @@ import { updateUserProfile } from '../../../lib/writeTodb';
 import EmailPasswordModal from '../../../components/app/modals/EmailPasswordModal';
 import FormAlert from '../../../components/app/FormAlert';
 import useFirstRender from '../../../components/app/useFirstRender';
+import { protectedRoute } from '../../../lib/hoc/protectedRoute';
 
 
-export default function settings() {
+function Settings() {
     const router = useRouter();
     const { signinWithEmailAndPassword, signinWithGoogle, auth, loading } = useAuth();
     const firstRender = useFirstRender();
@@ -174,3 +175,5 @@ export default function settings() {
         </Box>
     )
 }
+
+export default protectedRoute(Settings);
