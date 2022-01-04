@@ -4,14 +4,10 @@ import { useAuth } from "../../lib/auth";
 import { protectedRoute } from "../../lib/hoc/protectedRoute";
 
 function App() {
-  const { useRequiredAuth } = useAuth();
-  const auth = useRequiredAuth();
-
-  // Note remove passing of auth to Dashboard component
   return (
     <div>
       <Navbar/>
-      <Dashboard auth={auth}/> 
+      <Dashboard/> 
     </div>
   );
 }

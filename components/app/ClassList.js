@@ -16,6 +16,7 @@ import ClassListModal from './modals/ClassListModal';
 
 
 export default function Classes({ classList, uid }) {
+  if(classList === undefined) return null;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   
