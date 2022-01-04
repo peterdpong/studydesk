@@ -8,7 +8,6 @@ import {
     Button,
     Spacer,
     Flex,
-    Text,
     useDisclosure,
     Center,
     Link
@@ -24,14 +23,16 @@ import SyllabusModal from '../../../components/app/modals/SyllabusModal';
 import DeletePopover from '../../../components/app/DeletePopover';
 import { deleteClass, deleteSyllabus, deleteFile } from '../../../lib/writeTodb';
 import { protectedRoute } from '../../../lib/hoc/protectedRoute'
+import { Class } from "../../../lib/models/Class";
 
 
 const SingleClass = () => {
   const router = useRouter();
   const { name } = router.query;
-  const { auth, loading } = useAuth();
-  const [ currentClass, setCurrentClass ] = useState(null);
+  const { useRequiredAuth, loading } = useAuth();
+  const [ currentClass, setCurrentClass ] = useState<Class[] | null>(null);
   const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
+  const auth = useRequiredAuth();
 
 
   const { isOpen: isAssignmentOpen, onOpen: onAssignmentOpen, onClose: onAssignmentClose } = useDisclosure();  
@@ -43,7 +44,7 @@ const SingleClass = () => {
   const deleteHandler = async () => {
     if(confirm(`Are you sure you want to delete this class?`)){
         router.push("/app/");
-        await deleteClass(auth.uid, auth.classes, name);
+        await deleteClass(auth?.uid, auth?.classes, name);
     }
     else{
         return;
@@ -52,7 +53,7 @@ const SingleClass = () => {
 
   useEffect(() => {
     if(auth){
-        setCurrentClass(auth.classes.filter((c) => c.name === name));
+        setCurrentClass(auth.classes!.filter((c) => c.name === name));
     }
   }, [auth])
 
@@ -89,14 +90,14 @@ const SingleClass = () => {
                         <DeletePopover 
                             isDeleteOpen={isDeleteOpen}
                             setIsDeleteOpen={setIsDeleteOpen}
-                            deleteHandler={() => {deleteFile(currentClass[0].syllabus); deleteSyllabus(auth.uid, auth.classes, name);}}
+                            deleteHandler={() => {deleteFile(currentClass[0].syllabus); deleteSyllabus(auth!.uid, auth!.classes, name);}}
                             body="Are you sure you want to delete the syllabus?"
                         />
                     </Flex>
                 :
                     <Button onClick={onUploadOpen}>Upload Syllabus</Button>
                 }
-                <SyllabusModal isOpen={isUploadOpen} onClose={onUploadClose} name={name} uid={auth.uid} classes={auth.classes}/>
+                <SyllabusModal isOpen={isUploadOpen} onClose={onUploadClose} name={name} uid={auth!.uid} classes={auth!.classes}/>
             </Flex>
             
 
@@ -108,11 +109,11 @@ const SingleClass = () => {
                     <Spacer/>
                     <Box mt={3}>
                         <Button colorScheme="green" onClick={onTimeOpen} mr={{base: 2, md: 0}}>Add</Button>
-                        <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} uid={auth.uid} classes={auth.classes}/>
+                        <ClassTimeModal isOpen={isTimeOpen} onClose={onTimeClose} name={name} uid={auth!.uid} classes={auth!.classes}/>
                     </Box>
                 </Flex>
                 <Box overflowX={{base: "auto", sm: "initial"}} w={{base: "90%", md: "100%"}}>
-                    <ClassTimesTable times={currentClass[0].times} name={name} uid={auth.uid} classes={auth.classes} />
+                    <ClassTimesTable times={currentClass[0].times} name={name} uid={auth!.uid} classes={auth!.classes} />
                 </Box>
             </Box>
 
@@ -124,11 +125,11 @@ const SingleClass = () => {
                     <Spacer/>
                     <Box mt={3}>
                         <Button colorScheme="green" onClick={onAssignmentOpen} mr={{base: 2, md: 0}}>Add</Button>
-                        <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name} uid={auth.uid} classes={auth.classes} />
+                        <AssignmentModal isOpen={isAssignmentOpen} onClose={onAssignmentClose} name={name} uid={auth!.uid} classes={auth!.classes} />
                     </Box>
                 </Flex>
                 <Box overflowX={{base: "auto", sm: "initial"}} w={{base: "90%", md: "100%"}}>
-                    <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth.uid} classes={auth.classes} />
+                    <AssignmentTable assignments={currentClass[0].assignments} name={name} uid={auth!.uid} classes={auth!.classes} />
                 </Box>
                 <Center>
                     <Button mt={5} colorScheme="red" onClick={onGradeOpen}>Calculate Grade</Button>
