@@ -4,7 +4,6 @@ import firebase from './firebase';
 import { UserModel } from './models/User';
 import { Class } from './models/Class';
 import { Task } from './models/Task';
-import { useRouter } from 'next/dist/client/router';
 interface AuthContext {
   useRequiredAuth: () => UserModel | null;
   loading: boolean;
@@ -135,7 +134,7 @@ function useProvideAuth() {
         provider: provider,
         firstName: fullNameSplit ? fullNameSplit[0] : undefined,
         lastName: fullNameSplit ? fullNameSplit[1] : undefined,
-        email: response.user.email,
+        email: response.user.email ? response.user.email : undefined,
         school: "",
         classes: new Array<Class>(),
         tasks: new Array<Task>()
