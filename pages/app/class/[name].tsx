@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import Navbar from "../../../components/app/navbar";
+import Navbar from "../../../components/app/Navbar";
 import {
     Heading,
     Box,

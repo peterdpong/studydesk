@@ -8,9 +8,11 @@ import {
 } from "@chakra-ui/react";
 import { findCalendarMatch } from '../../lib/writeTodb';
 import CalendarModal from './modals/CalendarModal';
+import { Task } from '../../lib/models/Task';
+import { Class } from '../../lib/models/Class';
 
 
-const sortByTime = (times) => {
+const sortByTime = (times: any[]) => {
     times.sort((a, b) => {
         return a.startTime.localeCompare(b.startTime);
     });
@@ -19,16 +21,16 @@ const sortByTime = (times) => {
 }
 
 
-export default function MainCalendar({ uid, tasks, classes }) {
+export default function MainCalendar(props: { uid: string, tasks: Task[], classes: Class[] }) {
     const [ value, setValue ] = useState(new Date());
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ date, setDate ] = useState('');
     const [ day, setDay ] = useState('');
-    const [ assignmentList, setAssignmentList ] = useState([]);
-    const [ taskList, setTaskList ] = useState([]);
-    const [ classList, setClassList ] = useState([]);
+    const [ assignmentList, setAssignmentList ] = useState<any[]>([]);
+    const [ taskList, setTaskList ] = useState<any[]>([]);
+    const [ classList, setClassList ] = useState<any[]>([]);
 
-    const onChange = (nextValue) => {
+    const onChange = (nextValue: Date) => {
         setValue(nextValue);
         const dateString = nextValue
             .toISOString()
@@ -41,7 +43,7 @@ export default function MainCalendar({ uid, tasks, classes }) {
         setDate(dateString.substring(5, 10).replace('-', '/'));
         setDay(dayString);
 
-        const { assignmentArray, taskArray, classArray } = findCalendarMatch(tasks, classes, dateString, dayString);
+        const { assignmentArray, taskArray, classArray } = findCalendarMatch(props.tasks, props.classes, dateString, dayString);
         setAssignmentList(assignmentArray);
         setTaskList(taskArray);
         setClassList(sortByTime(classArray));

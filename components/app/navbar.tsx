@@ -24,7 +24,6 @@ import {
   Menu,
   MenuList,
   MenuItem,
-  MenuDivider,
   Center,
 } from '@chakra-ui/react';
 import {

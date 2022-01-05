@@ -38,7 +38,7 @@ export default function Tasks(props: {taskList: Task[] | undefined, classList: C
             <List spacing={3} mt={3}>
                 {sortedList?.map((task) => {
                     return(
-                        <TaskItem task={task} uid={props.uid} key={task.id} allTasks={props.taskList} allClasses={props.classList} />
+                        <TaskItem task={task} uid={props.uid!} key={task.id} allTasks={props.taskList!} allClasses={props.classList!} />
                     );
                 })}
             </List>

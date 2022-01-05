@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import {
     AlertDialog,
     AlertDialogBody,
@@ -10,12 +10,15 @@ import {
     Button
 } from '@chakra-ui/react';
 
-export default function FormAlert({ onClose, isOpen, text }) {
+export default function FormAlert(props: { onClose: () => void, isOpen: boolean, text: string }) {
+    const cancelRef: RefObject<any> | undefined = React.useRef();
+
     return (
         <AlertDialog
             motionPreset="slideInBottom"
-            onClose={onClose}
-            isOpen={isOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={props.onClose}
+            isOpen={props.isOpen}
             isCentered
         >
             <AlertDialogOverlay />
@@ -24,10 +27,10 @@ export default function FormAlert({ onClose, isOpen, text }) {
             <AlertDialogHeader>Alert</AlertDialogHeader>
             <AlertDialogCloseButton />
             <AlertDialogBody>
-                {text}
+                {props.text}
             </AlertDialogBody>
             <AlertDialogFooter>
-                <Button onClick={onClose} colorScheme="blue">
+                <Button onClick={props.onClose} colorScheme="blue">
                 OK
                 </Button>
             </AlertDialogFooter>

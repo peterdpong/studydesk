@@ -11,7 +11,7 @@ import {
     FormLabel,
     useDisclosure
 } from '@chakra-ui/react';
-import Navbar from '../../../components/app/navbar';
+import Navbar from '../../../components/app/Navbar';
 import { useAuth } from '../../../lib/auth';
 import { FullPageLoading } from '../../../components/FullPageLoading';
 import { updateUserProfile } from '../../../lib/writeTodb';

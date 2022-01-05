@@ -13,16 +13,18 @@ import {
     Input
 } from "@chakra-ui/react";
 import { addClass } from '../../../lib/writeTodb';
+import { Class } from '../../../lib/models/Class';
+import { ClassTypes } from '../../../lib/models/ClassTimes';
 
-export default function ClassListModal({ isOpen, onClose, uid, classes }) {
+export default function ClassListModal(props: { isOpen: boolean, onClose: () => void, uid: string, classes: Class[] }) {
 
     const [ name, setName ] = useState('');
 
-    const nameHandler = (e) => {
+    const nameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
 
         if(name.length === 0){
@@ -30,15 +32,18 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
             return;
         }
 
-        const checkOverlap = classes.filter((c) => c.name === name);
+        const checkOverlap = props.classes.filter((c: Class) => c.name === name);
 
         if(checkOverlap[0]){
             alert("This class already exists!");
             return;
         }
 
-        const classObject = {
+        const classObject: Class = {
             name: name,
+            classTimes: [],
+            teacherName: '',
+            color: '',
             syllabus: "",
             times: [
                 {
@@ -46,7 +51,7 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
                     startTime: "09:00",
                     endTime: "10:00",
                     day: "Mon",
-                    type: "Lecture",
+                    type: ClassTypes.Lecture,
                     classroom: "MH100",
                     className: name
                 }
@@ -62,14 +67,14 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
             ]
         }
 
-        const updatedClasses = classes.concat(classObject);
-        addClass(uid, updatedClasses);
+        const updatedClasses = props.classes.concat(classObject);
+        addClass(props.uid, updatedClasses);
         setName('');
-        onClose();
+        props.onClose();
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
             <ModalContent>
             <ModalHeader>Add Class</ModalHeader>
@@ -85,7 +90,7 @@ export default function ClassListModal({ isOpen, onClose, uid, classes }) {
                 <Button colorScheme="blue" mr={3} onClick={submitHandler}>
                 Submit
                 </Button>
-                <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
+                <Button colorScheme="blue" variant="outline" mr={3} onClick={props.onClose}>
                 Close
                 </Button>
             </ModalFooter>

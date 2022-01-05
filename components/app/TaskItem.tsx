@@ -22,9 +22,11 @@ import {
 import { toggleTask, deleteTask} from '../../lib/writeTodb';
 import TaskModal from './modals/TaskModal';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { Task } from '../../lib/models/Task';
+import { Class } from '../../lib/models/Class';
 
 
-const priorityColor = (priority) => {
+const priorityColor = (priority: number) => {
   let color = '';
 
   switch (priority) {
@@ -71,34 +73,34 @@ const priorityColor = (priority) => {
       break; */
 
 
-export default function TaskItem({ task, uid, allTasks, allClasses }) {
+export default function TaskItem(props: {task: Task, uid: string, allTasks: Task[], allClasses: Class[]} ) {
 
-  const [ boxChecked, setBoxChecked ] = useState(task.checked);
+  const [ boxChecked, setBoxChecked ] = useState<boolean>(props.task.status);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [ isModOpen, setIsModOpen ] = useState(false);
 
 
-  const toggleHandler = (e) => {
+  const toggleHandler = (e: any) => {
     setBoxChecked(e.target.checked);
-    toggleTask(uid, allTasks, task.id);
+    toggleTask(props.uid, props.allTasks, props.task.id);
   }
 
   const deleteHandler = () => {
-    deleteTask(uid, allTasks, task.id);
+    deleteTask(props.uid, props.allTasks, props.task.id);
   }
 
   return (
     <ListItem>
       <Flex align="center">
         <Checkbox size={'lg'} colorScheme={'green'} isChecked={boxChecked} onChange={toggleHandler} />
-        <Box p={3} bg={priorityColor(task.priority)} fontSize={15} borderRadius={10} ml={3} fontWeight="medium">
+        <Box p={3} bg={priorityColor(props.task.priority)} fontSize={15} borderRadius={10} ml={3} fontWeight="medium">
           {boxChecked ?
-          <Text textDecorationLine="line-through" textDecorationColor="black"> {task.name} ({task.className}) - {task.dueDate.substring(5, 10).replace('-', '/')} </Text>
+          <Text textDecorationLine="line-through" textDecorationColor="black"> {props.task.name} ({props.task.class}) - {props.task.dueDate.substring(5, 10).replace('-', '/')} </Text>
             :
-          <Text> {task.name} ({task.className}) - {task.dueDate.substring(5, 10).replace('-', '/')} </Text>
+          <Text> {props.task.name} ({props.task.class}) - {props.task.dueDate.substring(5, 10).replace('-', '/')} </Text>
           }
         </Box>
-        <TaskModal isOpen={isOpen} onClose={onClose} uid={uid} tasks={allTasks} classes={allClasses} isEdit={true} taskObject={task} />
+        <TaskModal isOpen={isOpen} onClose={onClose} uid={props.uid} tasks={props.allTasks} classes={props.allClasses} isEdit={true} taskObject={props.task} />
         
         <Popover
           returnFocusOnClose={false}
@@ -114,7 +116,9 @@ export default function TaskItem({ task, uid, allTasks, allClasses }) {
               bg="white" 
               size="sm" 
               borderRadius={20}
-              icon={<Icon as={BsThreeDotsVertical}/>}/>
+              icon={<Icon as={BsThreeDotsVertical}/>}
+              aria-label='Edit'
+            />
           </PopoverTrigger>
           <PopoverContent>
             <PopoverArrow />
