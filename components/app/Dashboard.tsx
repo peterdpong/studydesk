@@ -8,6 +8,7 @@ import Tasks from './Tasks';
 import MainCalendar from './MainCalendar';
 import ClassList from './ClassList';
 import { newClass, newTask } from '../../lib/writeTodb';
+import { useAuth } from '../../lib/auth';
 
 
 const classList = [
@@ -51,26 +52,28 @@ const taskList = [
 ]
 
 
-export default function Classes({ auth }) {
+export default function Classes() {
+  const { useRequiredAuth } = useAuth();
+  const auth = useRequiredAuth();
 
-  if(auth.classes.length === 0){
-    newClass(auth.uid, classList);
+  if(auth!.classes?.length === 0){
+    newClass(auth!.uid, classList);
   }
 
-  if(auth.tasks.length === 0){
-    newTask(auth.uid, taskList);
+  if(auth!.tasks?.length === 0){
+    newTask(auth!.uid, taskList);
   }
   
   return (
     <Flex direction={{ base: "column", md: "row" }}>
       <Box w={{base: "100%", md: "65%"}} p={10}>
-        <ClassList classList={auth.classes} uid={auth.uid}/>
+        <ClassList classList={auth!.classes!} uid={auth!.uid!}/>
       </Box>
 
       <Box w={{base: "100%", md: "35%"}} p={10}>
-        <Tasks taskList={auth.tasks} classList={auth.classes} uid={auth.uid}/>
+        <Tasks taskList={auth!.tasks} classList={auth!.classes} uid={auth!.uid}/>
         <Box mt={50}>
-          <MainCalendar uid={auth.uid} tasks={auth.tasks} classes={auth.classes}/>
+          <MainCalendar uid={auth!.uid!} tasks={auth!.tasks!} classes={auth!.classes!}/>
         </Box>
       </Box>
     </Flex>

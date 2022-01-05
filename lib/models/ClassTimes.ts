@@ -1,4 +1,6 @@
 export type ClassTimes = {
+    id: number;
+    className: string;
     classroom: string;
     day: string;
     startTime: string;
@@ -6,7 +8,7 @@ export type ClassTimes = {
     type: ClassTypes;
 }
 
-enum ClassTypes {
+export enum ClassTypes {
     Lecture,
     Tutorial,
     Practical

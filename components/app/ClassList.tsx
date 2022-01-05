@@ -1,7 +1,6 @@
 import React from 'react';
 import { 
-    Box, 
-    Flex, 
+    Box,
     Text, 
     Button,
     SimpleGrid,
@@ -13,9 +12,11 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import ClassListModal from './modals/ClassListModal';
+import { Class } from '../../lib/models/Class';
 
 
-export default function Classes({ classList, uid }) {
+export default function Classes(props: { classList: Class[], uid: string}) {
+  if(props.classList === undefined) return null;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -34,7 +35,7 @@ export default function Classes({ classList, uid }) {
         </Box> 
 
         <SimpleGrid minChildWidth={{base: 100, md: 200}} spacing="4" justifyItems="center">
-          {classList.map((c) => {
+          {props.classList.map((c: Class) => {
             return(
               <Link href={`/app/class/${c.name}`} key={c.name}>
                 <Button border="none" colorScheme={'green'} w={{base: 100, md: 200}} h={{base: 100, md: 125}} borderRadius={20}>
@@ -47,7 +48,7 @@ export default function Classes({ classList, uid }) {
           })}
         </SimpleGrid>
 
-        <ClassListModal isOpen={isOpen} onClose={onClose} uid={uid} classes={classList} />
+        <ClassListModal isOpen={isOpen} onClose={onClose} uid={props.uid} classes={props.classList} />
 
       </Box>
     )

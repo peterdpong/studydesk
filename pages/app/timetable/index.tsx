@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../../../components/app/navbar';
+import Navbar from '../../../components/app/Navbar';
 import { protectedRoute } from '../../../lib/hoc/protectedRoute';
 
 
