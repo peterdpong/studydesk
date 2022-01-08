@@ -13,17 +13,18 @@ import {
 import DeletePopover from '../DeletePopover';
 import { CheckIcon } from '@chakra-ui/icons';
 import { editClassTime, deleteTime } from '../../../lib/writeTodb';
+import { Class } from '../../../lib/models/Class';
 
 
-export default function TimeTableItem({ classname, t, uid, classes }) {
+export default function TimeTableItem(props: { classname: string | string[] | undefined, t: any, uid: string | undefined, classes: Class[] | undefined }) {
 
     const [ editing, setEditing ] = useState(false);
-    const id = t.id;
-    const [ startTime, setStartTime ] = useState(t.startTime);
-    const [ endTime, setEndTime ] = useState(t.endTime);
-    const [ day, setDay ] = useState(t.day);
-    const [ type, setType ] = useState(t.type);
-    const [ classroom, setClassroom ] = useState(t.classroom);
+    const id = props.t.id;
+    const [ startTime, setStartTime ] = useState(props.t.startTime);
+    const [ endTime, setEndTime ] = useState(props.t.endTime);
+    const [ day, setDay ] = useState(props.t.day);
+    const [ type, setType ] = useState(props.t.type);
+    const [ classroom, setClassroom ] = useState(props.t.classroom);
 
     const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
 
@@ -31,15 +32,15 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
         //check errors
 
         const timeObject = {
-            id, startTime, endTime, day, type, classroom, className: classname
+            id, startTime, endTime, day, type, classroom, className: props.classname
         }
 
-        editClassTime(uid, classes, timeObject, classname);
+        editClassTime(props.uid, props.classes, timeObject, props.classname);
         setEditing(false);
     }
 
     const deleteHandler = () => {
-        deleteTime(uid, classes, classname, id);
+        deleteTime(props.uid, props.classes, props.classname, id);
     }
 
     return (
@@ -47,7 +48,7 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
             <Td>
                 <Flex>
                 <Editable 
-                    defaultValue={t.startTime}
+                    defaultValue={props.t.startTime}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
                     onChange={(e) => setStartTime(e)}
@@ -59,7 +60,7 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
                 -
                 </Box>
                 <Editable 
-                    defaultValue={t.endTime}
+                    defaultValue={props.t.endTime}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
                     onChange={(e) => setEndTime(e)}
@@ -71,7 +72,7 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
             </Td>
             <Td>
                 <Editable 
-                    defaultValue={t.day}
+                    defaultValue={props.t.day}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
                     onChange={(e) => setDay(e)}
@@ -82,7 +83,7 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
             </Td>
             <Td>
                 <Editable 
-                    defaultValue={t.type}
+                    defaultValue={props.t.type}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
                     onChange={(e) => setType(e)}
@@ -94,7 +95,7 @@ export default function TimeTableItem({ classname, t, uid, classes }) {
             <Td>
                 <Flex align="center">
                     <Editable 
-                        defaultValue={t.classroom}
+                        defaultValue={props.t.classroom}
                         onEdit={() => setEditing(true)}
                         onCancel={() => setEditing(false)}
                         onChange={(e) => setClassroom(e)}

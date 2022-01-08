@@ -12,16 +12,17 @@ import {
 import DeletePopover from '../DeletePopover';
 import { CheckIcon } from '@chakra-ui/icons';
 import { editAssignment, deleteAssignment } from '../../../lib/writeTodb';
+import { Class } from '../../../lib/models/Class';
 
 
-export default function AssignmentTableItem({ a, classname, uid, classes }) {
+export default function AssignmentTableItem(props: { a: any, classname: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
 
     const [ editing, setEditing ] = useState(false);
-    const id = a.id;
-    const [ name, setName ] = useState(a.name);
-    const [ dueDate, setDueDate ] = useState(a.dueDate);
-    const [ weight, setWeight ] = useState(a.weight);
-    const [ grade, setGrade ] = useState(a.grade);
+    const id = props.a.id;
+    const [ name, setName ] = useState(props.a.name);
+    const [ dueDate, setDueDate ] = useState(props.a.dueDate);
+    const [ weight, setWeight ] = useState(props.a.weight);
+    const [ grade, setGrade ] = useState(props.a.grade);
 
     const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
 
@@ -33,19 +34,19 @@ export default function AssignmentTableItem({ a, classname, uid, classes }) {
             id, name, dueDate, weight, grade
         }
 
-        editAssignment(uid, classes, assignmentObject, classname);
+        editAssignment(props.uid, props.classes, assignmentObject, props.classname);
         setEditing(false);
     }
 
     const deleteHandler = () => {
-        deleteAssignment(uid, classes, classname, id);
+        deleteAssignment(props.uid, props.classes, props.classname, id);
     }
 
     return (
-        <Tr key={a.id}>
+        <Tr key={props.a.id}>
             <Td>
                 <Editable 
-                    defaultValue={a.name}
+                    defaultValue={props.a.name}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
                     onChange={(e) => setName(e)}
@@ -56,7 +57,7 @@ export default function AssignmentTableItem({ a, classname, uid, classes }) {
             </Td>
             <Td>
                 <Editable 
-                    defaultValue={a.dueDate}
+                    defaultValue={props.a.dueDate}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
                     onChange={(e) => setDueDate(e)}
@@ -68,7 +69,7 @@ export default function AssignmentTableItem({ a, classname, uid, classes }) {
             <Td>
                 <Flex align="center">
                     <Editable 
-                        defaultValue={a.weight}
+                        defaultValue={props.a.weight}
                         onEdit={() => setEditing(true)}
                         onCancel={() => setEditing(false)}
                         onChange={(e) => setWeight(e)}
@@ -82,7 +83,7 @@ export default function AssignmentTableItem({ a, classname, uid, classes }) {
             <Td>
                 <Flex align="center">
                     <Editable 
-                        defaultValue={a.grade}
+                        defaultValue={props.a.grade}
                         onEdit={() => setEditing(true)}
                         onCancel={() => setEditing(false)}
                         onChange={(e) => setGrade(e)}

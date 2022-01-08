@@ -34,7 +34,7 @@ export default function DeletePopover(props: { isDeleteOpen: boolean, setIsDelet
                         background: "red",
                         color: "white"
                     }}
-                    onClick={() => props.setIsDeleteOpen(!isDeleteOpen)}
+                    onClick={() => props.setIsDeleteOpen(!props.isDeleteOpen)}
                 />
             </PopoverTrigger>
             <PopoverContent>

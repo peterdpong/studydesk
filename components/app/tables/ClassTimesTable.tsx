@@ -7,9 +7,11 @@ import {
     Th,
 } from "@chakra-ui/react";
 import TimeTableItem from './TimeTableItem';
+import { ClassTimes } from '../../../lib/models/ClassTimes';
+import { Class } from '../../../lib/models/Class';
 
 
-export default function ClassTimesTable({ times, name, uid, classes }) {
+export default function ClassTimesTable(props: { times: ClassTimes[], name: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
 
     return (
         <Table variant="simple">
@@ -22,9 +24,9 @@ export default function ClassTimesTable({ times, name, uid, classes }) {
                 </Tr>
             </Thead>
             <Tbody>
-                {times.map((t) => {
+                {props.times.map((t: any) => {
                     return(
-                        <TimeTableItem t={t} classname={name} key={t.id} uid={uid} classes={classes} />
+                        <TimeTableItem t={t} classname={props.name} key={t.id} uid={props.uid} classes={props.classes} />
                     )
                 })}
             </Tbody>
