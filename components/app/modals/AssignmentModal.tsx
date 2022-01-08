@@ -19,9 +19,10 @@ import {
     Input
 } from "@chakra-ui/react";
 import { addAssignment } from '../../../lib/writeTodb';
+import { Class } from '../../../lib/models/Class';
   
 
-export default function AssignmentModal({ isOpen, onClose, name, uid, classes }) {
+export default function AssignmentModal(props: { isOpen: boolean, onClose: () => void, name: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
 
     const [ assignmentName, setAssignmentName ] = useState('');
     const [ assignmentDate, setAssignmentDate ] = useState('');
@@ -33,7 +34,7 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
         setAssignmentWeight(0);
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
 
         if(assignmentName.length === 0){
@@ -54,13 +55,13 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
             assignmentObject.dueDate = 'N/A';
         }
 
-        addAssignment(uid, classes, assignmentObject, name);
+        addAssignment(props.uid, props.classes, assignmentObject, name);
         resetVariables();
-        onClose();
+        props.onClose();
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
             <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Add Assignment</ModalHeader>
@@ -78,7 +79,7 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
                     
                 <FormControl id="assignment-weight">
                     <FormLabel mt={5}>Weight (%)</FormLabel>
-                    <NumberInput max={100} min={0} onChange={(e) => setAssignmentWeight(e)}>
+                    <NumberInput max={100} min={0} onChange={(valueAsString: string, valueAsNumber: number) => setAssignmentWeight(valueAsNumber)}>
                         <NumberInputField />
                         <NumberInputStepper>
                             <NumberIncrementStepper />
@@ -92,7 +93,7 @@ export default function AssignmentModal({ isOpen, onClose, name, uid, classes })
                 <Button colorScheme="blue" mr={3} onClick={submitHandler}>
                     Submit
                 </Button>
-                <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
+                <Button colorScheme="blue" variant="outline" mr={3} onClick={props.onClose}>
                     Close
                 </Button>
             </ModalFooter>

@@ -19,44 +19,51 @@ import { TextWithDivider } from "../../forms/TextWithDivider";
 
 
 
-export default function EmailPasswordModal({ isOpen, onClose, setAuthenticated, emailPassword, google, setError }) {
+export default function EmailPasswordModal(props: { 
+    isOpen: boolean, 
+    onClose: () => void, 
+    setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>, 
+    emailPassword: (email: string, password: string) => Promise<any>, 
+    google: () => Promise<void>, 
+    setError: React.Dispatch<React.SetStateAction<string | undefined>> 
+}) {
 
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
 
-    const emailPasswordSignIn = (e) => {
+    const emailPasswordSignIn = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
-        setError(null);
+        props.setError(undefined);
 
-        emailPassword(email, password)
+        props.emailPassword(email, password)
             .then(() => {
-                setAuthenticated(true);
+                props.setAuthenticated(true);
             })
             .catch(error => {
-                setError(error.message);
+                props.setError(error.message);
             });
         
-        onClose();
+        props.onClose();
     }
 
-    const googleSignIn = (e) => {
+    const googleSignIn = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
-        setError(null);
+        props.setError(undefined);
 
-        google()
+        props.google()
             .then(() => {
-                setAuthenticated(true);
+                props.setAuthenticated(true);
             })
             .catch(error => {
-                setError(error.message);
+                props.setError(error.message);
             });
         
-        onClose();
+        props.onClose();
     }
 
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
             <ModalContent>
             <ModalHeader>Re-Login to modify Email or Password</ModalHeader>
@@ -82,7 +89,7 @@ export default function EmailPasswordModal({ isOpen, onClose, setAuthenticated, 
                 <Button colorScheme="blue" mr={3} onClick={emailPasswordSignIn}>
                 Authenticate
                 </Button>
-                <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
+                <Button colorScheme="blue" variant="outline" mr={3} onClick={props.onClose}>
                 Close
                 </Button>
             </ModalFooter>

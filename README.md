@@ -17,9 +17,6 @@ NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY=
 > **Warning:**  Make sure this file is not committed to the repository. The gitignore should handle this but please double check.
 
 ##  Running the website
-
-  
-
 To run the development server:
 
 ```bash

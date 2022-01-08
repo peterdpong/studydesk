@@ -12,20 +12,20 @@ import {
     Button
 } from "@chakra-ui/react";
 
-export default function CalendarModal({ isOpen, onClose, classList, assignmentList, taskList, date, day }) {
+export default function CalendarModal(props: { isOpen: boolean, onClose: () => void, classList: any[], assignmentList: any[], taskList: any[], date: string, day: string }) {
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
             <ModalContent maxW={{base: "90%", md: "md"}}>
-            <ModalHeader>{date} {day}</ModalHeader>
+            <ModalHeader>{props.date} {props.day}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
                 <Text fontSize='xl'>Classes: </Text>
-                {classList.length === 0 ? 
+                {props.classList.length === 0 ? 
                 <Text>No classes on this day!</Text>
                     :
                 <Box>
-                    {classList.map((c) => {
+                    {props.classList.map((c: any) => {
                         return(
                             <Box key={c.id}>
                                 <Text>{c.startTime}-{c.endTime} - {c.className} ({c.type}) at {c.classroom}</Text>
@@ -37,11 +37,11 @@ export default function CalendarModal({ isOpen, onClose, classList, assignmentLi
                 }
 
                 <Text fontSize='xl' mt={5}>Assignments: </Text>
-                {assignmentList.length === 0 ? 
+                {props.assignmentList.length === 0 ? 
                 <Text>No assignments due on this day!</Text>
                 :   
                 <Box>
-                    {assignmentList.map((a) => {
+                    {props.assignmentList.map((a: any) => {
                         return(
                             <Box key={a.id}>
                                 <Text>· {a.name} ({a.className}) - {a.weight}%</Text>
@@ -52,11 +52,11 @@ export default function CalendarModal({ isOpen, onClose, classList, assignmentLi
                 }
                 
                 <Text fontSize='xl' mt={5}>Tasks: </Text>
-                {taskList.length === 0 ? 
+                {props.taskList.length === 0 ? 
                 <Text>No tasks due on this day!</Text>
                 :   
                 <Box>
-                    {taskList.map((t) => {
+                    {props.taskList.map((t: any) => {
                         return(
                             <Box key={t.id}>
                                 <Text>· {t.name} ({t.className})</Text>
@@ -69,7 +69,7 @@ export default function CalendarModal({ isOpen, onClose, classList, assignmentLi
             </ModalBody>
 
             <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                <Button colorScheme="blue" mr={3} onClick={props.onClose}>
                 Close
                 </Button>
             </ModalFooter>

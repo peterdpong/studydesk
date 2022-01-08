@@ -62,19 +62,19 @@ const gradeSelector = (grade) => {
 }
 
 
-export default function GradeModal({ isOpen, onClose, assignments }) {
+export default function GradeModal(props: { isOpen: boolean, onClose: () => void, assignments: Object[] }) {
     
-    const grades = [];
-    const reducer = (acc, curr) => acc + curr;
+    const grades: any[] = [];
+    const reducer = (acc: number, curr: number) => acc + curr;
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
             <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Current Grade</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                {assignments.map((a) => {
+                {props.assignments.map((a: any) => {
                     grades.push(0.01 * a.weight * a.grade);
                 })}
 
@@ -86,7 +86,7 @@ export default function GradeModal({ isOpen, onClose, assignments }) {
             </ModalBody>
 
             <ModalFooter>
-                <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
+                <Button colorScheme="blue" variant="outline" mr={3} onClick={props.onClose}>
                     Close
                 </Button>
             </ModalFooter>

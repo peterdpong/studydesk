@@ -16,13 +16,14 @@ import {
     Input
 } from "@chakra-ui/react";
 import { newFile, deleteFile, addSyllabus } from '../../../lib/writeTodb';
+import { Class } from '../../../lib/models/Class';
 
 
-export default function SyllabusModal({ isOpen, onClose, name, uid, classes }) {
+export default function SyllabusModal(props: { isOpen: boolean, onClose: () => void, name: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
 
     const [ fileURL, setFileURL ] = useState('');
 
-    const onFileChange = async (e) => {
+    const onFileChange = async (e: any) => {
         const file = e.target.files[0];
         if(file){
             const newFileURL = await newFile(file);
@@ -34,23 +35,23 @@ export default function SyllabusModal({ isOpen, onClose, name, uid, classes }) {
         
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
 
         if(fileURL.length === 0){
             alert('Please choose a file');
         }
 
-        addSyllabus(uid, fileURL, classes, name);
+        addSyllabus(props.uid, fileURL, props.classes, props.name);
         setFileURL('');
-        onClose();
+        props.onClose();
     }
 
 
     const closeHandler = async () => {
         if(fileURL.length === 0){
             setFileURL('');
-            onClose();
+            props.onClose();
             return;
         }
         else{
@@ -61,14 +62,14 @@ export default function SyllabusModal({ isOpen, onClose, name, uid, classes }) {
             }
 
             setFileURL('');
-            onClose();
+            props.onClose();
             return;
         }
     }
 
 
     return (
-        <Modal isOpen={isOpen} onClose={closeHandler}>
+        <Modal isOpen={props.isOpen} onClose={closeHandler}>
             <ModalOverlay />
             <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Upload your syllabus</ModalHeader>

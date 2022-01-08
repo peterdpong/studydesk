@@ -15,9 +15,10 @@ import {
     Select
 } from "@chakra-ui/react";
 import { addClassTime } from '../../../lib/writeTodb';
+import { Class } from '../../../lib/models/Class';
   
 
-export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) {
+export default function ClassTimeModal(props: { isOpen: boolean, onClose: () => void, name: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
     const [ startTime, setStartTime ] = useState('');
     const [ endTime, setEndTime ] = useState('') ;
     const [ classDay, setClassDay ] = useState('');
@@ -32,7 +33,7 @@ export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) 
         setClassroom('');
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
 
         if(startTime.length === 0){
@@ -70,13 +71,13 @@ export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) 
             classroom: classroom
         }
 
-        addClassTime(uid, classes, classTimeObject, name);
+        addClassTime(props.uid, props.classes, classTimeObject, name);
         resetVariables();
-        onClose();
+        props.onClose();
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={props.isOpen} onClose={props.onClose}>
             <ModalOverlay />
             <ModalContent maxW={{base: "90%", md: "md"}}>
             <ModalHeader>Add Class Time</ModalHeader>
@@ -122,7 +123,7 @@ export default function ClassTimeModal({ isOpen, onClose, name, uid, classes }) 
                 <Button colorScheme="blue" mr={3} onClick={submitHandler}>
                     Submit
                 </Button>
-                <Button colorScheme="blue" variant="outline" mr={3} onClick={onClose}>
+                <Button colorScheme="blue" variant="outline" mr={3} onClick={props.onClose}>
                     Close
                 </Button>
             </ModalFooter>

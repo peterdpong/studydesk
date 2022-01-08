@@ -14,12 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon } from '@chakra-ui/icons';
 
-export default function DeletePopover({ isDeleteOpen, setIsDeleteOpen, deleteHandler, body }) {
+export default function DeletePopover(props: { isDeleteOpen: boolean, setIsDeleteOpen: React.Dispatch<React.SetStateAction<boolean>>, deleteHandler: () => void, body: string }) {
     return (
         <Popover
             returnFocusOnClose={false}
-            isOpen={isDeleteOpen}
-            onClose={() => setIsDeleteOpen(false)}
+            isOpen={props.isDeleteOpen}
+            onClose={() => props.setIsDeleteOpen(false)}
             placement="right"
             closeOnBlur={false}
         >
@@ -34,7 +34,7 @@ export default function DeletePopover({ isDeleteOpen, setIsDeleteOpen, deleteHan
                         background: "red",
                         color: "white"
                     }}
-                    onClick={() => setIsDeleteOpen(!isDeleteOpen)}
+                    onClick={() => props.setIsDeleteOpen(!isDeleteOpen)}
                 />
             </PopoverTrigger>
             <PopoverContent>
@@ -42,12 +42,12 @@ export default function DeletePopover({ isDeleteOpen, setIsDeleteOpen, deleteHan
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverBody>
-                {body}
+                {props.body}
             </PopoverBody>
             <PopoverFooter d="flex" justifyContent="flex-end">
                 <ButtonGroup size="sm">
-                <Button variant="outline" onClick={() => setIsDeleteOpen(false)}>Cancel</Button>
-                <Button colorScheme="red" onClick={deleteHandler}>Delete</Button>
+                <Button variant="outline" onClick={() => props.setIsDeleteOpen(false)}>Cancel</Button>
+                <Button colorScheme="red" onClick={props.deleteHandler}>Delete</Button>
                 </ButtonGroup>
             </PopoverFooter>
             </PopoverContent>
