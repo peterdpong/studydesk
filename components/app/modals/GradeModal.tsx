@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 
-const gradeSelector = (grade) => {
+const gradeSelector = (grade: number) => {
     let gradeAlphabet = '';
 
     switch (true) {
