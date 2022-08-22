@@ -44,7 +44,7 @@ export default function DeletePopover(props: { isDeleteOpen: boolean, setIsDelet
             <PopoverBody>
                 {props.body}
             </PopoverBody>
-            <PopoverFooter d="flex" justifyContent="flex-end">
+            <PopoverFooter justifyContent="flex-end">
                 <ButtonGroup size="sm">
                 <Button variant="outline" onClick={() => props.setIsDeleteOpen(false)}>Cancel</Button>
                 <Button colorScheme="red" onClick={props.deleteHandler}>Delete</Button>

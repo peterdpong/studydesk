@@ -25,10 +25,10 @@ export default function Tasks(props: {taskList: Task[] | undefined, classList: C
 
     return (
         <Box>
-            <Box align="center" display={{md: "flex"}}>
+            <Box alignItems="center" display={{md: "flex"}}>
                 <Heading>Tasks</Heading>
                 <Spacer/>
-                <Box align="right" mr={{md: "12%"}} mt={2}>
+                <Box alignItems="right" mr={{md: "12%"}} mt={2}>
                     <Button colorScheme="green" size="sm" onClick={onOpen}>Add Task</Button>
                 </Box>
             </Box>

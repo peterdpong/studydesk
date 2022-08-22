@@ -123,7 +123,7 @@ export default function TaskItem(props: {task: Task, uid: string, allTasks: Task
           <PopoverContent>
             <PopoverArrow />
             <PopoverCloseButton />
-            <PopoverBody d="flex" justifyContent="center">
+            <PopoverBody justifyContent="center">
               <ButtonGroup size="sm">
                 <Button variant="outline" onClick={() => {setIsModOpen(false); onOpen()}}>Edit</Button>
                 <Button colorScheme="red" onClick={() => {setIsModOpen(false); deleteHandler()}}>Delete</Button>

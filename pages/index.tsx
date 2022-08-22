@@ -90,7 +90,7 @@ export default function Home() {
 
           </Stack>
           <Box w={{ base: "80%", sm: "60%", md: "50%" }} mb={{ base: 12, md: 0 }}>
-            <Image src="/images/placeholder.jpeg" size="100%" rounded="1rem" shadow="xl" />
+            <Image src="/images/placeholder.jpeg" sizes="100%" rounded="1rem" shadow="xl" />
           </Box>
 
         </Flex>
