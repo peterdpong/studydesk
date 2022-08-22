@@ -29,7 +29,7 @@ export default function Classes(props: { classList: Class[], uid: string}) {
             Classes
           </Heading>
           <Spacer/>
-          <Box align="right" mt={{md: "0", base: "3"}}>
+          <Box alignItems="right" mt={{md: "0", base: "3"}}>
             <Button colorScheme="green" size={buttonSize} onClick={onOpen} rightIcon={<AddIcon/>}>New class</Button>
           </Box>
         </Box> 

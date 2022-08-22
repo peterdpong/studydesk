@@ -55,7 +55,7 @@ export default function Footer() {
         py={4}
         spacing={4}
         justify={'center'}
-        align={'center'}>
+        alignItems="center">
         <Heading
           size="md"
         >

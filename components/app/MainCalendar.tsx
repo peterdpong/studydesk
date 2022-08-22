@@ -54,7 +54,7 @@ export default function MainCalendar(props: { uid: string, tasks: Task[], classe
     return (
         <Box mt={5}>
             <Heading mb={2} textAlign={{base: "center", md: "left"}}>Calendar</Heading>
-            <Box align="center" mt={5}>
+            <Box alignItems="center" mt={5}>
                 <Calendar
                     onChange={onChange}
                     value={value}
