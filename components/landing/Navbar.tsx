@@ -1,27 +1,12 @@
 import {
   Box,
   Flex,
-  Text,
-  IconButton,
   Button,
   Stack,
-  Collapse,
-  Icon,
-  Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useColorModeValue,
-  useBreakpointValue,
-  useDisclosure,
   useColorMode,
   Heading,
 } from '@chakra-ui/react'
 import {
-  HamburgerIcon,
-  CloseIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
   MoonIcon,
   SunIcon,
 } from '@chakra-ui/icons'
