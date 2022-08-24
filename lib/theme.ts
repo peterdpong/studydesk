@@ -6,6 +6,12 @@ const theme = extendTheme({
     fonts: {
         heading: 'DM Sans',
         body: 'DM Sans'
+    },
+    colors: {
+        brand: {
+            primary: "#0057FF",
+            primary_hover: "#2D74FF"
+        }
     }
 })
 

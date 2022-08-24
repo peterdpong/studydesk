@@ -6,10 +6,7 @@ import {
   useColorMode,
   Heading,
 } from '@chakra-ui/react'
-import {
-  MoonIcon,
-  SunIcon,
-} from '@chakra-ui/icons'
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode()
@@ -39,7 +36,12 @@ export default function Navbar() {
                 display={'inline-flex'}
                 fontSize={'sm'}
                 fontWeight={600}
-                colorScheme={'blue'}
+                // TODO(Peter): Change to use PrimaryButton Component.
+                bg="brand.primary"
+                _hover={{ bg: 'brand.primary_hover' }}
+                _active={{ bg: 'brand.primary_hover' }}
+                color="white"
+                variant="solid"
                 href={'/signup'}
               >
                 Sign Up

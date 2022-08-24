@@ -11,6 +11,7 @@ import {
     InputRightElement,
     Input,
   } from '@chakra-ui/react';
+import PrimaryButton from '../shared/PrimaryButton';
   
   export default function Hero() {
     return (
@@ -45,13 +46,7 @@ import {
   <InputGroup maxW={'md'} size='md'>
     <Input placeholder='Email' />
     <InputRightElement width='6rem' children={
-        <Button
-            size={'md'}
-            colorScheme={'blue'}
-            bg={'blue.500'}
-            _hover={{ bg: 'blue.600' }}>
-                Subscribe
-        </Button>
+        <PrimaryButton text={"Subscribe"}/>
     } />
   </InputGroup>
             

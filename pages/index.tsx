@@ -6,12 +6,10 @@ import {
   Flex,
   Stack,
   Heading,
-  Text,
   Button,
   Box,
   Image,
   SimpleGrid,
-  Icon,
   Center,
   Container,
 } from '@chakra-ui/react'
@@ -20,6 +18,7 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import Hero from '../components/landing/Hero';
 import Navbar from '../components/landing/Navbar';
 import Footer from '../components/landing/Footer';
+import PrimaryButton from '../components/shared/PrimaryButton';
 
 export default function Home() {
   return (
@@ -41,13 +40,14 @@ export default function Home() {
           <Container maxW={'7xl'} py={10}>
             <SimpleGrid columns={{base: 1, md: 2}} spacing={10}>
                 <Stack>
-                  <Flex>
                       <Heading
                         size={'lg'}
                       >
-                        Global and class task lists.
+                        Keep track of all your classes tasks and deadlines.
                       </Heading>
-                  </Flex>
+                      <Heading fontWeight={500} size={'md'} color={'gray.600'}>
+                      See an overview with Unified view or concentrate on a specific class with Focus view.
+                      </Heading>
                 </Stack>
 
                 <Flex>
@@ -74,14 +74,16 @@ export default function Home() {
           <Container maxW={'7xl'} py={10}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
               <Stack>
-                <Flex>
 
                     <Heading
                       size={'lg'}
                     >
                       Load and plan your timetables.
                     </Heading>
-                </Flex>
+
+                    <Heading fontWeight={500} size={'md'} color={'gray.600'}>
+                      Share your timetables and see which classes you are taking with your friends with overlap mode.
+                      </Heading>
               </Stack>
               <Flex>
                 <Image
@@ -96,13 +98,14 @@ export default function Home() {
           <Container maxW={'7xl'} py={10}>
             <SimpleGrid columns={{base: 1, md: 2}} spacing={10}>
                 <Stack>
-                  <Flex>
                       <Heading
                         size={'lg'}
                       >
-                        Manage your marks and calculate minimum grades.
+                        Manage and track your marks.
                       </Heading>
-                  </Flex>
+                      <Heading fontWeight={500} size={'md'} color={'gray.600'}>
+                      See how you are doing in your classes. See your current average and calculate what marks you need to reach a certain mark.
+                      </Heading>
 
                 </Stack>
 
@@ -150,13 +153,7 @@ export default function Home() {
             </Heading>
             <Center>
               <Link href="/signup">
-                  <Button 
-                  rightIcon={<ArrowForwardIcon/>} 
-                  colorScheme="blue" 
-                  variant="solid"
-                  >
-                    Sign up
-                  </Button>
+                <PrimaryButton text={"Sign up"} rightIcon={<ArrowForwardIcon/>}/>
               </Link> 
             </Center>
             

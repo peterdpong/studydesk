@@ -60,9 +60,9 @@ export default function Footer() {
       >
         <Heading size="md">Studydesk</Heading>
         <Stack direction={'row'} spacing={6}>
-          <Link href={'#'}>Home</Link>
-          <Link href={'#'}>Features</Link>
-          <Link href={'#'}>About</Link>
+          <Link href={'#'}>Privacy</Link>
+          <Link href={'#'}>Terms</Link>
+          <Link href={'#'}>Contact</Link>
         </Stack>
       </Container>
 
@@ -80,9 +80,12 @@ export default function Footer() {
           justify={{ base: 'center', md: 'space-between' }}
           align={{ base: 'center', md: 'center' }}
         >
-          <Text>Created in Toronto 🇨🇦</Text>
+          <Text>Studydesk - Built in Canada.</Text>
           <Stack direction={'row'} spacing={6}>
-            <SocialButton label={'Twitter'} href={'#'}>
+            <SocialButton
+              label={'Twitter'}
+              href={'https://twitter.com/trystudydesk'}
+            >
               <FaTwitter />
             </SocialButton>
           </Stack>
