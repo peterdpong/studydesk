@@ -17,8 +17,8 @@ import {
 } from '@chakra-ui/react'
 
 import { IoAnalytics, IoCalendarClear, IoList } from 'react-icons/io5';
-import Navbar from '../components/landing/Navbar'
-import Footer from '../components/landing/Footer'
+import Navbar from '../components/landing/navbar'
+import Footer from '../components/landing/footer'
 import Feature from '../components/landing/feature'
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 
