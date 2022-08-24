@@ -65,7 +65,7 @@ export default function SignUp() {
 
   return (
     <Box
-      bg={useColorModeValue('gray.50', 'inherit')}
+      bg={'gray.50'}
       minH="100vh"
       py="12"
       px={{ base: '4', lg: '8' }}

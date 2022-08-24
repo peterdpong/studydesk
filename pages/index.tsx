@@ -109,7 +109,7 @@ export default function Home() {
             mb={8}
             textAlign={'center'}
           >
-            Studydesk's features help organize all aspects of school.
+            Studydesk&apos;s features help organize all aspects of school.
           </Text>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} my={'5'}>
             <Feature

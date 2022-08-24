@@ -94,7 +94,7 @@ export default function Navbar() {
             onClick={onOpenModal}
             leftIcon={<WiStars/>}
           >
-            What's new?
+            What&apos;s new?
           </Button>
 
           <Menu>
@@ -122,7 +122,7 @@ export default function Navbar() {
       <Modal isOpen={isOpenModal} onClose={onCloseModal}>
         <ModalOverlay/>
         <ModalContent>
-          <ModalHeader>What's new?</ModalHeader>
+          <ModalHeader>What&apos;s new?</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             Version Beta 0.1
