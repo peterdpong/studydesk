@@ -55,7 +55,7 @@ const SingleClass = () => {
     if(auth){
         setCurrentClass(auth.classes!.filter((c) => c.name === name));
     }
-  }, [auth])
+  }, [auth, name])
 
 
   if(loading || currentClass === null){

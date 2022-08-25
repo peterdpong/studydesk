@@ -16,11 +16,10 @@ import { Class } from '../../lib/models/Class';
 
 
 export default function Classes(props: { classList: Class[], uid: string}) {
-  if(props.classList === undefined) return null;
-
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const buttonSize = useBreakpointValue({base: "sm", md: "md"})
   
-  const buttonSize = useBreakpointValue({base: "sm", md: "md"});
+  if(props.classList === undefined) return null;;
   
     return (
       <Box>

@@ -54,7 +54,7 @@ function Settings() {
         if(!firstRender){
             onAlertOpen();
         }
-    }, [alertMessage])
+    }, [alertMessage, firstRender, onAlertOpen])
     
     if(loading){
         return(

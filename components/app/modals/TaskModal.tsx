@@ -76,11 +76,11 @@ const priorityNumberPicker = (priority: string) => {
 
 
 export default function TaskModal(props: { isOpen: boolean, onClose: () => void, uid: string, tasks: Task[], classes: Class[], isEdit: boolean, taskObject: Task }) {
-
-  const [ name, setName ] = props.isEdit ? useState(props.taskObject.name) : useState('');
-  const [ className, setClassName ] = props.isEdit ? useState(props.taskObject.class) : useState('');
-  const [ dueDate, setDueDate ] = props.isEdit ? useState(props.taskObject.dueDate) : useState('');
-  const [ priority, setPriority ] = props.isEdit ? useState<number | undefined>(props.taskObject.priority) : useState<number | undefined>(undefined);    
+  
+  const [ name, setName ] = useState(props.isEdit ? props.taskObject.name: '');
+  const [ className, setClassName ] = useState(props.isEdit ? props.taskObject.class: '');
+  const [ dueDate, setDueDate ] = useState(props.isEdit ? props.taskObject.dueDate: '')
+  const [ priority, setPriority ] = useState<number | undefined>(props.isEdit ? props.taskObject.priority : undefined);  
 
   const resetVariables = () => {
     setName('');

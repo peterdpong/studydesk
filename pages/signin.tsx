@@ -117,7 +117,7 @@ export default function Signin() {
           Sign in to Studydesk
         </Heading>
         <Text mt="4" mb="8" align="center" maxW="md" fontWeight="medium">
-          <Text as="span">Don't have an account? </Text>
+          <Text as="span">Don&apos;t have an account? </Text>
           <Link href="/signup" color={'blue.500'} _hover={{color: 'blue.600'}} display={{ base: 'block', sm: 'inline' }}>Sign up.</Link>
         </Text>
         <Card>
