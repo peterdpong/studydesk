@@ -16,7 +16,10 @@ import {
 import * as React from 'react'
 import { HiEye, HiEyeOff } from 'react-icons/hi'
 
-export const PasswordFieldSignup = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+export const PasswordFieldSignup = React.forwardRef<
+  HTMLInputElement,
+  InputProps
+>((props, ref) => {
   const { isOpen, onToggle } = useDisclosure()
   const inputRef = React.useRef<HTMLInputElement>(null)
 
