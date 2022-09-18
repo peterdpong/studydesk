@@ -22,7 +22,7 @@ export default function Navbar() {
               {/* <Button onClick={toggleColorMode}>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button> */}
-              <Button
+              {/* <Button
                 as={'a'}
                 fontSize={'sm'}
                 fontWeight={400}
@@ -45,7 +45,7 @@ export default function Navbar() {
                 href={'/signup'}
               >
                 Sign Up
-              </Button>
+              </Button> */}
             </Stack>
           </Flex>
         </Flex>

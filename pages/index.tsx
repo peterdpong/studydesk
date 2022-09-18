@@ -12,6 +12,10 @@ import {
   SimpleGrid,
   Center,
   Container,
+  InputGroup,
+  Input,
+  InputRightElement,
+  VStack,
 } from '@chakra-ui/react'
 
 import { ArrowForwardIcon } from '@chakra-ui/icons'
@@ -47,7 +51,14 @@ export default function Home() {
               </Stack>
 
               <Flex>
-                <Image rounded={'md'} alt={'feature image'} />
+                <Center>
+                  <Image
+                    rounded={'md'}
+                    width={'400px'}
+                    alt={'Image of clipboard icon and checkbox icon'}
+                    src="images/landing-1.png"
+                  />
+                </Center>
               </Flex>
             </SimpleGrid>
           </Container>
@@ -63,7 +74,14 @@ export default function Home() {
                 </Heading>
               </Stack>
               <Flex>
-                <Image rounded={'md'} alt={'feature image'} />
+                <Center>
+                  <Image
+                    rounded={'md'}
+                    width={'400px'}
+                    alt={'Image of calendar icon and pencil icon'}
+                    src="/images/landing-2.png"
+                  />
+                </Center>
               </Flex>
             </SimpleGrid>
           </Container>
@@ -80,7 +98,14 @@ export default function Home() {
               </Stack>
 
               <Flex>
-                <Image rounded={'md'} alt={'feature image'} />
+                <Center>
+                  <Image
+                    rounded={'md'}
+                    width={'400px'}
+                    alt={'Image of icons of a list and mark tracking'}
+                    src="images/landing-3.png"
+                  />
+                </Center>
               </Flex>
             </SimpleGrid>
           </Container>
@@ -99,13 +124,30 @@ export default function Home() {
           >
             Start organizing your studying all in one place.
           </Heading>
+
           <Center>
-            <Link href="/signup">
+            <VStack>
+              <Heading
+                fontWeight={500}
+                fontSize={{ base: 'xl', sm: 'md', md: 'lg' }}
+                maxW={'3xl'}
+              >
+                Coming soon. Be the first to try it.
+              </Heading>
+              <InputGroup maxW={'md'} size="md">
+                <Input placeholder="Email" />
+                <InputRightElement
+                  width="6rem"
+                  children={<PrimaryButton text={'Subscribe'} />}
+                />
+              </InputGroup>
+            </VStack>
+            {/* <Link href="/signup">
               <PrimaryButton
                 text={'Sign up'}
                 rightIcon={<ArrowForwardIcon />}
               />
-            </Link>
+            </Link> */}
           </Center>
         </Box>
 
