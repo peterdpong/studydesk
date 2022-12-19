@@ -136,10 +136,9 @@ export default function Home() {
               </Heading>
               <InputGroup maxW={'md'} size="md">
                 <Input placeholder="Email" />
-                <InputRightElement
-                  width="6rem"
-                  children={<PrimaryButton text={'Subscribe'} />}
-                />
+                <InputRightElement width="6rem">
+                  <PrimaryButton text={'Subscribe'} />
+                </InputRightElement>
               </InputGroup>
             </VStack>
             {/* <Link href="/signup">

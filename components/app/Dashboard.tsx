@@ -7,23 +7,25 @@ import 'react-calendar/dist/Calendar.css';
 import Tasks from './Tasks';
 import MainCalendar from './MainCalendar';
 import ClassList from './ClassList';
-import { newClass, newTask } from '../../lib/writeTodb';
+import { newClass, newTask } from '../../lib/firestoredb';
 import { useAuth } from '../../lib/auth';
+import { ClassModel } from '../../lib/models/ClassModel'
+import { ClassTypes } from '../../lib/models/ClassTimes';
 
 
-const classList = [
+const classList: ClassModel[] = [
   {
     name: "Example Class",
+    teacherName: "",
     syllabus: "",
-    times: [
+    classTimes: [
       {
-        id: Math.random(),
         className: "Example Class",
         startTime: "09:00",
         endTime: "10:00",
         day: "Mon",
-        type: "Lecture",
-        classroom: "Example Classroom"
+        type: ClassTypes.Lecture,
+        classRoom: "Example Classroom"
     }
     ],
     assignments: [
@@ -35,7 +37,8 @@ const classList = [
         weight: 5,
         grade: 80
       }
-    ]
+    ],
+    color: "#FFFFFF"
   }
 ]
 

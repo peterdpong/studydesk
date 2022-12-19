@@ -11,11 +11,12 @@ import {
 } from "@chakra-ui/react";
 import DeletePopover from '../DeletePopover';
 import { CheckIcon } from '@chakra-ui/icons';
-import { editAssignment, deleteAssignment } from '../../../lib/writeTodb';
-import { Class } from '../../../lib/models/Class';
+import { ClassModel } from '../../../lib/models/ClassModel';
+import { Assignment } from '../../../lib/models/Assignment';
+import { deleteAssignment, editAssignment } from '../../../lib/db-actions/ClassActions';
 
 
-export default function AssignmentTableItem(props: { a: any, classname: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
+export default function AssignmentTableItem(props: { a: any, classname: string | undefined, uid: string | undefined, classes: ClassModel[] | undefined }) {
 
     const [ editing, setEditing ] = useState(false);
     const id = props.a.id;
@@ -30,16 +31,17 @@ export default function AssignmentTableItem(props: { a: any, classname: string |
 
         //check for error
         
-        const assignmentObject = {
-            id, name, dueDate, weight, grade
+        const assignmentObject: Assignment = {
+            id, name, className: "", dueDate, weight, grade
         }
 
-        editAssignment(props.uid, props.classes, assignmentObject, props.classname);
+        // TODO: Check undefined
+        editAssignment(props.uid, props.classes!, assignmentObject, props.classname ? props.classname : "");
         setEditing(false);
     }
 
     const deleteHandler = () => {
-        deleteAssignment(props.uid, props.classes, props.classname, id);
+        deleteAssignment(props.uid, props.classes!, props.classname ? props.classname : "", id);
     }
 
     return (

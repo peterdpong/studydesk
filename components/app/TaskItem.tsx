@@ -19,11 +19,11 @@ import {
     PopoverFooter,
     ButtonGroup
 } from "@chakra-ui/react";
-import { toggleTask, deleteTask} from '../../lib/writeTodb';
+import { toggleTask, deleteTask} from '../../lib/firestoredb';
 import TaskModal from './modals/TaskModal';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { Task } from '../../lib/models/Task';
-import { Class } from '../../lib/models/Class';
+import { ClassModel } from '../../lib/models/ClassModel';
 
 
 const priorityColor = (priority: number) => {
@@ -73,9 +73,9 @@ const priorityColor = (priority: number) => {
       break; */
 
 
-export default function TaskItem(props: {task: Task, uid: string, allTasks: Task[], allClasses: Class[]} ) {
+export default function TaskItem(props: {task: Task, uid: string, allTasks: Task[], allClasses: ClassModel[]} ) {
 
-  const [ boxChecked, setBoxChecked ] = useState<boolean>(props.task.status);
+  const [ boxChecked, setBoxChecked ] = useState<boolean>(props.task.checked);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [ isModOpen, setIsModOpen ] = useState(false);
 
@@ -95,9 +95,9 @@ export default function TaskItem(props: {task: Task, uid: string, allTasks: Task
         <Checkbox size={'lg'} colorScheme={'green'} isChecked={boxChecked} onChange={toggleHandler} />
         <Box p={3} bg={priorityColor(props.task.priority)} fontSize={15} borderRadius={10} ml={3} fontWeight="medium">
           {boxChecked ?
-          <Text textDecorationLine="line-through" textDecorationColor="black"> {props.task.name} ({props.task.class}) - {props.task.dueDate.substring(5, 10).replace('-', '/')} </Text>
+          <Text textDecorationLine="line-through" textDecorationColor="black"> {props.task.name} ({props.task.className}) - {props.task.dueDate.substring(5, 10).replace('-', '/')} </Text>
             :
-          <Text> {props.task.name} ({props.task.class}) - {props.task.dueDate.substring(5, 10).replace('-', '/')} </Text>
+          <Text> {props.task.name} ({props.task.className}) - {props.task.dueDate.substring(5, 10).replace('-', '/')} </Text>
           }
         </Box>
         <TaskModal isOpen={isOpen} onClose={onClose} uid={props.uid} tasks={props.allTasks} classes={props.allClasses} isEdit={true} taskObject={props.task} />

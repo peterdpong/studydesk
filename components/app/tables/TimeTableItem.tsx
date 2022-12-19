@@ -12,35 +12,36 @@ import {
 } from "@chakra-ui/react";
 import DeletePopover from '../DeletePopover';
 import { CheckIcon } from '@chakra-ui/icons';
-import { editClassTime, deleteTime } from '../../../lib/writeTodb';
-import { Class } from '../../../lib/models/Class';
+import { ClassModel } from '../../../lib/models/ClassModel';
+import { ClassTimes } from '../../../lib/models/ClassTimes';
+import { editClassTime, deleteClassTime } from '../../../lib/db-actions/ClassActions';
 
 
-export default function TimeTableItem(props: { classname: string | string[] | undefined, t: any, uid: string | undefined, classes: Class[] | undefined }) {
+export default function TimeTableItem(props: { key: number, classname: string | undefined, t: ClassTimes, uid: string | undefined, classes: ClassModel[] | undefined }) {
 
     const [ editing, setEditing ] = useState(false);
-    const id = props.t.id;
     const [ startTime, setStartTime ] = useState(props.t.startTime);
     const [ endTime, setEndTime ] = useState(props.t.endTime);
     const [ day, setDay ] = useState(props.t.day);
     const [ type, setType ] = useState(props.t.type);
-    const [ classroom, setClassroom ] = useState(props.t.classroom);
+    const [ classRoom, setClassRoom ] = useState(props.t.classRoom);
 
     const [ isDeleteOpen, setIsDeleteOpen ] = useState(false);
 
     const submitHandler = () => {
-        //check errors
+        // TODO: Check errors
 
-        const timeObject = {
-            id, startTime, endTime, day, type, classroom, className: props.classname
+        const timeObject: ClassTimes = {
+            startTime, endTime, day, type, classRoom, className: props.classname ? props.classname : ""
         }
 
-        editClassTime(props.uid, props.classes, timeObject, props.classname);
+        // TODO: Check undefined
+        editClassTime(props.uid, props.classes!, timeObject, props.classname ? props.classname : "", props.key);
         setEditing(false);
     }
 
     const deleteHandler = () => {
-        deleteTime(props.uid, props.classes, props.classname, id);
+      deleteClassTime(props.uid, props.classes!, props.classname ? props.classname : "", props.key);
     }
 
     return (
@@ -83,10 +84,11 @@ export default function TimeTableItem(props: { classname: string | string[] | un
             </Td>
             <Td>
                 <Editable 
-                    defaultValue={props.t.type}
+                    defaultValue={props.t.type.toString()}
                     onEdit={() => setEditing(true)}
                     onCancel={() => setEditing(false)}
-                    onChange={(e) => setType(e)}
+                    // TODO: Create string to ClassTypes
+                    //onChange={(e) => setType(e)}
                     onSubmit={submitHandler}>
                     <EditablePreview />
                     <EditableInput />
@@ -95,10 +97,10 @@ export default function TimeTableItem(props: { classname: string | string[] | un
             <Td>
                 <Flex align="center">
                     <Editable 
-                        defaultValue={props.t.classroom}
+                        defaultValue={props.t.classRoom}
                         onEdit={() => setEditing(true)}
                         onCancel={() => setEditing(false)}
-                        onChange={(e) => setClassroom(e)}
+                        onChange={(e) => setClassRoom(e)}
                         onSubmit={submitHandler}>
                         <EditablePreview />
                         <EditableInput />

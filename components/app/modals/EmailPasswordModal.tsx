@@ -13,7 +13,7 @@ import {
     Input,
     Stack
 } from "@chakra-ui/react";
-import { addClass } from '../../../lib/writeTodb';
+import { addClass } from '../../../lib/firestoredb';
 import { FaGoogle } from "react-icons/fa";
 import { TextWithDivider } from "../../forms/TextWithDivider";
 

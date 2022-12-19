@@ -1,8 +1,8 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react'
-import { addUser, getUserData } from './firestoredb'
+import { addUser, getUserData } from './db-actions/UserActions'
 import firebase from './firebase'
 import { UserModel } from './models/User'
-import { Class } from './models/Class'
+import { ClassModel } from './models/ClassModel'
 import { Task } from './models/Task'
 interface AuthContext {
   useRequiredAuth: () => UserModel | null
@@ -64,6 +64,13 @@ function useProvideAuth() {
     }
 
     const userData = await getUserData(authState.uid)
+
+    if (!userData) {
+      console.error('handleAuthChange error: userData null')
+      setLoading(false)
+      return
+    }
+
     setAuth(formatUserState(userData))
     setLoading(false)
   }
@@ -85,6 +92,12 @@ function useProvideAuth() {
         }
 
         const userData = await getUserData(response.user.uid)
+        if (!userData) {
+          console.error('Email Signin Error: userData null')
+          setLoading(false)
+          return
+        }
+
         setAuth(formatUserState(userData))
         setLoading(false)
       })
@@ -122,7 +135,7 @@ function useProvideAuth() {
             lastName: fullNameSplit[1],
             email: email,
             school: '',
-            classes: new Array<Class>(),
+            classes: new Array<ClassModel>(),
             tasks: new Array<Task>(),
           }
 
@@ -145,6 +158,12 @@ function useProvideAuth() {
 
     const userData = await getUserData(response.user.uid)
 
+    if (!userData) {
+      console.error('Google Signin Error: userData null')
+      setLoading(false)
+      return
+    }
+
     // Check if new or existing user
     if (userData.exists === false) {
       const fullNameSplit: string[] | undefined =
@@ -157,7 +176,7 @@ function useProvideAuth() {
         lastName: fullNameSplit ? fullNameSplit[1] : undefined,
         email: response.user.email ? response.user.email : undefined,
         school: '',
-        classes: new Array<Class>(),
+        classes: new Array<ClassModel>(),
         tasks: new Array<Task>(),
       }
 
@@ -213,7 +232,7 @@ function useProvideAuth() {
 
       return () => unsubscribe()
     }
-  }, [loading])
+  }, [loading, auth?.uid])
 
   return {
     useRequiredAuth,

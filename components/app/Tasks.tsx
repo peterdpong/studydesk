@@ -12,16 +12,16 @@ import TaskModal from './modals/TaskModal';
 import TaskItem from './TaskItem';
 import PriorityBar from './PriorityBar';
 import { Task } from '../../lib/models/Task';
-import { Class } from '../../lib/models/Class';
+import { ClassModel } from '../../lib/models/ClassModel';
 
-//TODO: Look at Task ID generation and need
+// TODO: Look at Task ID generation and need
 
-export default function Tasks(props: {taskList: Task[] | undefined, classList: Class[] | undefined, uid: string | undefined}) {
+export default function Tasks(props: {taskList: Task[] | undefined, classList: ClassModel[] | undefined, uid: string | undefined}) {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const sortByPriority = props.taskList?.sort((x, y) => x.priority - y.priority);
-    const sortedList = sortByPriority?.sort((x, y) => Number(x.status) - Number( y.status)); //TODO: redo this as this is hacky boolean subtraction
+    const sortedList = sortByPriority?.sort((x, y) => Number(x.checked) - Number( y.checked)); //TODO: redo this as this is hacky boolean subtraction
 
     return (
         <Box>

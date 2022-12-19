@@ -15,11 +15,11 @@ import {
     FormLabel,
     Input
 } from "@chakra-ui/react";
-import { newFile, deleteFile, addSyllabus } from '../../../lib/writeTodb';
-import { Class } from '../../../lib/models/Class';
+import { newFile, deleteFile, addSyllabus } from '../../../lib/firestoredb';
+import { ClassModel } from '../../../lib/models/ClassModel';
 
 
-export default function SyllabusModal(props: { isOpen: boolean, onClose: () => void, name: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
+export default function SyllabusModal(props: { isOpen: boolean, onClose: () => void, name: string | undefined, uid: string | undefined, classes: ClassModel[] | undefined }) {
 
     const [ fileURL, setFileURL ] = useState('');
 
@@ -42,7 +42,7 @@ export default function SyllabusModal(props: { isOpen: boolean, onClose: () => v
             alert('Please choose a file');
         }
 
-        addSyllabus(props.uid, fileURL, props.classes, props.name);
+        addSyllabus(props.uid, fileURL, props.classes!, props.name ? props.name : "");
         setFileURL('');
         props.onClose();
     }

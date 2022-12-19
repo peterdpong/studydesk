@@ -15,9 +15,9 @@ import {
     Select,
     Flex
 } from "@chakra-ui/react";
-import { addTask, editTask } from '../../../lib/writeTodb';
+import { addTask, editTask } from '../../../lib/firestoredb';
 import { Task } from '../../../lib/models/Task';
-import { Class } from '../../../lib/models/Class';
+import { ClassModel } from '../../../lib/models/ClassModel';
 
 
 const priorityPicker = (priorityNumber: number) => {
@@ -75,10 +75,10 @@ const priorityNumberPicker = (priority: string) => {
 }
 
 
-export default function TaskModal(props: { isOpen: boolean, onClose: () => void, uid: string, tasks: Task[], classes: Class[], isEdit: boolean, taskObject: Task }) {
+export default function TaskModal(props: { isOpen: boolean, onClose: () => void, uid: string, tasks: Task[], classes: ClassModel[], isEdit: boolean, taskObject: Task }) {
   
   const [ name, setName ] = useState(props.isEdit ? props.taskObject.name: '');
-  const [ className, setClassName ] = useState(props.isEdit ? props.taskObject.class: '');
+  const [ className, setClassName ] = useState(props.isEdit ? props.taskObject.className: '');
   const [ dueDate, setDueDate ] = useState(props.isEdit ? props.taskObject.dueDate: '')
   const [ priority, setPriority ] = useState<number | undefined>(props.isEdit ? props.taskObject.priority : undefined);  
 
@@ -116,17 +116,18 @@ export default function TaskModal(props: { isOpen: boolean, onClose: () => void,
 
     const newObject = {
       name: name,
+      className: "",
       dueDate: dueDate,
       class: className,
       priority: priority!
     }
 
     if(props.isEdit){
-      const editObject = {...newObject, id: props.taskObject.id, checked: props.taskObject.status};
+      const editObject: Task = {...newObject, id: props.taskObject.id, checked: props.taskObject.checked};
       editTask(props.uid, props.tasks, props.taskObject.id, editObject);
     }
     else{
-      const addObject: Task = {...newObject, id: Math.random(), status: false};
+      const addObject: Task = {...newObject, id: Math.random(), checked: false};
       const updatedTasks = props.tasks.concat(addObject);
       addTask(props.uid, updatedTasks);
       resetVariables();
