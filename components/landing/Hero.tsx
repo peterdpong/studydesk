@@ -58,10 +58,9 @@ export default function Hero() {
         </Heading>
         <InputGroup maxW={'md'} size="md">
           <Input placeholder="Email" />
-          <InputRightElement
-            width="6rem"
-            children={<PrimaryButton text={'Subscribe'} />}
-          />
+          <InputRightElement width="6rem">
+            <PrimaryButton text={'Subscribe'} />
+          </InputRightElement>
         </InputGroup>
 
         <Flex w={'full'}>
