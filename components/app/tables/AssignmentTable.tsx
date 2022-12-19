@@ -7,9 +7,9 @@ import {
     Th,
 } from "@chakra-ui/react";
 import AssignmentTableItem from './AssignmentTableItem';
-import { Class } from '../../../lib/models/Class';
+import { ClassModel } from '../../../lib/models/ClassModel';
 
-export default function AssignmentTable(props: { assignments: Object[], name: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
+export default function AssignmentTable(props: { assignments: Object[], name: string | undefined, uid: string | undefined, classes: ClassModel[] | undefined }) {
     return (
         <Table variant="simple">
             <Thead>

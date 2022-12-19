@@ -12,11 +12,11 @@ import {
     FormLabel,
     Input
 } from "@chakra-ui/react";
-import { addClass } from '../../../lib/writeTodb';
-import { Class } from '../../../lib/models/Class';
+import { addClass } from '../../../lib/firestoredb';
+import { ClassModel } from '../../../lib/models/ClassModel';
 import { ClassTypes } from '../../../lib/models/ClassTimes';
 
-export default function ClassListModal(props: { isOpen: boolean, onClose: () => void, uid: string, classes: Class[] }) {
+export default function ClassListModal(props: { isOpen: boolean, onClose: () => void, uid: string, classes: ClassModel[] }) {
 
     const [ name, setName ] = useState('');
 
@@ -32,27 +32,25 @@ export default function ClassListModal(props: { isOpen: boolean, onClose: () => 
             return;
         }
 
-        const checkOverlap = props.classes.filter((c: Class) => c.name === name);
+        const checkOverlap = props.classes.filter((c: ClassModel) => c.name === name);
 
         if(checkOverlap[0]){
             alert("This class already exists!");
             return;
         }
 
-        const classObject: Class = {
+        const classObject: ClassModel = {
             name: name,
-            classTimes: [],
             teacherName: '',
             color: '',
             syllabus: "",
-            times: [
+            classTimes: [
                 {
-                    id: Math.random(),
                     startTime: "09:00",
                     endTime: "10:00",
                     day: "Mon",
                     type: ClassTypes.Lecture,
-                    classroom: "MH100",
+                    classRoom: "MH100",
                     className: name
                 }
             ],
@@ -60,6 +58,7 @@ export default function ClassListModal(props: { isOpen: boolean, onClose: () => 
                 {
                     id: Math.random(),
                     name: "Example Assignment",
+                    className: "",
                     dueDate: "2021-09-08",
                     weight: 5,
                     grade: 80

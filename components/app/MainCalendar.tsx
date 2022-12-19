@@ -6,10 +6,10 @@ import {
     Heading,
     useDisclosure
 } from "@chakra-ui/react";
-import { findCalendarMatch } from '../../lib/writeTodb';
+import { findCalendarMatch } from '../../lib/firestoredb';
 import CalendarModal from './modals/CalendarModal';
 import { Task } from '../../lib/models/Task';
-import { Class } from '../../lib/models/Class';
+import { ClassModel } from '../../lib/models/ClassModel';
 
 
 const sortByTime = (times: any[]) => {
@@ -21,7 +21,7 @@ const sortByTime = (times: any[]) => {
 }
 
 
-export default function MainCalendar(props: { uid: string, tasks: Task[], classes: Class[] }) {
+export default function MainCalendar(props: { uid: string, tasks: Task[], classes: ClassModel[] }) {
     const [ value, setValue ] = useState(new Date());
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [ date, setDate ] = useState('');

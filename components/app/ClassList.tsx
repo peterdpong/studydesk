@@ -12,10 +12,10 @@ import {
 import { AddIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import ClassListModal from './modals/ClassListModal';
-import { Class } from '../../lib/models/Class';
+import { ClassModel } from '../../lib/models/ClassModel';
 
 
-export default function Classes(props: { classList: Class[], uid: string}) {
+export default function Classes(props: { classList: ClassModel[], uid: string}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const buttonSize = useBreakpointValue({base: "sm", md: "md"})
   
@@ -34,7 +34,7 @@ export default function Classes(props: { classList: Class[], uid: string}) {
         </Box> 
 
         <SimpleGrid minChildWidth={{base: 100, md: 200}} spacing="4" justifyItems="center">
-          {props.classList.map((c: Class) => {
+          {props.classList.map((c: ClassModel) => {
             return(
               <Link href={`/app/class/${c.name}`} key={c.name}>
                 <Button border="none" colorScheme={'green'} w={{base: 100, md: 200}} h={{base: 100, md: 125}} borderRadius={20}>

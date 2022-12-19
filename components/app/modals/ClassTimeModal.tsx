@@ -14,23 +14,24 @@ import {
     Input, 
     Select
 } from "@chakra-ui/react";
-import { addClassTime } from '../../../lib/writeTodb';
-import { Class } from '../../../lib/models/Class';
+import { addClassTime } from '../../../lib/db-actions/ClassActions';
+import { ClassModel } from '../../../lib/models/ClassModel';
+import { ClassTimes, ClassTypes } from '../../../lib/models/ClassTimes';
   
 
-export default function ClassTimeModal(props: { isOpen: boolean, onClose: () => void, name: string | string[] | undefined, uid: string | undefined, classes: Class[] | undefined }) {
+export default function ClassTimeModal(props: { isOpen: boolean, onClose: () => void, name: string | undefined, uid: string | undefined, classes: ClassModel[] | undefined }) {
     const [ startTime, setStartTime ] = useState('');
     const [ endTime, setEndTime ] = useState('') ;
     const [ classDay, setClassDay ] = useState('');
     const [ classType, setClassType ] = useState('');
-    const [ classroom, setClassroom ] = useState('');
+    const [ classRoom, setClassRoom ] = useState('');
 
     const resetVariables = () => {
         setStartTime('');
         setEndTime('');
         setClassDay('');
         setClassType('');
-        setClassroom('');
+        setClassRoom('');
     }
 
     const submitHandler = (e: React.MouseEvent<HTMLElement>) => {
@@ -56,22 +57,23 @@ export default function ClassTimeModal(props: { isOpen: boolean, onClose: () => 
             return;
         }
 
-        if(classroom.length === 0){
+        if(classRoom.length === 0){
             alert('Please enter a classroom');
             return;
         }
 
-        const classTimeObject = {
-            id: Math.random(),
-            className: name,
+        // TODO: Check undefined
+        const newClassTime: ClassTimes = {
+            className: props.name ? props.name : "",
             startTime: startTime,
             endTime: endTime,
             day: classDay,
-            type: classType,
-            classroom: classroom
+            type: ClassTypes.Lecture,
+            classRoom: classRoom
         }
 
-        addClassTime(props.uid, props.classes, classTimeObject, name);
+        // TODO: Check undefined
+        addClassTime(props.uid, props.classes!, newClassTime, props.name!);
         resetVariables();
         props.onClose();
     }
@@ -115,7 +117,7 @@ export default function ClassTimeModal(props: { isOpen: boolean, onClose: () => 
 
                 <FormControl isRequired>
                     <FormLabel mt={5}>Classroom</FormLabel>
-                    <Input placeholder="Classroom" value={classroom} onChange={(e) => setClassroom(e.target.value)}/>
+                    <Input placeholder="Classroom" value={classRoom} onChange={(e) => setClassRoom(e.target.value)}/>
                 </FormControl>
             </ModalBody>
 
