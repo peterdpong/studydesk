@@ -1,12 +1,11 @@
 import React from 'react'
-import Navbar from '../../../components/app/Navbar'
+import Sidebar from '../../../components/app/Sidebar'
 import { protectedRoute } from '../../../lib/hoc/protectedRoute'
 
 function Timetable() {
   return (
     <div>
-      <Navbar />
-      Timetable Index
+      <Sidebar>Timetable Index</Sidebar>
     </div>
   )
 }

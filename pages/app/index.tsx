@@ -1,12 +1,13 @@
-import Navbar from '../../components/app/Navbar'
 import Dashboard from '../../components/app/Dashboard'
 import { protectedRoute } from '../../lib/hoc/protectedRoute'
+import Sidebar from '../../components/app/Sidebar'
 
 function App() {
   return (
     <div>
-      <Navbar />
-      <Dashboard />
+      <Sidebar>
+        <Dashboard />
+      </Sidebar>
     </div>
   )
 }
