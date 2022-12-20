@@ -84,7 +84,7 @@ export default function Footer() {
           <Stack direction={'row'} spacing={6}>
             <SocialButton
               label={'Twitter'}
-              href={'https://twitter.com/trystudydesk'}
+              href={'https://twitter.com/StudydeskHQ'}
             >
               <FaTwitter />
             </SocialButton>

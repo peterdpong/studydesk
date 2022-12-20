@@ -1,9 +1,10 @@
 import { Context, createContext, useContext, useEffect, useState } from 'react'
-import { addUser, getUserData } from './db-actions/UserActions'
 import firebase from './firebase'
 import { UserModel } from './models/User'
 import { ClassModel } from './models/ClassModel'
 import { Task } from './models/Task'
+import { addUser, getUserData } from './db-actions/UserActions'
+
 interface AuthContext {
   useRequiredAuth: () => UserModel | null
   loading: boolean
