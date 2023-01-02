@@ -14,7 +14,7 @@ import Link from 'next/link'
 import ClassListModal from './modals/ClassListModal'
 import { ClassModel } from '../../lib/models/ClassModel'
 
-export default function Classes(props: {
+export default function ClassList(props: {
   classList: ClassModel[]
   uid: string
 }) {
